@@ -1,0 +1,35 @@
+.card-class{
+    width :100%;
+}
+.card-block-header{
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 1%;
+    text-transform: uppercase;
+}
+.card-block-detail{
+    font-size: 15px;
+    margin-top: 1%;
+    text-transform: capitalize;
+}
+.card-block-full{
+    font-size: 15px;
+    text-transform: capitalize;
+    margin: 2% 0% 2% 0%;
+    font-weight: 700;
+    border-bottom: 1px solid #DDD;
+}
+.card_header{
+    font-size: 16px;
+}
+.full_col{
+    font-size: 15px;
+    border-bottom: 1px solid #DDD;
+    margin-top: 2%;
+}
+.no-found-class{
+    text-align: center;
+    text-transform: capitalize;
+    color: #ce0820;
+    font-size: 16px;
+}
