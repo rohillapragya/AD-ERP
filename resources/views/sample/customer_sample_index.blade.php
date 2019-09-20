@@ -68,7 +68,7 @@
                         @endphp -->
                     @else  
                         <tr>
-                            <td colspan="10" class="no-data-found">No Inquiry found</td>
+                            <td colspan="10" class="no-data-found">No Customer Sample request found</td>
                         </tr>
                     @endif    
                 </tbody>

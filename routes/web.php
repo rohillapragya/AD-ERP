@@ -35,13 +35,23 @@ Route::post('/dashboard/editSampleRequest','Sample@editSampleRequest');
 Route::get('/sample/customer/readyForDispatch/{sampleId}','Sample@ReadyForDispatch');
 Route::post('/customer/sample/readyForDispatch','Sample@proceedForDispatch');
 
+
 Route::get('/dashboard/customerSampleBMRList','Production@pendingBMRList');
 Route::get('/sample/customer/BMRDetails/{sampleId}','Production@ReadyForBMR');
 Route::post('/production/bmr','Production@saveBMR');
 
+
 Route::get('/dashboard/customerSampleQC','QC@pendingQCDetailList');
-Route::get('/sample/customer/QCDetails/{sampleId}','QC@ReadyForQCDetails');
+Route::get('/sample/qc/QCDetails/{sampleId}','QC@ReadyForQCDetails');
 Route::post('/qcDetails/qcSave','QC@saveQCDetails');
+
+
+Route::get('/dashboard/addNewVendorSample','Sample@addVendorSample');
+Route::post('/dashboard/saveVendorSampleRequest','Sample@saveVendorSample');
+Route::get('/sample/vendor/show/{sampleId}','Sample@showVendorSample');
+Route::post('/dashboard/editVendorSampleRequest','Sample@editVendorSample');
+Route::get('/sample/vendor/saveVendorSample/{sampleId}','Sample@saveVendorSampleInformation');
+Route::post('/vendor/sample/proceedVendorSampleTOStore','Sample@proceedVendorSampleTOStore');
 // sample route section end  here
 
 
@@ -51,6 +61,7 @@ Route::get('/dashboard/addNewDistapchService','Dispatch@addNewService');
 Route::post('/dispatch/saveService','Dispatch@saveService');
 Route::get('/dispatch/service/edit/{serviceId}','Dispatch@showService');
 Route::post('/dispatch/updateService','Dispatch@editService');
+Route::post('/dispatch/add','Dispatch@addDisaptchInfo');
 
 
 Route::get('/dashboard/dispatchInfo','Dispatch@dispatchInfoIndex');
@@ -64,3 +75,9 @@ Route::get('/product/getProductList','Product@getProductList');
 Route::get('/product/getMethodList','Product@getMethod');
 Route::get('/product/uom','Product@getUOM');
 // product route section end  here
+
+
+// warehouse route section start here
+
+
+// warehouse route section  end  here

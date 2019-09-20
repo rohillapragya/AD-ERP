@@ -52,21 +52,6 @@ class QC extends Controller
         $data['message'] ='QC Details Added Successfully. Go to  Dashboard using button';
 
         return view('dashboard_return.success',$data);
-
-        // print_r($qc_table_document_name);
-        // print_r($qc_table_document_number);
-        // dd("exit");
-
-        /*$sampleId = request('sampleId');
-        $bmr_number = request('bmr_number');
-        $store_remarks = request('store_remarks');
-        $user_id = Session::get('UID');
-
-        $output = $this->qc->saveQCDetails($sampleId,$bmr_number,$store_remarks,$user_id);
-
-        $data['message'] ='BMR Added Successfully. Go to  Dashboard using button';
-
-        return view('dashboard_return.success',$data);*/
     }
 
 }

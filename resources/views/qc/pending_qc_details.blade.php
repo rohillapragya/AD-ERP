@@ -48,7 +48,7 @@
                                 <td>{{$output[$i]['customer_status']}}</td>
                                 @if($user_role_id=='3' || $user_role_id=='7')
                                   <!--   <td><a href="/sample/customer/readyForDispatch/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a></td> -->
-                                     <td><a href="/sample/customer/QCDetails/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a></td>
+                                     <td><a href="/sample/qc/QCDetails/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a></td>
                                 @else
                                     <td><span class="glyphicon glyphicon-tag"></td>
                                 @endif

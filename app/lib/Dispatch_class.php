@@ -61,10 +61,79 @@ class Dispatch_class
         return json_decode(json_encode($out), true);
     }
 
-    // function getDispatchServiceList()
-    // {
-    //     $out = DB::select("select * from dispatch_service_master");
+    function string_to_date($day,$month,$year)
+    {
+        $odate = "$day-$month-$year";
+        return date("Y/m/d", strtotime($odate));
+    }
 
-    //     return json_decode(json_encode($out), true);
-    // }
+    function maxDispatchDetailsId()
+    {
+        $out = DB::select("select COALESCE(max(id), 0) + 1 as max_id from dispatch_details");
+        $result = json_decode(json_encode($out), true);
+        foreach ($result as $key => $value) 
+        {
+            return $value['max_id'];
+        }
+    }
+
+    function maxDispatchAttachmentsId()
+    {
+        $out = DB::select("select COALESCE(max(id), 0) + 1 as max_id from dispatch_attachments");
+        $result = json_decode(json_encode($out), true);
+        foreach ($result as $key => $value) 
+        {
+            return $value['max_id'];
+        }
+    }
+
+    function saveDispatchInfo($sampleId,$object_type,$user_id,$dispatchService,$dispatch_amount,$dispatchdateDay,$dispatchDateMonth,$dispatchDateyear,$deliverydateDay,$deliveryDateMonth,$deliveryDateyear,$dispatch_docx_number,$dispatchStatus,$docx_receipt_attacment,$dispatch_table_document_name)
+    {
+       
+        $getTypeOfDocName = gettype($dispatch_table_document_name);
+
+       // dd($getTypeOfDocName);
+
+        if($getTypeOfDocName=='array')
+        {
+            $dispatchDate =  $this->string_to_date($dispatchdateDay,$dispatchDateMonth,$dispatchDateyear);
+
+            $deliveryDate = $this->string_to_date($deliverydateDay,$deliveryDateMonth,$deliveryDateyear);
+
+            $maxDispatchDetailsId = $this->maxDispatchDetailsId();
+
+            $out = DB::insert("insert into dispatch_details(id,object_type,object_id,service_id,status,amount,dispatch_date,delivery_date,dispatch_docx_num,dispatch_docx_receipt,created_at,created_by) values('$maxDispatchDetailsId','$object_type','$sampleId','$dispatchService','CUSTOMER_SAMPLE_DISPATCH_TO_CUSTOMER','$dispatch_amount','$dispatchDate','$deliveryDate','$dispatch_docx_number','$docx_receipt_attacment','$this->created_at','$user_id')");
+
+            DB::update("update sample_master set status = 'CUSTOMER_SAMPLE_DISPATCH_TO_CUSTOMER',updated_at = '$this->created_at',updated_by = '$user_id' where id ='$sampleId'");
+
+            $countTable = count($dispatch_table_document_name);
+
+            foreach ($dispatch_table_document_name as $key_code => $value_code) {
+                $document_name[] = $value_code['document_name'];
+            }
+
+            for($i=0;$i<$countTable;$i++)
+            {
+                $maxDispatchAttachmentsId = $this->maxDispatchAttachmentsId();
+
+                $doc_name = $document_name[$i];
+            
+                $out = DB::insert("insert into dispatch_attachments (id,dispatch_details_id,attached_docx_name,created_at,created_by) values('$maxDispatchAttachmentsId','$maxDispatchDetailsId','$doc_name','$this->created_at','$user_id')");
+            }
+        }
+    }
+
+    function getDispatchDetails($object_type,$sampleId)
+    {
+        $out = DB::select("select * from dispatch_details a, dispatch_attachments b where a.object_id='$sampleId' and a.object_type='$object_type' and a.id=b.dispatch_details_id");
+
+        return json_decode(json_encode($out), true);
+    }
+
+    function editDispatchInfo($sampleId,$object_type,$user_id,$dispatchStatus)
+    {
+        DB::update("update sample_master set status = 'CUSTOMER_SAMPLE_RECEIVED_BY_CUSTOMER',updated_at = '$this->created_at',updated_by = '$user_id' where id ='$sampleId'");
+
+        DB::update("update dispatch_details set status = 'CUSTOMER_SAMPLE_RECEIVED_BY_CUSTOMER' where object_id ='$sampleId' and object_type='$object_type'");
+    }
 }

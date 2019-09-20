@@ -109,12 +109,78 @@ class Dispatch extends Controller
     {
         $sampleId = $request->segment(3);
 
+        $object_type ='SAMPLE';
+
         $output = $this->product->getCustomerSampleInfoBySampleId($sampleId);
 
         $dispatch_service_list = $this->dispatch->getDispatchServiceList();
-        //dd($output);
 
-        return view('dispatch.save_dispatch',compact('output','dispatch_service_list'));
+        $dispatch_details = $this->dispatch->getDispatchDetails($object_type,$sampleId);
+        
+       // dd($dispatch_details);
+
+        return view('dispatch.save_dispatch',compact('output','dispatch_service_list','dispatch_details'));
     }
  
+    public function addDisaptchInfo(Request $request)
+    {
+        $sampleId = request('sampleId');
+
+        if(request('sampleId')) {
+            $object_type='SAMPLE';
+        }   
+        else{
+             $object_type='INQUIRY';
+        }    
+
+        $user_id = Session::get('UID');
+
+        if(request('docx_receipt_attacment'))
+        {
+            $request->validate([
+                'docx_receipt_attacment' => 'mimes:jpeg,png,jpg,pdf|max:2048',
+                ]);
+        }
+
+        $dispatchService = request('dispatchService');
+
+        $dispatch_amount = request('dispatch_amount');
+
+        $dispatchdateDay = request('dispatchdateDay');
+
+        $dispatchDateMonth = request('dispatchDateMonth');
+
+        $dispatchDateyear = request('dispatchDateyear');
+
+        $deliverydateDay = request('deliverydateDay');
+
+        $deliveryDateMonth = request('deliveryDateMonth');
+
+        $deliveryDateyear = request('deliveryDateyear');
+
+        $dispatch_docx_number = request('dispatch_docx_number');
+
+        $dispatchStatus = request('dispatchStatus');
+
+        $docx_receipt_attacment = request('docx_receipt_attacment');
+
+        $document_name = request('document_name');
+
+        if($dispatchStatus=='DISPATCH')
+        {
+           // echo "DISPATCH";
+            $output = $this->dispatch->saveDispatchInfo($sampleId,$object_type,$user_id,$dispatchService,$dispatch_amount,$dispatchdateDay,$dispatchDateMonth,$dispatchDateyear,$deliverydateDay,$deliveryDateMonth,$deliveryDateyear,$dispatch_docx_number,$dispatchStatus,$docx_receipt_attacment,$document_name);
+        }
+        else
+        {
+            //echo "DELIVERIED";
+             $output = $this->dispatch->editDispatchInfo($sampleId,$object_type,$user_id,$dispatchStatus);
+        }
+       // dd($dispatchStatus);
+       // dd('Saved');
+
+        $data['message'] ='Dispatch Information saved Successfully. Go to  Dashboard using button';
+
+        return view('dashboard_return.success',$data);
+    }
 }

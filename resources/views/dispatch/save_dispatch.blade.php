@@ -13,7 +13,34 @@
 @php
     $user_role_id = Session::get('role_id');
     $behalf_of = $output[0]["any_behalf_of"];
+    $dis_year =  2019;
+    $dis_month =  01;
+    $dis_day =  1;
+
+    $deli_year =  2019;
+    $deli_month = 01;
+    $deli_day =  1;
+
+
 @endphp
+
+@if(count($dispatch_details) >0)
+    @php
+        $dispatch_date = $dispatch_details[0]['dispatch_date'];
+        $dis_date_arr = explode("-",$dispatch_date);
+        $dis_year =  $dis_date_arr[0];
+        $dis_month =  $dis_date_arr[1];
+        $dis_day =  $dis_date_arr[2];
+
+        $delivery_date = $dispatch_details[0]['delivery_date'];
+        $deli_date_arr = explode("-",$delivery_date);
+        $deli_year =  $deli_date_arr[0];
+        $deli_month =  $deli_date_arr[1];
+        $deli_day =  $deli_date_arr[2];
+    @endphp   
+
+@endif
+
 
    	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
@@ -24,7 +51,7 @@
 
 	<div class="container box-shadow">
 	 	
-         <form method="post" action="#">
+         <form method="post" action="/dispatch/add" enctype="multipart/form-data">
             {{ csrf_field() }}
             
             <input type="hidden" id="sampleId" name="sampleId" value="{{$output[0]['sample_id']}}">
@@ -136,7 +163,7 @@
                             <div class="row">
                                 <div class="col-md-4 card-block-header">Amount (Only ₹)</div>
                                 <div class="col-md-8 card-block-detail">
-                                     <input class="form-control" id="dispatch_amount" type="number" name="dispatch_amount" placeholder="dispatch amount" required="required" min="1">
+                                     <input class="form-control" id="dispatch_amount" type="number" name="dispatch_amount" placeholder="dispatch amount" required="required" min="1" value="{{ isset($dispatch_details[0]['amount'] ) ? $dispatch_details[0]['amount']  : '' }}">
                                 </div>
                             </div>
 
@@ -146,26 +173,39 @@
                                      <div class="day-month-yaer-class">
                                         <select class="form-control date-class" id="dispatchdateDay" name="dispatchdateDay">
                                             @for ($i = 1; $i <= 31; $i++)
-                                                <option value={{ $i}}>{{ $i}}</option>
+                                               <!--  <option value={{ $i}}>{{ $i}}</option> -->
+                                                @if($i==$dis_day)
+                                                    <option selected value={{ $i}}>{{ $i}}</option>
+                                                @else  
+                                                    <option value={{ $i}}>{{ $i}}</option>
+                                                @endif 
+
                                             @endfor
                                         </select>
                                         <select class="form-control date-class" id="dispatchDateMonth" name="dispatchDateMonth">
-                                            <option value="01">Jan</option>
-                                            <option value="02">Feb</option> 
-                                            <option value="03">Mar</option> 
-                                            <option value="04">Apr</option> 
-                                            <option value="05">May</option> 
-                                            <option value="06">Jun</option> 
-                                            <option value="07">Jul</option> 
-                                            <option value="08">Aug</option> 
-                                            <option value="09">Sep</option> 
-                                            <option value="10">Oct</option> 
-                                            <option value="11">Nov</option> 
-                                            <option value="12">Dec</option> 
+                                            @if($dis_month=="01") <option selected value="01">Jan</option>@else  <option value="01">Jan</option>@endif 
+                                            @if($dis_month=="02") <option selected value="02">Feb</option> @else <option value="02">Feb</option>@endif
+                                            @if($dis_month=="03") <option selected value="03">Mar</option> @else <option value="03">Mar</option>@endif
+                                            @if($dis_month=="04") <option selected value="04">Apr</option> @else <option value="04">Apr</option>@endif
+                                            @if($dis_month=="05") <option selected value="05">May</option> @else <option value="05">May</option>@endif
+                                            @if($dis_month=="06") <option selected value="06">Jun</option> @else <option value="06">Jun</option>@endif
+                                            @if($dis_month=="07") <option selected value="07">Jul</option> @else <option value="07">Jul</option>@endif
+                                            @if($dis_month=="08") <option selected value="08">Aug</option> @else <option value="08">Aug</option>@endif
+                                            @if($dis_month=="09") <option selected value="09">Sep</option> @else <option value="09">Sep</option>@endif
+                                            @if($dis_month=="10") <option selected value="10">Oct</option> @else <option value="10">Oct</option>@endif
+                                            @if($dis_month=="11") <option selected value="11">Nov</option> @else <option value="11">Nov</option>@endif
+                                            @if($dis_month=="12") <option selected value="12">Dec</option> @else <option value="12">Dec</option>@endif
                                         </select>
                                         <select class="form-control date-class" id="dispatchDateyear" name="dispatchDateyear">
                                             @for ($i = 2019; $i <= 2022; $i++)
-                                                <option value={{ $i}}>{{ $i}}</option>
+                                               <!--  <option value={{ $i}}>{{ $i}}</option> -->
+
+                                               @if($i==$dis_year)
+                                                    <option selected value={{ $i}}>{{ $i}}</option>
+                                                @else  
+                                                    <option value={{ $i}}>{{ $i}}</option>
+                                                @endif
+
                                             @endfor
                                         </select>
                                     </div> 
@@ -173,61 +213,131 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-4 card-block-header">elivery Date (- / + 2 days is possible)</div>
+                                <div class="col-md-4 card-block-header">Delivery Date (- / + 2 days is possible)</div>
                                 <div class="col-md-8 card-block-detail">
                                      <div class="day-month-yaer-class">
                                         <select class="form-control date-class" id="deliverydateDay" name="deliverydateDay">
                                             @for ($i = 1; $i <= 31; $i++)
-                                                <option value={{ $i}}>{{ $i}}</option>
+                                               <!--  <option value={{ $i}}>{{ $i}}</option> -->
+
+                                                @if($i==$deli_day)
+                                                    <option selected value={{ $i}}>{{ $i}}</option>
+                                                @else  
+                                                    <option value={{ $i}}>{{ $i}}</option>
+                                                @endif 
+
                                             @endfor
                                         </select>
                                         <select class="form-control date-class" id="deliveryDateMonth" name="deliveryDateMonth">
-                                            <option value="01">Jan</option>
-                                            <option value="02">Feb</option> 
-                                            <option value="03">Mar</option> 
-                                            <option value="04">Apr</option> 
-                                            <option value="05">May</option> 
-                                            <option value="06">Jun</option> 
-                                            <option value="07">Jul</option> 
-                                            <option value="08">Aug</option> 
-                                            <option value="09">Sep</option> 
-                                            <option value="10">Oct</option> 
-                                            <option value="11">Nov</option> 
-                                            <option value="12">Dec</option> 
+                                            @if($deli_month=="01") <option selected value="01">Jan</option>@else  <option value="01">Jan</option>@endif 
+                                            @if($deli_month=="02") <option selected value="02">Feb</option> @else <option value="02">Feb</option>@endif
+                                            @if($deli_month=="03") <option selected value="03">Mar</option> @else <option value="03">Mar</option>@endif
+                                            @if($deli_month=="04") <option selected value="04">Apr</option> @else <option value="04">Apr</option>@endif
+                                            @if($deli_month=="05") <option selected value="05">May</option> @else <option value="05">May</option>@endif
+                                            @if($deli_month=="06") <option selected value="06">Jun</option> @else <option value="06">Jun</option>@endif
+                                            @if($deli_month=="07") <option selected value="07">Jul</option> @else <option value="07">Jul</option>@endif
+                                            @if($deli_month=="08") <option selected value="08">Aug</option> @else <option value="08">Aug</option>@endif
+                                            @if($deli_month=="09") <option selected value="09">Sep</option> @else <option value="09">Sep</option>@endif
+                                            @if($deli_month=="10") <option selected value="10">Oct</option> @else <option value="10">Oct</option>@endif
+                                            @if($deli_month=="11") <option selected value="11">Nov</option> @else <option value="11">Nov</option>@endif
+                                            @if($deli_month=="12") <option selected value="12">Dec</option> @else <option value="12">Dec</option>@endif
                                         </select>
                                         <select class="form-control date-class" id="deliveryDateyear" name="deliveryDateyear">
                                             @for ($i = 2019; $i <= 2022; $i++)
-                                                <option value={{ $i}}>{{ $i}}</option>
+                                                <!-- <option value={{ $i}}>{{ $i}}</option> -->
+                                                @if($i==$deli_year)
+                                                    <option selected value={{ $i}}>{{ $i}}</option>
+                                                @else  
+                                                    <option value={{ $i}}>{{ $i}}</option>
+                                                @endif
+
                                             @endfor
                                         </select>
                                     </div> 
                                 </div>
                             </div>
 
-                             <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">Dispatch Docx Number</label>
-                                <div class="col-sm-8">
-                                    <input type="input" class="form-control" id="behalf_of" name="behalf_of" value={{$output[0]["any_behalf_of"]}}>
+                            <div class="row">
+                                <label class="col-sm-4 card-block-header">Dispatch Docx Number</label>
+                                <div class="col-sm-8 card-block-detail">
+                                    <input type="input" class="form-control" id="dispatch_docx_number" name="dispatch_docx_number" value="{{ isset($dispatch_details[0]['dispatch_docx_num'] ) ? $dispatch_details[0]['dispatch_docx_num']  : '' }}">
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <label class="col-sm-4 card-block-header">Docx receipt attachment (.pdf,.jpg,.jpeg,.png with max 2 MB size)</label>
+                                <div class="col-sm-8 card-block-detail">
+                                    <div class="custom-file">
+                                        <input type="file" class="form-control-file" id="docx_receipt_attacment" name="docx_receipt_attacment">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 card-block-header">Status</div>
+                                <div class="col-md-8 card-block-detail">
+                                     <div class="day-month-yaer-class">
+                                        <select class="form-control" id="dispatchStatus" name="dispatchStatus">
+                                                <option value='DISPATCH'>Dispatch</option>
+                                                <option value="DELIVERIED">Delivered</option>
+                                        </select>
+                                    </div> 
+                                </div>
+                            </div>
+
+                            <div class="row"> <div class="col-md-12 card-block-full">Document inclued into Dispatch</div> </div>
+
+                            <div class="form-group row" style="margin-top: 4%"> 
+                                <div class="col-sm-12 col-form-label">
+
+                                    <table class="table table-bordered" id="dispatchDocumentsList">
+                                        <thead style="background-color: #f8f8f8;font-size: 14px;">
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Document Name</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 14px;">
+                                            @if(count($dispatch_details) > 0)
+                                            
+                                                @for ($i = 0; $i < count($dispatch_details); $i++)
+                                                <tr>
+                                                    <th style="vertical-align:middle">{{($i+1)}}</th>
+                                                    <th colspan="2">{{$dispatch_details[$i]["attached_docx_name"]}}</th>
+                                                 </tr>      
+                                                @endfor 
+                                             
+                                            @else  
+                                                <tr>
+                                                    <th style="vertical-align:middle">1</th>
+                                                    <th>
+                                                        <input class="form-control" type="text" id="document_name" name="document_name[][document_name]" placeholder="document name (exp COA, Purchase Order etc)" required="required">
+                                                    </th>
+                                                    <th><span class="glyphicon glyphicon-remove" style="display:none"></span></th>
+                                                </tr>    
+                                            @endif  
+                                        </tbody>
+                                    </table>
+
+                                    @if(count($dispatch_details)== 0)
+                                        <div class="container">
+                                            <button type="button" class="btn btn-default" onclick="addSampleNewRow()">Add New Row</button>
+                                        </div>
+                                    @endif
+                                </div> 
+                            </div>
+
 
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- <div class="form-group row">
-                <div class="card card-class">
-                    <div class="card-header card_header"> Sample Details </div>
-                    <div class="card-body"></div>
-                </div>
-
-            </div> -->
-
             <div class="form-group row" style="margin-top: 5%"> 
                 <div class="col-sm-4"></div>
                 <div class="col-sm-8">
-                    <button type="submit" class="btn btn-success btn-lg" style="width: 40%;margin-right: 10%;">Proceed for Dispatch</button>
+                    <button type="submit" class="btn btn-success btn-lg" style="width: 40%;margin-right: 10%;">Submit</button>
                     <button type="button" class="btn btn-secondary btn-lg" style="width: 40%;">Cancel</button>
                 </div>
             </div>    
@@ -238,7 +348,7 @@
     
 @stop
 
-<script src="{{ asset('js/custom/custom.js') }}"></script>
+<script src="{{ asset('js/dispatch/dispatchService.js') }}"></script>
 
 <!-- @extends('layout.dashboard_footer_layout')
 @section('footer')
