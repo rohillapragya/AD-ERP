@@ -185,7 +185,7 @@
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Address</label>
                     <div class="col-sm-8">
-                        <textarea class="form-control" rows="3" id="address" name="address" onblur="validateAddress()" value={{$output[0]["ref_address"]}} required="required"></textarea>
+                        <textarea class="form-control" rows="3" id="address" name="address" onblur="validateAddress()" required="required">{{$output[0]["ref_address"]}}</textarea>
                     </div>
                 </div>
                 

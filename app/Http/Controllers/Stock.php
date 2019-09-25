@@ -1,0 +1,159 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Session;
+
+use App\lib\Stock_class; 
+
+use App\lib\Warehouse_class;
+
+use App\lib\Product_class;
+
+class Stock extends Controller
+{
+	var $uid;
+
+    public function __construct(Stock_class $stock,Warehouse_class $warehouse,Product_class $product) 
+    {
+        $this->stock = $stock;
+
+        $this->warehouse = $warehouse;
+
+        $this->uid = Session::get('UID');
+
+         $this->product = $product;
+    }
+
+    public function index()
+    {
+    	// dd('Hello');
+       $output = $this->stock->showLatestStockEntry();
+
+        return view('stock.index',compact('output'));
+    }
+
+    public function addNew()
+    {
+    	$stockEntryTypeDetailsId = '1';
+
+    	$getStockEntryTypeMaster = $this->stock->getStockEntryTypeMaster();
+
+    	$getStockEntryTypeMasterDetails = $this->stock->getStockEntryTypeMasterDetails($stockEntryTypeDetailsId);
+
+    	$getWarehouseList = $this->warehouse->getWarehouseList();
+    	
+    	return view('stock.new',compact('getStockEntryTypeMaster','getStockEntryTypeMasterDetails','getWarehouseList'));
+    }
+
+    public function getStockEntryTypeDetails(Request $request)
+    {
+    	$stockEntryType = $request->input('stockEntryType');
+
+        $getStockEntryTypeMasterDetails = $this->stock->getStockEntryTypeMasterDetails($stockEntryType);
+
+        return $getStockEntryTypeMasterDetails;
+    }
+
+    public function saveStock(Request $request)
+    {
+    	$stockEntrydateDay = request('stockEntrydateDay');
+
+    	$stockEntryDateMonth = request('stockEntryDateMonth');
+
+    	$stockEntryDateyear = request('stockEntryDateyear');
+
+    	$stockEntryType = request('stockEntryType');
+
+    	$stockEntryTypeDetails = request('stockEntryTypeDetails');
+
+    	$stock_entry_description = request('stock_entry_description');
+
+    	$stockEntryWarehouseId = request('stockEntryWarehouseId');
+
+    	$table_product_name = request('product_name');
+    	
+    	$table_product_method = request('product_method');
+
+    	$table_product_qty = request('product_qty');
+    	
+    	$table_product_uom = request('product_uom');
+
+    	$table_product_sample_qty = request('product_sample_qty');
+    	
+    	$table_product_sample_uom = request('product_sample_uom');
+
+    	$output = $this->stock->addStock($this->uid,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$stockEntryWarehouseId);
+
+    	//dd("Save");
+
+    	$data['message'] ='Stock Added Successfully. Go to  Dashboard using button';
+
+        return view('dashboard_return.success',$data);
+    }
+
+    public function show(Request $request)
+    {
+    	$storeId = $request->segment(3);
+    	//dd($storeId);
+
+    	$stockEntryTypeDetailsId = '1';
+
+    	$getStockEntryTypeMaster = $this->stock->getStockEntryTypeMaster();
+
+    	$getStockEntryTypeMasterDetails = $this->stock->getStockEntryTypeMasterDetails($stockEntryTypeDetailsId);
+
+    	$getWarehouseList = $this->warehouse->getWarehouseList();
+
+    	$getStockInfoByStockId = $this->stock->getStockInfoByStockId($storeId);
+
+    	$product = $this->product->getProuductList();
+
+        $method = $this->product->getMethod();
+
+        $uom = $this->product->getUOM();
+    	
+    	return view('stock.edit',compact('getStockEntryTypeMaster','getStockEntryTypeMasterDetails','getWarehouseList','getStockInfoByStockId','product','method','uom'));
+    }
+
+    public function update(Request $request)
+    {
+    	$store_id = request('stock_entry_id');
+
+    	// dd($store_id);
+
+    	$stockEntrydateDay = request('stockEntrydateDay');
+
+    	$stockEntryDateMonth = request('stockEntryDateMonth');
+
+    	$stockEntryDateyear = request('stockEntryDateyear');
+
+    	$stockEntryType = request('stockEntryType');
+
+    	$stockEntryTypeDetails = request('stockEntryTypeDetails');
+
+    	$stock_entry_description = request('stock_entry_description');
+
+    	$stockEntryWarehouseId = request('stockEntryWarehouseId');
+
+    	$table_product_name = request('product_name');
+    	
+    	$table_product_method = request('product_method');
+
+    	$table_product_qty = request('product_qty');
+    	
+    	$table_product_uom = request('product_uom');
+
+    	$table_product_sample_qty = request('product_sample_qty');
+    	
+    	$table_product_sample_uom = request('product_sample_uom');
+
+    	$output = $this->stock->updateStock($this->uid,$store_id,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$stockEntryWarehouseId);
+
+    	$data['message'] ='Stock updated Successfully. Go to  Dashboard using button';
+
+        return view('dashboard_return.success',$data);
+    }
+}

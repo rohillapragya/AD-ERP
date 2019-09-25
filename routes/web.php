@@ -79,5 +79,22 @@ Route::get('/product/uom','Product@getUOM');
 
 // warehouse route section start here
 
-
+Route::get('/dashboard/warehouseInit','Warehouse@index');
+Route::get('/dashboard/addNewWarehouse','Warehouse@addNew');
+Route::get('/warehouse/getCityList','Warehouse@getCityList');
+Route::post('/warehouse/save','Warehouse@save');
+Route::get('/warehouse/edit/{warehouseId}','Warehouse@show');
+Route::post('/warehouse/update','Warehouse@update');
 // warehouse route section  end  here
+
+
+
+// store route section start here
+
+Route::get('/dashboard/stockEntryInit','Stock@index');
+Route::get('/dashboard/addNewStockEntry','Stock@addNew');
+Route::get('/stock/getStockEntryTypeDetails','Stock@getStockEntryTypeDetails');
+Route::post('/stock/save','Stock@saveStock');
+Route::get('/store/edit/{warehouseId}','Stock@show');
+Route::post('/stock/update','Stock@update');
+// store route section  end  here

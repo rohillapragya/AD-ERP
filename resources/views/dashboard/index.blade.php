@@ -122,10 +122,10 @@ $user_role_id = Session::get('role_id');
                 
             <!-- stock, warehouse section start here -->
                 @if($user_role_id=='3' || $user_role_id=='11')    
-                    <a href="#" class="panel-content"><span>Stock</span></a>
-                    <a href="#" class="panel-content"><span>Warehouse</span></a>
+                    <a href="/dashboard/stockEntryInit" class="panel-content"><span>Stock Entry</span></a>
+                    <a href="/dashboard/warehouseInit" class="panel-content"><span>Warehouse</span></a>
                 @else
-                    <span class="panel-content">Stock</span>
+                    <span class="panel-content">Stock Entry</span>
                     <span class="panel-content">Warehouse</span>
                 @endif
             <!-- stock, warehouse section end here     -->
