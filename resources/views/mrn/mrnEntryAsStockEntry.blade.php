@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            <input type="hidden" id="stockEntryMRNID" value="0">
+            <input type="hidden" id="stockEntryMRNID" value={{$mrnDetails[0]['id']}}>
 
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Entry Type</label>
@@ -117,44 +117,73 @@
                             </tr>
                         </thead>
                         <tbody style="font-size: 14px;">
+                            @for ($i = 0; $i < count($mrnDetails); $i++)
+
                             <tr>
-                                <th style="vertical-align:middle">1</th>
+                                <th style="vertical-align:middle">{{$i+1}}</th>
 
                                 <th>
                                     <select name='product_name[][product_code]' class="form-control" id='product_name' style="width: 250px">
-                                        <option value="0">NA</option>
+                                        <@for ($ix = 0; $ix < count($product); $ix++) 
+                                            @if($mrnDetails[$i]['item_code']==$product[$ix]['id'])
+                                                 <option  selected value="{{ $product[$ix]['id']}}">{{ $product[$ix]['name']}}</option>
+                                            @else
+                                                 <option value="{{ $product[$ix]['id']}}">{{ $product[$ix]['name']}}</option>
+                                            @endif
+                                           
+                                        @endfor
                                     </select>
 
                                 </th>
 
                                 <th>
                                     <select name="product_method[][method]" class="form-control" id='method' style="width: 150px">
-                                        <option value="0">Select Method</option>
+                                       @for ($ix = 0; $ix < count($method); $ix++) 
+                                            @if($mrnDetails[$i]['method']==$method[$ix]['id'])
+                                                 <option  selected value="{{ $method[$ix]['id']}}">{{ $method[$ix]['name']}}</option>
+                                            @else
+                                                 <option value="{{ $method[$ix]['id']}}">{{ $method[$ix]['name']}}</option>
+                                            @endif
+                                           
+                                        @endfor
                                     </select>
                                 </th>
 
                                 <th>
-                                    <input class="form-control qty" id="qty" type="number" name="product_qty[][qty]" placeholder="qty" required="required" min="0">
+                                    <input class="form-control qty" id="qty" type="number" name="product_qty[][qty]" placeholder="qty" required="required" min="0" value="{{$mrnDetails[$i]['item_qty']}}">
                                 </th>
 
                                 <th>
                                     <select id="uom" class="form-control" name="product_uom[][uom]">
-                                        <option value="1">KG</option>
+                                       @for ($ix = 0; $ix < count($uom); $ix++) 
+                                            @if($mrnDetails[$i]['item_uom']==$uom[$ix]['id'])
+                                                <option selected value="{{ $uom[$ix]['id']}}">{{ $uom[$ix]['name']}}</option>
+                                            @else
+                                                <option value="{{ $uom[$ix]['id']}}">{{ $uom[$ix]['name']}}</option>
+                                            @endif
+                                        @endfor
                                     </select>
                                 </th>
 
                                  <th>
-                                    <input class="form-control qty" id="product_sample_qty" type="number" name="product_sample_qty[][product_sample_qty]" placeholder="sample qty" required="required" min="0">
+                                    <input class="form-control qty" id="product_sample_qty" type="number" name="product_sample_qty[][product_sample_qty]" placeholder="sample qty" required="required" min="0" value="{{ $mrnDetails[$i]['control_qty']}}">
                                 </th>
 
                                 <th>
                                     <select id="product_sample_uom" class="form-control" name="product_sample_uom[][product_sample_uom]">
-                                        <option value="1">KG</option>
+                                        @for ($ix = 0; $ix < count($uom); $ix++) 
+                                            @if($mrnDetails[$i]['control_uom']==$uom[$ix]['id'])
+                                                <option selected value="{{ $uom[$ix]['id']}}">{{ $uom[$ix]['name']}}</option>
+                                            @else
+                                                <option value="{{ $uom[$ix]['id']}}">{{ $uom[$ix]['name']}}</option>
+                                            @endif
+                                        @endfor
                                     </select>
                                 </th>
 
                                 <th><span class="glyphicon glyphicon-remove" style="display:none"></span></th>
                             </tr>
+                             @endfor
                         </tbody>
                     </table>
 

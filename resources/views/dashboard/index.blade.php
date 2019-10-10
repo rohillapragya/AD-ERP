@@ -78,7 +78,6 @@ $user_role_id = Session::get('role_id');
             <div class="panel-body panel-class">
              
             <!-- dispatch service info section start -->
-
                 @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='12')
                     <a href="/dashboard/dispatchService" class="panel-content"><span>Dispatch Service</span></a>
                     <a href="/dashboard/dispatchInfo" class="panel-content" style="margin-bottom: 12%;"><span>Dispatch Info</span></a>
@@ -132,7 +131,7 @@ $user_role_id = Session::get('role_id');
 
             <!-- Material Requization Note (MRN) section start here -->
                 @if($user_role_id=='3' || $user_role_id=='7'|| $user_role_id=='8' || $user_role_id=='10')
-                    <a href="#" class="panel-content"><span>Material Requization Note (MRN)</span></a>
+                    <a href="/dashboard/mrnInit" class="panel-content"><span>Material Requization Note (MRN)</span></a>
                 @else
                     <span class="panel-content">Material Requization Note (MRN)</span>
                 @endif
@@ -146,17 +145,17 @@ $user_role_id = Session::get('role_id');
                 @endif
             <!-- Purchase Requization Note (PRN) section end here -->
 
-            <!-- Goods Receipt Note (GRN) section start here -->
+            <!-- Goods Receipt Note (GRN - Material Receipt Note) section start here -->
                 @if($user_role_id=='3' || $user_role_id=='11')
-                    <a href="#" class="panel-content"><span>Goods Receipt Note (GRN)</span></a>
+                    <a href="#" class="panel-content"><span>Goods Receipt Note (GRN - Material Receipt Note)</span></a>
                 @else
-                    <span class="panel-content">Goods Receipt Note (GRN)</span>
+                    <span class="panel-content">Goods Receipt Note (GRN - Material Receipt Note)</span>
                 @endif
-            <!-- Goods Receipt Note (GRN) section end here -->
+            <!-- Goods Receipt Note (GRN - Material Receipt Note) section end here -->
 
             <!-- Stock Report section start here -->
                 @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='9' || $user_role_id=='11')
-                    <a href="#"><span>Stock Report</span></a>
+                    <a href="/dashboard/StockReport"><span>Stock Report</span></a>
                 @else
                     <span class="panel-content">Stock Report</span>
                 @endif
@@ -227,7 +226,7 @@ $user_role_id = Session::get('role_id');
             
             <!-- add inquiry section start -->
 
-                <a href="#" class="panel-content" style="margin-bottom: 13%"><span>Add Inquiry</span></a>
+                <a href="#" class="panel-content" style="margin-bottom: 13%"><span>Inquiry</span></a>
             <!-- add inquiry section end     -->
             </div>
         </div>

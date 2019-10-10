@@ -12,11 +12,13 @@ use App\lib\Warehouse_class;
 
 use App\lib\Product_class;
 
+use App\lib\MRN_class;
+
 class Stock extends Controller
 {
 	var $uid;
 
-    public function __construct(Stock_class $stock,Warehouse_class $warehouse,Product_class $product) 
+    public function __construct(Stock_class $stock,Warehouse_class $warehouse,Product_class $product,MRN_class $mrn) 
     {
         $this->stock = $stock;
 
@@ -24,7 +26,9 @@ class Stock extends Controller
 
         $this->uid = Session::get('UID');
 
-         $this->product = $product;
+        $this->product = $product;
+
+        $this->mrn = $mrn;        
     }
 
     public function index()
@@ -59,6 +63,13 @@ class Stock extends Controller
 
     public function saveStock(Request $request)
     {
+        $stockEntryMRNID = request('stockEntryMRNID');
+
+        if($stockEntryMRNID > 0)
+        {
+            $output = $this->mrn->updateMRNStockEntry($stockEntryMRNID);
+        }
+
     	$stockEntrydateDay = request('stockEntrydateDay');
 
     	$stockEntryDateMonth = request('stockEntryDateMonth');
@@ -155,5 +166,30 @@ class Stock extends Controller
     	$data['message'] ='Stock updated Successfully. Go to  Dashboard using button';
 
         return view('dashboard_return.success',$data);
+    }
+
+    public function reportIndex(Request $request)
+    {
+        $warehouseID = $request->input('warehouseID');
+
+        if($warehouseID=='') {
+            $warehouseID="ALL";
+        }
+
+        //dd($warehouseID);
+        $output = $this->stock->getStockQtyByWareHouseId($warehouseID);
+        //dd($output);
+        $warehouse = $this->warehouse->showWarehouseList();
+
+        return view('stockreport.index',compact('output','warehouse'));
+    }
+
+    public function getStockByWarehouseId(Request $request)
+    {
+        $warehouseID = $request->input('warehouseID');
+
+        $output = $this->stock->getStockQtyByWareHouseId($warehouseID);
+
+        return $output;
     }
 }

@@ -25,7 +25,7 @@
     <div class="container box-shadow">
         <div class="form-group row">
             <div class="col-sm-12">
-                <a href="/dashboard/addNewSample" style="float: right" class="btn btn-default">Add New Inquiry</a>
+                <a href="/dashboard/addNewSample" style="float: right" class="btn btn-default">Add New Sample Request</a>
             </div>
         </div>
         <div class="form-group row">

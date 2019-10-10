@@ -43,7 +43,7 @@ $(document).ready(function(){
 
 function addSampleNewRow()
 {
-    var table = document.getElementById("stockItemsDetails");
+    var table = document.getElementById("mrnItemsDetails");
     var table_tr_count = table.children[1].children.length;
 
     var row = table.insertRow(table_tr_count+1);
@@ -132,43 +132,31 @@ function populateInfo(obj)
 function ondeleteProductFromTable(el){
 
     var id = parseInt(el.id) +1;
-    var table = document.getElementById("stockItemsDetails");
+    var table = document.getElementById("mrnItemsDetails");
     var table_tr_count = table.children[1].children.length;
     row_delete = table.deleteRow(id);
 }
 
 function validateAddress(){
 
-    var description = document.getElementById("stock_entry_description");
+    var description = document.getElementById("mrn_remark");
+   // console.log("in validateAddress field");
     var description_value = description.value;
     var description_string = description_value.replace(/[^a-zA-Z0-9]/g, ' ');
     description.value = description_string;
 }
 
-function onChangeEntryTypeDetails(obj)
+function onkeyupRemarks()
 {
-    var value = obj.value;
-    //console.log("Value is -"+value);
-    $.ajax({
-        type: 'GET', //THIS NEEDS TO BE GET
-        url: '/stock/getStockEntryTypeDetails',
-        dataType: 'json',
-        data : ({stockEntryType:value}),
-        success: function (resp) 
-        {
-           // console.log('success-'+resp);
-            var length = resp.length;
-            //console.log(resp[0].name);
-            $("#stockEntryTypeDetails").empty();
-            for(var i=0;i<length;i++)
-            {
-              // console.log("name-"+name);
-               $('#stockEntryTypeDetails').append("<option value="+resp[i].id+">"+resp[i].name+"</option>");
-            }
-        },
-        error:function()
-        { 
-             console.log('error');
-        }
-    });
+    var max_char = 200;
+
+    var remarks = document.getElementById("mrn_remark");
+
+    var remarks_len = remarks.textLength;
+   
+    var remaining_len = max_char - remarks_len;
+
+    var mrn_remark_span = document.getElementById("mrn_remark_span");
+
+    mrn_remark_span.innerText=remaining_len+" characters are remaining";
 }

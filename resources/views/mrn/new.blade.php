@@ -1,6 +1,7 @@
 @extends('layout.dashboard_header_layout')
 
-<link rel="stylesheet" href="{{ asset('css/stock/stock.css') }}">
+<link rel="stylesheet" href="{{ asset('css//mrn/init.css') }}">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/sweetalert2/5.3.5/sweetalert2.min.css">
 
 
 @section('dashboard-home')
@@ -18,21 +19,41 @@
     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <span class="glyphicon glyphicon-map-marker"></span>
-        <li class="breadcrumb-item active" aria-current="page"> <a href="/dashboard"> Dashboard </a> /  Stock /  Add </li>
+        <li class="breadcrumb-item active" aria-current="page"> <a href="/dashboard"> Dashboard </a> /   Material Requization Note (MRN) /  Add </li>
     </ol>
     </nav>
 
     <div class="container box-shadow">
-        <form method="post" action="/stock/save">
+        <form method="post" action="/mrn/save"> 
             {{ csrf_field() }}
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label">Date</label>
-                <div class="col-md-8 card-block-detail">
-                     <div class="day-month-yaer-class">
-                        <select class="form-control date-class" id="stockEntrydateDay" name="stockEntrydateDay">
-                            @for ($i = 1; $i <= 31; $i++)  <option value={{ $i}}>{{ $i}}</option> @endfor
+                <label class="col-sm-4 col-form-label">Request Type</label>
+                <div class="col-sm-8">
+                    <select class="form-control" id="mrn_request_type" name="mrn_request_type">
+                       <option  value="SAMPLE">Sample</option>
+                       <option  value="INQUIRY">Inquiry</option>
+                       <option  value="PURCHASE_INDENT">Purchase Indent</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Request ID</label>
+                <div class="col-sm-8">
+                    <input type="input" class="form-control" id="mrn_request_id" name="mrn_request_id" placeholder="required id" required="required" onblur="validateObjectID(this)" >
+                </div>
+            </div>
+           
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Required Date</label>
+                <div class="col-sm-8">
+                    <div class="day-month-yaer-class">
+                        <select class="form-control date-class" id="mrnrequiredDay" name="mrnrequiredDay">
+                            @for ($i = 1; $i <= 31; $i++)
+                                <option  value={{ $i}}>{{ $i}}</option>
+                            @endfor
                         </select>
-                        <select class="form-control date-class" id="stockEntryDateMonth" name="stockEntryDateMonth">
+                        <select class="form-control date-class" id="mrnrequiredMonth" name="mrnrequiredMonth">
                             <option value="01">Jan</option> 
                             <option value="02">Feb</option>
                             <option value="03">Mar</option>
@@ -46,64 +67,43 @@
                             <option value="11">Nov</option>
                             <option value="12">Dec</option>
                         </select>
-                        <select class="form-control date-class" id="stockEntryDateyear" name="stockEntryDateyear">
-                            @for ($i = 2019; $i <= 2022; $i++) <option value={{ $i}}>{{ $i}}</option> @endfor
-                        </select>
-                    </div> 
-                </div>
-            </div>
-
-            <input type="hidden" id="stockEntryMRNID" value="0">
-
-            <div class="form-group row">
-                <label class="col-sm-4 col-form-label">Entry Type</label>
-                <div class="col-sm-8">
-                    <div class="day-month-yaer-class">
-                        <select class="form-control" id="stockEntryType" name="stockEntryType" onchange="onChangeEntryTypeDetails(this)">
-                            @for ($i = 0; $i < count($getStockEntryTypeMaster); $i++)  <option value={{ $getStockEntryTypeMaster[$i]["id"]}}>{{ $getStockEntryTypeMaster[$i]["name"]}}</option> @endfor
-                        </select>
-                    </div> 
-                </div>
-            </div>
-
-
-            <div class="form-group row">
-                <label class="col-sm-4 col-form-label">Entry Type Details</label>
-                <div class="col-sm-8">
-                    <div class="day-month-yaer-class">
-                        <select class="form-control" id="stockEntryTypeDetails" name="stockEntryTypeDetails">
-                            @for ($i = 0; $i < count($getStockEntryTypeMasterDetails); $i++)  <option value={{ $getStockEntryTypeMasterDetails[$i]['id']}}>{{ $getStockEntryTypeMasterDetails[$i]["name"]}}</option> @endfor
+                        <select class="form-control date-class" id="mrnrequiredyear" name="mrnrequiredyear">
+                            @for ($i = 2019; $i <= 2022; $i++)
+                               <option  value={{ $i}}>{{ $i}}</option>
+                            @endfor
                         </select>
                     </div> 
                 </div>
             </div>
 
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label">Description</label>
+                <label class="col-sm-4 col-form-label">Purpose</label>
                 <div class="col-sm-8">
-                    <textarea class="form-control" id="stock_entry_description" name="stock_entry_description" placeholder="description" required="required" onblur="validateAddress()"></textarea>
+                    <select class="form-control" id="mrn_purpose_type" name="mrn_purpose_type">
+                        @for ($i=0;$i < count($purposeList);$i++)
+                            <option  value={{ $purposeList[$i]["id"]}}> {{$purposeList[$i]["purpose"]}}</option>
+                        @endfor
+                    </select>
+
+                    <button type="button" class="btn btn-link addNewPurpose" id="addNewPurpose" onclick="onClickAddNewPurpose()" style="float: right;">Add New Purpose</button>
+                
                 </div>
             </div>
+
 
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label">Warehouse</label>
+                <label class="col-sm-4 col-form-label">Remark</label>
                 <div class="col-sm-8">
-                    <div class="day-month-yaer-class">
-                        <select class="form-control" id="stockEntryWarehouseId" name="stockEntryWarehouseId">
-                            @for ($i = 0; $i < count($getWarehouseList); $i++)  <option value={{ $getWarehouseList[$i]["id"]}}>{{ $getWarehouseList[$i]["name"]}}</option> @endfor
-                        </select>
-                    </div> 
+                   <textarea class="form-control" id="mrn_remark" name="mrn_remark" placeholder="remark" required="required" onkeyup="onkeyupRemarks()" onblur="validateAddress()" maxlength="200"></textarea>
+                   <span id="mrn_remark_span">Only 200 characters are allowed</span>
                 </div>
             </div>
-            
-
-            <div class="form-group row" style="margin-top: 4%"> <label class="col-sm-12 col-form-label">Items Details</label> </div>
 
            
-            <div class="form-group row" style="margin-top: 4%"> 
+             <div class="form-group row" style="margin-top: 4%"> 
                 <div class="col-sm-12 col-form-label">
 
-                    <table class="table table-bordered" id="stockItemsDetails">
+                    <table class="table table-bordered" id="mrnItemsDetails">
                         <thead style="background-color: #5fff43;font-size: 14px;">
                             <tr>
                                 <th scope="col" style="vertical-align: middle;">#</th>
@@ -162,23 +162,27 @@
                         <button type="button" class="btn btn-default" onclick="addSampleNewRow()">Add New Row</button>
                     </div>
                 </div> 
-            </div>   
+            </div>  
 
             <div class="form-group row" style="margin-top: 5%"> 
                 <div class="col-sm-4"></div>
                 <div class="col-sm-8">
                     <button type="submit" class="btn btn-success btn-lg" style="width: 40%;margin-right: 10%;">Submit</button>
                     <button type="button" class="btn btn-secondary btn-lg" style="width: 40%;">Cancel</button>
-                <div>
-            </div> 
-
+                </div>
+            </div>    
         </form>
     </div>
 
 @stop
 
+<script src="https://cdn.jsdelivr.net/sweetalert2/5.3.5/sweetalert2.min.js"></script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="{{ asset('js/stock/stock.js') }}"></script>
+<script src="{{ asset('js/mrn/init.js') }}"></script>
+<script src="{{ asset('js/mrn/function.js') }}"></script>
+<script src="{{ asset('js/mrn/addPurpose.js') }}"></script>
+
 
 <!-- @extends('layout.dashboard_footer_layout')
 @section('footer')

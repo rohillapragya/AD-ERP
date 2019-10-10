@@ -97,4 +97,17 @@ Route::get('/stock/getStockEntryTypeDetails','Stock@getStockEntryTypeDetails');
 Route::post('/stock/save','Stock@saveStock');
 Route::get('/store/edit/{warehouseId}','Stock@show');
 Route::post('/stock/update','Stock@update');
+Route::get('/dashboard/StockReport','Stock@reportIndex');
+Route::get('/stock/getStockByWarehouseId','Stock@getStockByWarehouseId');
 // store route section  end  here
+
+
+// MRN route section start here
+Route::get('/dashboard/mrnInit','MRN@index');
+Route::get('/dashboard/addNewMRN','MRN@addNew');
+Route::post('/mrn/save','MRN@saveMRN');
+Route::get('/mrn/checkMRNRequestId','MRN@checkMRNRequestId');
+Route::post('/mrn/addNewPurpose','MRN@addNewPurpose');
+Route::get('/mrn/getPurposeList','MRN@getPurposeList');
+Route::get('/mrn/{mrnID}/stockEntry','MRN@mrnStockEntry');
+// MRN route section end here
