@@ -65,8 +65,7 @@ $user_role_id = Session::get('role_id');
 
             <!-- user registration start -->
                 @if($user_role_id=='3')
-                    <!-- <a href="/dashbaord/erpUserRegistration"><span >User</span></a> -->
-                    <a href="#"><span style="color: #c48d07;">User</span></a>
+                    <a href="/dashbaord/erpUserRegistration"><span >User</span></a>
                 @else
                     <span>User</span>
                 @endif
@@ -143,7 +142,8 @@ $user_role_id = Session::get('role_id');
 
             <!-- Purchase Requization Note (PRN) section start here -->
                 @if($user_role_id=='3' || $user_role_id=='13')
-                    <a href="#" class="panel-content"><span style="color: #c48d07;">Purchase Requization Note (PRN)</span></a>
+                    <a href="#" class="panel-content"><span style="color: #c48d07">Purchase Requization Note (PRN)</span></a>
+                    <!-- <a href="/dashboard/prnInit" class="panel-content"><span>Purchase Requization Note (PRN)</span></a> -->
                 @else
                     <span class="panel-content">Purchase Requization Note (PRN)</span>
                 @endif

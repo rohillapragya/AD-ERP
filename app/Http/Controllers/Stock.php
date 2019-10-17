@@ -24,7 +24,7 @@ class Stock extends Controller
 
         $this->warehouse = $warehouse;
 
-        $this->uid = Session::get('UID');
+       // $this->uid = Session::get('UID');
 
         $this->product = $product;
 
@@ -96,7 +96,9 @@ class Stock extends Controller
     	
     	$table_product_sample_uom = request('product_sample_uom');
 
-    	$output = $this->stock->addStock($this->uid,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$stockEntryWarehouseId);
+        $user_id = Session::get('UID');
+
+    	$output = $this->stock->addStock($user_id,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$stockEntryWarehouseId);
 
     	//dd("Save");
 
@@ -161,7 +163,9 @@ class Stock extends Controller
     	
     	$table_product_sample_uom = request('product_sample_uom');
 
-    	$output = $this->stock->updateStock($this->uid,$store_id,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$stockEntryWarehouseId);
+        $user_id = Session::get('UID');
+
+    	$output = $this->stock->updateStock($user_id,$store_id,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$stockEntryWarehouseId);
 
     	$data['message'] ='Stock updated Successfully. Go to  Dashboard using button';
 

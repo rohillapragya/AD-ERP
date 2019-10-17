@@ -18,6 +18,8 @@ class Users
     function __construct()
 	{
 		$this->info = null;
+
+        $this->created_at =  date("Y/m/d");
 	}
     
     function doLogin($email,$password)

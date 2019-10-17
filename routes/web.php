@@ -22,6 +22,11 @@ Route::get('dashboard','Dashboard@show')->name('dashboard');
 Route::get('/dashbaord/customerRegistration','UserRegistration@index');
 Route::get('/dashbaord/vendorRegistration','UserRegistration@vendor_index');
 Route::get('/dashbaord/erpUserRegistration','UserRegistration@erp_user_index');
+Route::get('/dashboard/addNewERPUser','UserRegistration@addNewERPUser');
+Route::post('/erpuser/save','UserRegistration@save');
+Route::get('/erpuser/edit/{erpUserID}','UserRegistration@show');
+Route::post('/erpuser/update','UserRegistration@update');
+Route::post('/erpUser/changeStatus','UserRegistration@changeERPUserStatus');
 // Registration route section end  here
 
 
@@ -111,3 +116,14 @@ Route::post('/mrn/addNewPurpose','MRN@addNewPurpose');
 Route::get('/mrn/getPurposeList','MRN@getPurposeList');
 Route::get('/mrn/{mrnID}/stockEntry','MRN@mrnStockEntry');
 // MRN route section end here
+
+
+// PRN route section start here
+Route::get('/dashboard/prnInit','PRN@index');
+Route::get('/dashboard/addNewPRN','PRN@addNew');
+// PRN route section end here
+
+
+// Route::get('/sendbasicemail','MailController@basic_email');
+// Route::get('/sendhtmlemail','MailController@html_email');
+// Route::get('/sendattachmentemail','MailController@attachment_email');
