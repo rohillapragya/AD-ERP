@@ -106,7 +106,7 @@ Route::get('/dashboard/stockEntryInit','Stock@index');
 Route::get('/dashboard/addNewStockEntry','Stock@addNew');
 Route::get('/stock/getStockEntryTypeDetails','Stock@getStockEntryTypeDetails');
 Route::post('/stock/save','Stock@saveStock');
-Route::get('/store/edit/{warehouseId}','Stock@show');
+Route::get('/store/edit/{storeId}','Stock@show');
 Route::post('/stock/update','Stock@update');
 Route::get('/dashboard/StockReport','Stock@reportIndex');
 Route::get('/stock/getStockByWarehouseId','Stock@getStockByWarehouseId');

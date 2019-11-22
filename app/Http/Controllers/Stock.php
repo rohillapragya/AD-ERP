@@ -138,6 +138,8 @@ class Stock extends Controller
         $uom = $this->product->getUOM();
 
         $getStockEntryFor = $this->stock->getStockEntryFor();
+
+        //dd($getStockInfoByStockId);
     	
     	return view('stock.edit',compact('getStockEntryTypeMaster','getStockEntryTypeMasterDetails','getWarehouseList','getStockInfoByStockId','product','method','uom','getStockEntryFor'));
     }

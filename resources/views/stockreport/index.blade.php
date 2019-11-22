@@ -57,7 +57,6 @@
                         <th scope="col" style="vertical-align: initial">Qty Diff</th>
                         <th scope="col" style="vertical-align: initial">Qty UOM</th>
                         <th scope="col" style="vertical-align: initial">Control Qty Diff</th>
-                        <th scope="col" style="vertical-align: initial">Control Qty UOM</th>
                     </tr>
                 </thead>
                 <tbody style="font-size: 14px;" id="stockListTbody">
@@ -76,12 +75,11 @@
                                 <td><span class="item_qty_inward_class_diff"></span></td>
                                 <td>{{$output[$i]['item_uom']}}</td>
                                 <td><span class="item_qty_outward_class_diff"></span></td>
-                                <td>{{$output[$i]['control_uom']}}</td>
                             </tr>
                         @endfor
                     @else  
                         <tr>
-                            <td colspan="6" class="no-data-found">No record(s) found</td>
+                            <td colspan="12" class="no-data-found">No record(s) found</td>
                         </tr>
                     @endif    
                 </tbody>
