@@ -23,7 +23,7 @@
     </nav>
 
     <div class="container box-shadow">
-
+        @if($user_role_id=='3' || $user_role_id=='11')
         <div class="form-group row">
             <div class="col-sm-12">
                 <a href="/dashboard/addNewStockEntry" style="float: right" class="btn btn-default">Add New Stock Entry</a>
@@ -35,6 +35,7 @@
                 <thead style="background-color: #eef1ed;font-size: 14px;">
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col">Store For</th>
                         <th scope="col">Store Type</th>
                         <th scope="col">Store Type Details</th>
                         <th scope="col">Description</th>
@@ -48,6 +49,7 @@
                         @for ($i = 0; $i < count($output); $i++)
                             <tr>
                                 <td>{{($i+1)}}</td>
+                                <td>{{$output[$i]['stock_entry_for']}}</td>
                                 <td>{{$output[$i]['store_type']}}</td>
                                 <td>{{$output[$i]['store_type_details']}}</td>
                                 <td>{{$output[$i]['entry_description']}}</td>
@@ -64,6 +66,9 @@
                 </tbody>
             </table>
         </div>
+        @else
+            <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
+        @endif
     </div>
 
 @stop

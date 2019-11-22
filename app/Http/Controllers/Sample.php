@@ -12,15 +12,19 @@ use App\lib\Production_class;
 
 use App\lib\QC_class;
 
+use App\lib\Log_class;
+
 class Sample extends Controller
 {
-    public function __construct(Product_class $product,Production_class $production,QC_class $qc) 
+    public function __construct(Product_class $product,Production_class $production,QC_class $qc,Log_class $log) 
     {
         $this->product = $product;
 
         $this->production = $production;
 
         $this->qc = $qc;
+
+        $this->log = $log;
     }
     
     public function customerSampleIndex()
@@ -119,6 +123,20 @@ class Sample extends Controller
         $sample_table_product_uom = request('product_uom');
 
 
+        // log generation process 
+        $module = "Customer Sample Request Add";
+        $request_date = $samplerequestDay."-".$samplerequestMonth."-".$samplerequestyear;
+        $delivery_date = $sampledeliveryDay."-".$sampledeliveryMonth."-".$sampledeliveryyear;
+        $befalf_of = $behalf_of;
+        $name = $full_name;
+        $mobile = $mobile;
+        $email = $email;
+        $address = $address;
+    
+        $this->log->write_sample_log($module,$request_date,$delivery_date,$befalf_of,$name,$mobile,$email,$address);
+        // log generation process 
+
+
         $sample_request_master = $this->product->saveSampleRequestMaster($type,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$sampledeliveryDay,$sampledeliveryMonth,$sampledeliveryyear,$behalf_of,$user_id);
 
         $sample_details = $this->product->saveSampleRequestDetails($full_name,$mobile,$email,$address,$imageName);
@@ -194,6 +212,20 @@ class Sample extends Controller
         $sample_table_product_uom = request('product_uom');
 
 
+        // log generation process 
+        $module = "Customer Sample Request Edit";
+        $request_date = $samplerequestDay."-".$samplerequestMonth."-".$samplerequestyear;
+        $delivery_date = $sampledeliveryDay."-".$sampledeliveryMonth."-".$sampledeliveryyear;
+        $befalf_of = $behalf_of;
+        $name = $full_name;
+        $mobile = $mobile;
+        $email = $email;
+        $address = $address;
+    
+        $this->log->write_sample_log($module,$request_date,$delivery_date,$befalf_of,$name,$mobile,$email,$address);
+        // log generation process
+
+
         $sample_request_master = $this->product->editSampleRequestMaster($sampleId,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$sampledeliveryDay,$sampledeliveryMonth,$sampledeliveryyear,$behalf_of,$user_id);
 
         $sample_details = $this->product->editSampleRequestDetails($sampleId,$full_name,$mobile,$email,$address,$imageName);
@@ -208,6 +240,7 @@ class Sample extends Controller
     
         // return view('sample.customer_sample_index',compact('output'));
         $data['message'] ='Customer Sample edit Successfully. Go to  Dashboard using button';
+        $data['text'] = '';
 
         return view('dashboard_return.success',$data);
     }
@@ -239,6 +272,7 @@ class Sample extends Controller
         $output = $this->product->proceedForDispatch($sampleId,$user_id,$status);
 
         $data['message'] ='QC Details Added Successfully. Go to  Dashboard using button';
+        $data['text'] = '';
 
         return view('dashboard_return.success',$data);
         //dd("Sample Id -".$sampleId.'-readyForDispatch'.$readyForDispatch);
@@ -309,6 +343,20 @@ class Sample extends Controller
         $sample_table_product_uom = request('product_uom');
 
 
+         // log generation process 
+        $module = "Vendor Request Add";
+        $request_date = $samplerequestDay."-".$samplerequestMonth."-".$samplerequestyear;
+        $delivery_date = $samplereceivedDay."-".$samplereceivedMonth."-".$samplereceivedyear;
+        $befalf_of = $behalf_of;
+        $name = $full_name;
+        $mobile = $mobile;
+        $email = $email;
+        $address = $address;
+    
+        $this->log->write_sample_log($module,$request_date,$delivery_date,$befalf_of,$name,$mobile,$email,$address);
+        // log generation process
+
+
         $sample_request_master = $this->product->saveVendorSampleRequestMaster($type,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$samplereceivedDay,$samplereceivedMonth,$samplereceivedyear,$behalf_of,$user_id);
 
         $sample_details = $this->product->saveVendorSampleRequestDetails($full_name,$mobile,$email,$address,$imageName);
@@ -318,6 +366,7 @@ class Sample extends Controller
         //echo "Saved";
 
         $data['message'] ='Vendor Sample Information Added Successfully. Go to  Dashboard using button';
+        $data['text'] = '';
 
         return view('dashboard_return.success',$data);
     }
@@ -392,6 +441,21 @@ class Sample extends Controller
         $sample_table_product_qty = request('product_qty');
         $sample_table_product_uom = request('product_uom');
 
+
+        // log generation process 
+        $module = "Vendor Request Edit";
+        $request_date = $samplerequestDay."-".$samplerequestMonth."-".$samplerequestyear;
+        $delivery_date = $samplereceivedDay."-".$samplereceivedMonth."-".$samplereceivedyear;
+        $befalf_of = $behalf_of;
+        $name = $full_name;
+        $mobile = $mobile;
+        $email = $email;
+        $address = $address;
+    
+        $this->log->write_sample_log($module,$request_date,$delivery_date,$befalf_of,$name,$mobile,$email,$address);
+        // log generation process
+
+
         $sample_request_master = $this->product->editVendorSampleRequestMaster($sampleId,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$samplereceivedDay,$samplereceivedMonth,$samplereceivedyear,$behalf_of,$user_id);
 
         $sample_details = $this->product->editVendorSampleRequestDetails($sampleId,$full_name,$mobile,$email,$address,$imageName);
@@ -399,6 +463,7 @@ class Sample extends Controller
         $sample_items_details = $this->product->editVendorSampleItemDetails($sampleId,$sample_table_product_code,$sample_table_product_method,$sample_table_product_qty,$sample_table_product_uom);
 
         $data['message'] ='Vendor Sample edit Successfully. Go to  Dashboard using button';
+        $data['text'] = '';
 
         return view('dashboard_return.success',$data);
     }
@@ -429,6 +494,7 @@ class Sample extends Controller
         $output = $this->product->proceedForDispatch($sampleId,$user_id,$status);
 
         $data['message'] ='QC Details Added Successfully. Go to  Dashboard using button';
+        $data['text'] = '';
 
         return view('dashboard_return.success',$data);
         //dd("Sample Id -".$sampleId.'-readyForDispatch'.$readyForDispatch);

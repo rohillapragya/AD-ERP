@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 use App\lib\Users;
 
+
+
 class Dashboard extends Controller
 {
 
@@ -18,7 +20,10 @@ class Dashboard extends Controller
     
     public function show()
     {
-       //dd('AS');
-       return view ('dashboard.index');
+    	// $module = "login";
+    
+    	// $out = $this->log->write_log($module);
+
+       	return view ('dashboard.index');
     }
 }

@@ -23,7 +23,7 @@
     </nav>
 
     <div class="container box-shadow">
-
+        @if($user_role_id=='3' || $user_role_id=='7'|| $user_role_id=='8' || $user_role_id=='10')
         <div class="form-group row">
             <div class="col-sm-12">
                 <a href="/dashboard/addNewMRN" style="float: right" class="btn btn-default">Add New MRN</a>
@@ -56,7 +56,7 @@
                                 <td>{{$output[$i]['object_type']}}</td>
                                 <td>{{$output[$i]['object_id']}}</td>
                                 <td><a href="/mrn/{{$output[$i]['id']}}/stockEntry" class="btn btn-default">Stock_Entry</a></td>
-                                <td><a href="#" class="btn btn-default">Create_PRN</a></td>
+                                <td><a href="/mrn/{{$output[$i]['id']}}/prnEntry" class="btn btn-default">Create_PRN</a></td>
                                 <!-- <td><a href="/mrn/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a></td>  -->
                             </tr>
                         @endfor
@@ -68,6 +68,9 @@
                 </tbody>
             </table>
         </div>
+        @else
+            <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
+        @endif
     </div>
 
 @stop

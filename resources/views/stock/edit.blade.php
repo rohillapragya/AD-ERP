@@ -29,9 +29,31 @@
     </nav>
 
     <div class="container box-shadow">
+        @if($user_role_id=='3' || $user_role_id=='11')
         <form method="post" action="/stock/update">
             {{ csrf_field() }}
-             <input type="hidden" id="stock_entry_id" name="stock_entry_id" value="{{ $getStockInfoByStockId[0]['stock_entry_id']}}">
+
+            <input type="hidden" id="stock_entry_id" name="stock_entry_id" value="{{ $getStockInfoByStockId[0]['stock_entry_id']}}">
+            
+             <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Entry For</label>
+                <div class="col-sm-8">
+                    <div class="day-month-yaer-class">
+                        <select class="form-control" id="stockEntryFor" name="stockEntryFor">
+                            @for ($i = 0; $i < count($getStockEntryFor); $i++)
+                                @if($getStockInfoByStockId[0]['stock_entry_for']== $getStockEntryFor[$i]["id"])
+                                    <option selected value={{ $getStockEntryFor[$i]["id"]}}>{{ $getStockEntryFor[$i]["stock_entry_for"]}}</option> 
+                                @else
+                                    <option value={{ $getStockEntryFor[$i]["id"]}}>{{ $getStockEntryFor[$i]["stock_entry_for"]}}</option> 
+                                @endif
+                               <!--  <option value={{ $getStockEntryFor[$i]["id"]}}>{{ $getStockEntryFor[$i]["stock_entry_for"]}}</option>  -->
+                            @endfor
+                        </select>
+                    </div> 
+                </div>
+            </div>
+
+
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Date</label>
                 <div class="col-md-8 card-block-detail">
@@ -126,6 +148,12 @@
                 </div>
             </div>
             
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Vendor Code</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="vendor_code" name="vendor_code" placeholder="vendor code" required="required" value="{{$getStockInfoByStockId[0]['vendor_code']}}">
+                </div>
+            </div>
 
             <div class="form-group row" style="margin-top: 4%"> <label class="col-sm-12 col-form-label">Items Details</label> </div>
 
@@ -141,9 +169,9 @@
                                 <th scope="col" style="vertical-align: middle;">Method</th>
                                 <th scope="col" style="vertical-align: middle;">Qty</th>
                                 <th scope="col" style="vertical-align: middle;">UOM</th>
+                                <th scope="col" style="vertical-align: middle;">Control Sample</th>
                                 <th scope="col" style="vertical-align: middle;">Control Sample Qty</th>
                                 <th scope="col" style="vertical-align: middle;">Control Sample UOM</th>
-                                <th scope="col" style="vertical-align: middle;">Action</th>
                             </tr>
                         </thead>
                         <tbody style="font-size: 14px;">
@@ -152,7 +180,7 @@
                                 <th style="vertical-align:middle">{{$i+1}}</th>
                                
                                 <th>
-                                    <select name='product_name[][product_code]' class="form-control" id='product_name' style="width: 250px">
+                                    <select name='product_name[][product_code]' class="form-control" id='product_name' style="width: 300px;">
                                         @for ($ix = 0; $ix < count($product); $ix++) 
                                             @if($getStockInfoByStockId[$i]['item_code']==$product[$ix]['id'])
                                                  <option  selected value="{{ $product[$ix]['id']}}">{{ $product[$ix]['name']}}</option>
@@ -178,7 +206,7 @@
                                 </th>
 
                                 <th> 
-                                    <input class="form-control qty" id="qty" type="number" name="product_qty[][qty]" placeholder="qty" min="0" value="{{$getStockInfoByStockId[$i]['item_qty']}}">
+                                    <input class="form-control qty" id="qty" type="number" name="product_qty[][qty]" placeholder="qty" min="0" value="{{$getStockInfoByStockId[$i]['item_qty']}}" style="width: 80px;">
                                 </th>
 
                                 <th>
@@ -194,7 +222,14 @@
                                 </th>
 
                                 <th>
-                                    <input class="form-control qty" id="product_sample_qty" type="number" name="product_sample_qty[][product_sample_qty]" placeholder="sample qty" min="0" value="{{ $getStockInfoByStockId[$i]['control_qty']}}">
+                                    <select id="product_is_sample_uom" class="form-control" name="product_is_sample_uom[][product_is_sample_uom]">
+                                        <option value="Y">YES</option>
+                                        <option value="N">NO</option>
+                                    </select>
+                                </th>
+
+                                <th>
+                                    <input class="form-control qty" id="product_sample_qty" type="number" name="product_sample_qty[][product_sample_qty]" placeholder="sample qty" min="0" value="{{ $getStockInfoByStockId[$i]['control_qty']}}" style="width: 80px;">
                                 </th>
 
                                 <th>
@@ -209,16 +244,15 @@
                                     </select>
                                 </th>
 
-                                <th><span class="glyphicon glyphicon-remove"></span></th> 
                             </tr>
                             @endfor
                             
                         </tbody>
                     </table>
 
-                    <div class="container">
+                   <!--  <div class="container">
                         <button type="button" class="btn btn-default" onclick="addSampleNewRow()">Add New Row</button>
-                    </div>
+                    </div> -->
                 </div> 
             </div>   
 
@@ -231,6 +265,9 @@
             </div> 
 
         </form>
+        @else
+            <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
+        @endif
     </div>
 
 @stop

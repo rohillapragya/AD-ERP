@@ -26,11 +26,12 @@ $behalf_of = $output[0]["any_behalf_of"];
 
     
     <div class="container box-shadow">
+        @if($user_role_id=='3' || $user_role_id=='10')
         <form method="post" action="/qcDetails/qcSave">
             {{ csrf_field() }}
             <div class="form-group row">
                 <div class="col-sm-12">
-                    <a href="/dashboard/addNewSample" style="float: right" class="btn btn-default">Add New Inquiry</a>
+                    <a href="/dashboard/addNewSample" style="float: right" class="btn btn-default">Add New Sample Request</a>
                 </div>
             </div>
 
@@ -94,7 +95,7 @@ $behalf_of = $output[0]["any_behalf_of"];
                             </table>
                         </div>                    
 
-                        <div class="row">
+                       <!--  <div class="row">
                             <div class="col-md-12 card-block-full">Customer Details</div>
                         </div>
 
@@ -116,7 +117,7 @@ $behalf_of = $output[0]["any_behalf_of"];
                         <div class="row">
                             <div class="col-md-4 card-block-header">Mobile</div>
                             <div class="col-md-8 card-block-detail">{{$output[0]["ref_mobile"]}}</div>
-                        </div>
+                        </div> -->
 
                     </div>
                 </div>
@@ -187,6 +188,9 @@ $behalf_of = $output[0]["any_behalf_of"];
             </div>    
             
         </form>    
+        @else
+            <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
+        @endif
     </div>
     
 @stop

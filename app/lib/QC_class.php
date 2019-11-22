@@ -27,7 +27,9 @@ class QC_class
     {
         //$out = DB::select("select * from sample_master a,sample_details b, sample_items_details c where a.id='$sampleId' and a.id =b.sample_id and a.id = c.sample_id");
 
-       $out = DB::select("select * from (select c.description as customer_status,a.id,a.sample_number,a.type,a.request_date,a.received_date,a.delivered_date,a.status,a.any_behalf_of,a.source_at_team,b.id as sample_details_id,b.ref_name,b.ref_address,b.ref_mobile,b.ref_email,b.city,b.sample_response,b.status as sample_details_status  from sample_master a, sample_details b,process_status c  where a.status in ('CUSTOMER_SAMPLE_REQUEST','VENDOR_SAMPLE_RECEIVED') and a.id =b.sample_id and a.status=c.status) sample where sample.id not in (select object_id from qc_details where object_type='SAMPLE')");
+      // $out = DB::select("select * from (select c.description as customer_status,a.id,a.sample_number,a.type,a.request_date,a.received_date,a.delivered_date,a.status,a.any_behalf_of,a.source_at_team,b.id as sample_details_id,b.ref_name,b.ref_address,b.ref_mobile,b.ref_email,b.city,b.sample_response,b.status as sample_details_status  from sample_master a, sample_details b,process_status c  where a.status in ('CUSTOMER_SAMPLE_REQUEST','VENDOR_SAMPLE_RECEIVED') and a.id =b.sample_id and a.status=c.status) sample where sample.id not in (select object_id from qc_details where object_type='SAMPLE')");
+
+        $out = DB::select("select * from (select * from (select 'SAMPLE' as req_type,c.description as customer_status,a.id,a.sample_number,a.type,a.request_date,a.delivered_date from sample_master a, sample_details b,process_status c where a.status in ('CUSTOMER_SAMPLE_REQUEST','VENDOR_SAMPLE_RECEIVED') and a.id =b.sample_id and a.status=c.status) sample where sample.id not in (select object_id from qc_details where object_type='SAMPLE') union select 'STOCK' as req_type,'--' as customer_status,id,'--' as number,'--' as type,entry_date,created_at from stock_entry where vendor_batch_number is null or raw_material_batch_number is null or r_d_batch_number is null) sample");
         
         return json_decode(json_encode($out), true);
     }
@@ -89,7 +91,7 @@ class QC_class
 
         $sampleQcRemarksDetails = $this->maxQcRemarksDetailsId();
         
-        $out_1 = DB::insert("insert into qc_remarks_details(id,qc_ref_id,remarks,updated_at,updated_by,qc_ref_type) values('$sampleQcRemarksDetails','$sampleId','$qc_remarks','$this->created_at','$this->created_by','SAMPLE')");
+        $out_1 = DB::insert("insert into qc_remarks_details(id,qc_ref_id,remarks,updated_at,updated_by,qc_ref_type,qc_test_result) values('$sampleQcRemarksDetails','$sampleId','$qc_remarks','$this->created_at','$this->created_by','SAMPLE','$qcTestResult')");
     }
 
     function maxQcDetailsId()
@@ -117,5 +119,27 @@ class QC_class
         $out = DB::select("select * from qc_details a,qc_remarks_details b,process_status c where a.object_type='SAMPLE' and a.object_id='$sampleId' and a.object_id=b.qc_ref_id and a.status=c.status");
 
         return json_decode(json_encode($out), true);
+    }
+
+    function qcStockInfoSave($user_id,$stock_entry_id,$qcTestResult,$qc_remarks,$vendor_code,$vendor_betch_number,$raw_material_betch_number,$r_d_betch_number)
+    {
+        $status = 'STOCK_BATCH_INFORMATION_UPDATED_BY_QC_TEAM';
+
+        $id = $this->maxQcDetailsId();
+        $out = DB::insert("insert into qc_details (id,object_type,object_id,status,document_name,document_value,created_at,created_by) values('$id','STOCK','$stock_entry_id','$status','VENDOR_BETCH_NUMBER','$vendor_betch_number','$this->created_at','$user_id')");
+
+        $id = $this->maxQcDetailsId();
+        $out = DB::insert("insert into qc_details (id,object_type,object_id,status,document_name,document_value,created_at,created_by) values('$id','STOCK','$stock_entry_id','$status','RAW_MATERIAL_BETCH_NUMBER','$raw_material_betch_number','$this->created_at','$user_id')");
+
+        $id = $this->maxQcDetailsId();
+        $out = DB::insert("insert into qc_details (id,object_type,object_id,status,document_name,document_value,created_at,created_by) values('$id','STOCK','$stock_entry_id','$status','R_D_BETCH_NUMBER','$r_d_betch_number','$this->created_at','$user_id')");
+      
+
+        $stockQcRemarksDetails = $this->maxQcRemarksDetailsId();
+        
+        $out_1 = DB::insert("insert into qc_remarks_details(id,qc_ref_id,remarks,updated_at,updated_by,qc_ref_type,qc_test_result) values('$stockQcRemarksDetails','$stock_entry_id','$qc_remarks','$this->created_at','$user_id','STOCK','$qcTestResult')");
+
+
+        $o = DB::update("update stock_entry set vendor_code='$vendor_code',vendor_batch_number='$vendor_betch_number',raw_material_batch_number='$raw_material_betch_number',r_d_batch_number='$r_d_betch_number' where id='$stock_entry_id'");
     }
 }

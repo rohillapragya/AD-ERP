@@ -19,157 +19,151 @@ class PRN_class
 
     function showPRNList()
     {
-        $out = DB::select("select id,purchase_request_no,required_date,created_at as request_date from purchase_request_note");
+        $out = DB::select("select id,purchase_request_no,required_date,created_at as request_date from purchase_request_note where is_verifed_from_purchase_dept is null");
 
         return json_decode(json_encode($out), true);
     }
 
-    // function getPurposeList()
-    // {
-    //     $out = DB::select("select * from material_request_purpose");
+    function string_to_date($day,$month,$year)
+    {
+        $odate = "$day-$month-$year";
+        return date("Y/m/d", strtotime($odate));
+    }
 
-    //     return json_decode(json_encode($out), true);
-    // }
+    function showPRNDeatilsByPrnId($prnID)
+    {
+        $out = DB::select("select * from purchase_request_note a,purchase_request_note_details b where a.id='$prnID' and a.id=b.purchase_entry_id and a.is_verifed_from_purchase_dept is null");
 
-    // function string_to_date($day,$month,$year)
-    // {
-    //     $odate = "$day-$month-$year";
-    //     return date("Y/m/d", strtotime($odate));
-    // }
+        return json_decode(json_encode($out), true);
+    }
 
-    // function maxMaterialRequestNoteID()
-    // {
-    //     $out = DB::select("select COALESCE(max(id), 0) + 1 as max_id from material_request_note");
-    //     $result = json_decode(json_encode($out), true);
-    //     foreach ($result as $key => $value) 
-    //     {
-    //         return $value['max_id'];
-    //     }
-    // }
+    function maxPurchaseRequestNoteID()
+    {
+        $out = DB::select("select COALESCE(max(id), 0) + 1 as max_id from purchase_request_note");
+        $result = json_decode(json_encode($out), true);
+        foreach ($result as $key => $value) 
+        {
+            return $value['max_id'];
+        }
+    }
 
+    function purchase_request_no()
+    {
+        $date_1 = date("Ymd");
 
-    // function maxMaterialRequestNoteDetailsId()
-    // {
-    //     $out = DB::select("select COALESCE(max(id), 0) + 1 as max_id from material_request_note_details");
-    //     $result = json_decode(json_encode($out), true);
-    //     foreach ($result as $key => $value) 
-    //     {
-    //         return $value['max_id'];
-    //     }
-    // }
+        $out = DB::select("select COALESCE(max(id), 0) + 1 as max_id from purchase_request_note where created_at = '$this->created_at'");
 
-    // function material_request_no()
-    // {
-    //     $date_1 = date("Ymd");
+        $result = json_decode(json_encode($out), true);
 
-    //     $out = DB::select("select COALESCE(max(id), 0) + 1 as max_id from material_request_note where created_at = '$this->created_at'");
+        foreach ($result as $key => $value) {
+            $maxSampleNum = $value['max_id'];
+        }
 
-    //     $result = json_decode(json_encode($out), true);
-
-    //     foreach ($result as $key => $value) {
-    //         $maxSampleNum = $value['max_id'];
-    //     }
-
-    //     if($maxSampleNum <10){
-    //         $maxSampleNum = '0'.$maxSampleNum;
-    //     }
+        if($maxSampleNum <10){
+            $maxSampleNum = '0'.$maxSampleNum;
+        }
         
-    //     return 'NBT-MRN-'.$date_1.$maxSampleNum;
-    // }
+        return 'NBT-PRN-'.$date_1.$maxSampleNum;
+    }
 
 
-    // function saveMRN($mrn_request_type,$mrn_object_request_id,$mrnrequiredDay,$mrnrequiredMonth,$mrnrequiredyear,$mrn_purpose_type,$mrn_remark,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$user_id)
-    // {
-    //     $maxMaterialRequestNoteID = $this->maxMaterialRequestNoteID();
+    function maxPurchaseRequestNoteDetailsId()
+    {
+        $out = DB::select("select COALESCE(max(id), 0) + 1 as max_id from purchase_request_note_details");
+        $result = json_decode(json_encode($out), true);
+        foreach ($result as $key => $value) 
+        {
+            return $value['max_id'];
+        }
+    }
 
-    //     $materialRequestNo = $this->material_request_no();
 
-    //     $requiredDate =  $this->string_to_date($mrnrequiredDay,$mrnrequiredMonth,$mrnrequiredyear);
+    function saveprn($prnrequiredDay,$prnrequiredMonth,$prnrequiredyear,$prn_remark,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$user_id)
+    {
+        $maxPurchaseRequestNoteID = $this->maxPurchaseRequestNoteID();
 
-    //     $status = 'Material-Requization-Note-CREATED';
+        $purchaseRequestNo = $this->purchase_request_no();
 
-    //     $out = DB::insert("insert into material_request_note (id,material_request_no,required_date,object_type,object_id,status,purpose_id,remarks,created_at,created_by) values('$maxMaterialRequestNoteID','$materialRequestNo','$requiredDate','$mrn_request_type','$mrn_object_request_id','$status','$mrn_purpose_type','$mrn_remark','$this->created_at','$user_id')");
+        $requiredDate =  $this->string_to_date($prnrequiredDay,$prnrequiredMonth,$prnrequiredyear);
 
-    //     $countTable = count($table_product_name);
+        $status = 'PURCHASE_REQUIZATION_NOTE_CREATED';
 
-    //     foreach ($table_product_name as $key_code => $value_code) { $product_code[] = $value_code['product_code']; }
+        $out = DB::insert("insert into purchase_request_note (id,purchase_request_no,required_date,status,remarks,created_at,created_by) values('$maxPurchaseRequestNoteID','$purchaseRequestNo','$requiredDate','$status','$prn_remark','$this->created_at','$user_id')");
 
-    //     foreach ($table_product_method as $key_method => $value_method) { $product_method[] = $value_method['method']; }
+        $countTable = count($table_product_name);
 
-    //     foreach ($table_product_qty as $key_qty => $value_qty) { $product_qty[] = $value_qty['qty']; }
+        foreach ($table_product_name as $key_code => $value_code) { $product_code[] = $value_code['product_code']; }
 
-    //     foreach ($table_product_uom as $key_uom => $value_uom) { $product_uom[] = $value_uom['uom']; }
+        foreach ($table_product_method as $key_method => $value_method) { $product_method[] = $value_method['method']; }
 
-    //     foreach ($table_product_sample_qty as $key_qty => $value_qty) { $product_sample_qty[] = $value_qty['product_sample_qty']; }
+        foreach ($table_product_qty as $key_qty => $value_qty) { $product_qty[] = $value_qty['qty']; }
 
-    //     foreach ($table_product_sample_uom as $key_uom => $value_uom) { $product_sample_uom[] = $value_uom['product_sample_uom']; }
+        foreach ($table_product_uom as $key_uom => $value_uom) { $product_uom[] = $value_uom['uom']; }
 
-    //     for($i=0;$i<$countTable;$i++)
-    //     {
-    //         $product_code_sample = $product_code[$i];
+        for($i=0;$i<$countTable;$i++)
+        {
+            $product_code_sample = $product_code[$i];
      
-    //         $product_method_sample = $product_method[$i];
+            $product_method_sample = $product_method[$i];
         
-    //         $product_qty_sample = $product_qty[$i];
+            $product_qty_sample = $product_qty[$i];
          
-    //         $product_uom_sample = $product_uom[$i];
+            $product_uom_sample = $product_uom[$i];
 
-    //         $product_sample_qty_sample = $product_sample_qty[$i];
+            $maxPurchaseRequestNoteDetailsId = $this->maxPurchaseRequestNoteDetailsId();
 
-    //         $product_sample_uom_sample = $product_sample_uom[$i];
+            $out = DB::insert("insert into purchase_request_note_details (id,purchase_entry_id,item_code,item_name,method,item_qty,item_uom) values('$maxPurchaseRequestNoteDetailsId','$maxPurchaseRequestNoteID','$product_code_sample','$product_code_sample','$product_method_sample','$product_qty_sample','$product_uom_sample')");
+        }
+    }
 
-    //         $maxMaterialRequestNoteDetailsId = $this->maxMaterialRequestNoteDetailsId();
+    function updateprn($prnid,$prnrequiredDay,$prnrequiredMonth,$prnrequiredyear,$prn_remark,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$user_id)
+    {
+        $requiredDate =  $this->string_to_date($prnrequiredDay,$prnrequiredMonth,$prnrequiredyear);
 
-    //         $out = DB::insert("insert into material_request_note_details (id,stock_entry_id,item_code,item_name,method,item_qty,item_uom,control_qty,control_uom) values('$maxMaterialRequestNoteDetailsId','$maxMaterialRequestNoteID','$product_code_sample','$product_code_sample','$product_method_sample','$product_qty_sample','$product_uom_sample','$product_sample_qty_sample','$product_sample_uom_sample')");
-    //     }
-    // }
+      //  dd($prnid);
 
-    // function checkMRNRequestId($objectId,$objectType)
-    // {
-    //     if($objectType=="SAMPLE")
-    //     {
-    //         $out = DB::select("select * from sample_master where sample_number='$objectId'");
-    //     }
-    //     else if ($objectType=="INQUIRY")
-    //     {
-    //         $out = DB::select("select * from inquiry_master where id='$objectId'");
-    //     }
-    //     else
-    //     {
-    //         $out = DB::select("select * from purchase_indent where purchase_indent_id='$objectId'");
-    //     }
-    //     return json_decode(json_encode($out), true);
-    // }
+        $out = DB::update("update purchase_request_note set required_date='$requiredDate',remarks='$prn_remark' where id='$prnid'");
 
-    // function maxMaterialRequestPurposeId()
-    // {
-    //     $out = DB::select("select COALESCE(max(id), 0) + 1 as max_id from material_request_purpose");
-    //     $result = json_decode(json_encode($out), true);
-    //     foreach ($result as $key => $value) 
-    //     {
-    //         return $value['max_id'];
-    //     }
-    // }
+        $out_1 = DB::delete("delete from purchase_request_note_details where purchase_entry_id='$prnid' ");
 
+        $countTable = count($table_product_name);
 
-    // function addNewPurpose($purpose)
-    // {
-    //     $maxMaterialRequestPurposeId = $this->maxMaterialRequestPurposeId();
+        foreach ($table_product_name as $key_code => $value_code) { $product_code[] = $value_code['product_code']; }
 
-    //     $out = DB::insert("insert into material_request_purpose (id,purpose) values('$maxMaterialRequestPurposeId','$purpose')");
-    // }
+        foreach ($table_product_method as $key_method => $value_method) { $product_method[] = $value_method['method']; }
 
-    // function mrnStockEntry($mrnID)
-    // {
-    //     $out = DB::select("select * from material_request_note a,material_request_note_details b where a.id='$mrnID' and a.id= b.stock_entry_id");
+        foreach ($table_product_qty as $key_qty => $value_qty) { $product_qty[] = $value_qty['qty']; }
 
-    //     return json_decode(json_encode($out), true);
-    // }
+        foreach ($table_product_uom as $key_uom => $value_uom) { $product_uom[] = $value_uom['uom']; }
 
-    // function updateMRNStockEntry($mrnID)
-    // {
-    //     $out = DB::update("update material_request_note set is_procced_for_stock_entry='Y' where id='$mrnID'");
+        for($i=0;$i<$countTable;$i++)
+        {
+            $product_code_sample = $product_code[$i];
+     
+            $product_method_sample = $product_method[$i];
+        
+            $product_qty_sample = $product_qty[$i];
+         
+            $product_uom_sample = $product_uom[$i];
 
-    //     return json_decode(json_encode($out), true);
-    // }
+            $maxPurchaseRequestNoteDetailsId = $this->maxPurchaseRequestNoteDetailsId();
+
+            $out = DB::insert("insert into purchase_request_note_details (id,purchase_entry_id,item_code,item_name,method,item_qty,item_uom) values('$maxPurchaseRequestNoteDetailsId','$prnid','$product_code_sample','$product_code_sample','$product_method_sample','$product_qty_sample','$product_uom_sample')");
+        }
+    }
+
+    function showPRNDeatils($prnID)
+    {
+        $out = DB::select("select a.*,b.*,c.name as product_name,c.scrientific_name as product_scrientific_name,d.name as method_name,e.name as item_uom from purchase_request_note a,purchase_request_note_details b,product_master c,product_method_master d,UOM_master e where a.id='$prnID' and a.id=b.purchase_entry_id and a.is_verifed_from_purchase_dept is null and b.item_code=c.code and b.method=d.id and b.item_uom = e.id");
+
+        return json_decode(json_encode($out), true);
+    }
+
+    function verifyPRN($prnID,$user_id)
+    {
+        $out = DB::update("update purchase_request_note set is_verifed_from_purchase_dept='Y',update_by='$user_id',update_date='$this->created_at',status='PURCHASE_REQUIZATION_NOTE_VERIFIED' where id='$prnID'");
+
+        return json_decode(json_encode($out), true);
+    }
+
 }

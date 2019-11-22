@@ -122,6 +122,6 @@ function validateAddress()
     var address_value = address.value;
    
     var address_string = address_value.replace(/[^a-zA-Z0-9]/g, ' ');
-    console.log("address_string-"+address_string);
+    //console.log("address_string-"+address_string);
     address.value = address_string;
 }

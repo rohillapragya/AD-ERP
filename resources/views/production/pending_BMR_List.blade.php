@@ -23,6 +23,7 @@
     </nav>
 
     <div class="container box-shadow">
+         @if($user_role_id=='3' || $user_role_id=='8')
         <div class="form-group row">
             <table class="table table-bordered" id="sampleItemsList">
                 <thead style="background-color: #eef1ed;font-size: 14px;">
@@ -61,12 +62,15 @@
                         @endphp -->
                     @else  
                         <tr>
-                            <td colspan="10" class="no-data-found">No Inquiry found</td>
+                            <td colspan="10" class="no-data-found">No record found</td>
                         </tr>
                     @endif    
                 </tbody>
             </table>
         </div>
+         @else
+            <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
+        @endif
     </div>
 
 @stop

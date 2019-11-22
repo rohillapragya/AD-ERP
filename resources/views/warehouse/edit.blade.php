@@ -25,11 +25,12 @@
     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <span class="glyphicon glyphicon-map-marker"></span>
-        <li class="breadcrumb-item active" aria-current="page"> <a href="/dashboard"> Dashboard </a> /  Warehouse /  Add </li>
+        <li class="breadcrumb-item active" aria-current="page"> <a href="/dashboard"> Dashboard </a> /  Warehouse /  Edit </li>
     </ol>
     </nav>
 
     <div class="container box-shadow">
+         @if($user_role_id=='3' || $user_role_id=='11')
         <form method="post" action="/warehouse/update">
             {{ csrf_field() }}
             <!-- <input type="hidden" id="warehouseId" name="warehouseId" value="{{$output[0]['id']}}"> -->
@@ -124,6 +125,9 @@
                 </div>
             </div>    
         </form>
+         @else
+            <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
+        @endif
     </div>
 
 @stop

@@ -23,6 +23,7 @@ $user_role_id = Session::get('role_id');
 	</nav>
 
 	<div class="container box-shadow">
+        @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='12')
 	 	<table class="table table-bordered">
             <thead style="background-color: #eef1ed;font-size: 14px;">
                 <tr>
@@ -57,6 +58,9 @@ $user_role_id = Session::get('role_id');
                 @endif    
             </tbody>
         </table>
+        @else
+            <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
+        @endif
 	</div>
     
 @stop

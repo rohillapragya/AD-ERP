@@ -3,22 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Session;
 
 //use DB;
 
 use App\lib\Users;
 
+use App\lib\Log_class;
+
 class Login extends Controller
 {
-    
-    // public function __construct()
-    // {
-    // }
-
-    public function __construct(Users $user) 
+    public function __construct(Users $user,Log_class $log) 
     {
         $this->user = $user;
+
+        $this->log = $log;
     }
     
     public function show()
@@ -46,7 +46,12 @@ class Login extends Controller
             }
             else
             {
+                $module = "login";
+
+                $out = $this->log->write_log($module);
+
                 $this->user->populate($email);
+
                 return redirect()->route('dashboard');
 
                // return view('dashboard.index');
@@ -56,6 +61,10 @@ class Login extends Controller
 
     public function signoff()
     {
+        $module = "logout";
+
+        $out = $this->log->write_log($module);
+
         Session::flush();
         return redirect()->route('login');
     }

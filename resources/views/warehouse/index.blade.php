@@ -23,7 +23,7 @@
     </nav>
 
     <div class="container box-shadow">
-
+         @if($user_role_id=='3' || $user_role_id=='11')
         <div class="form-group row">
             <div class="col-sm-12">
                 <a href="/dashboard/addNewWarehouse" style="float: right" class="btn btn-default">Add New Warehouse</a>
@@ -62,6 +62,9 @@
                 </tbody>
             </table>
         </div>
+         @else
+            <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
+        @endif
     </div>
 
 @stop

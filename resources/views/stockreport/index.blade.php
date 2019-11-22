@@ -24,7 +24,7 @@
 
 
      <div class="container box-shadow">
-
+        @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='9' || $user_role_id=='11')
         <div class="form-group row">
             <div class="col-sm-1">Search :</div>
             <div class="col-sm-4">
@@ -87,6 +87,9 @@
                 </tbody>
             </table>
         </div>
+        @else
+            <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
+        @endif
     </div>
    
 

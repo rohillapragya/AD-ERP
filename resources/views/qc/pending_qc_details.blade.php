@@ -23,15 +23,16 @@
     </nav>
 
     <div class="container box-shadow">
+        @if($user_role_id=='3' || $user_role_id=='10')
         <div class="form-group row">
             <table class="table table-bordered" id="sampleItemsList">
                 <thead style="background-color: #eef1ed;font-size: 14px;">
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Inquiry Number</th>
-                        <th scope="col">Inquiry Date</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Number</th>
+                        <th scope="col">Request Date</th>
                         <th scope="col">Delivery Date</th>
-                        <th scope="col">Customer Info</th>
                         <th scope="col">Status</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -41,19 +42,22 @@
                         @for ($i = 0; $i < count($output); $i++)
                             <tr>
                                 <td>{{($i+1)}}</td>
+                                <td>{{$output[$i]['req_type']}}</td>
                                 <td>{{$output[$i]['sample_number']}}</td>
                                 <td>{{$output[$i]['request_date']}}</td>
                                 <td>{{$output[$i]['delivered_date']}}</td>
-                                <td>{{$output[$i]['ref_name']}}</td>
                                 <td>{{$output[$i]['customer_status']}}</td>
-                                @if($user_role_id=='3' || $user_role_id=='7')
-                                  <!--   <td><a href="/sample/customer/readyForDispatch/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a></td> -->
-                                     <td><a href="/sample/qc/QCDetails/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a></td>
+
+                                @if($user_role_id=='3' || $user_role_id=='10')
+                                    @if($output[$i]['req_type']=='SAMPLE')
+                                        <td><a href="/sample/qc/QCDetails/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a></td>
+                                    @else
+                                        <td><a href="/stock/qc/QCDetails/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a></td>        
+                                    @endif  
+                                    
                                 @else
                                     <td><span class="glyphicon glyphicon-tag"></td>
                                 @endif
-
-                               
                             </tr>
                         @endfor
                         <!-- @php
@@ -61,12 +65,15 @@
                         @endphp -->
                     @else  
                         <tr>
-                            <td colspan="10" class="no-data-found">No Inquiry found</td>
+                            <td colspan="10" class="no-data-found">No data found</td>
                         </tr>
                     @endif    
                 </tbody>
             </table>
         </div>
+        @else
+            <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
+        @endif
     </div>
 
 @stop

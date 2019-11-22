@@ -23,9 +23,16 @@ class Stock_class
     {
     	//$out = DB::select("select * from stock_entry order by id desc");
 
-    	$out = DB::select("select a.id as id,a.entry_description,b.name as store_type,c.name as store_type_details,a.entry_date as created_at,d.name as warehouse_name from stock_entry a,stock_entry_type_master b,stock_entry_type_details c,warehouse_master d where a.entry_type_id = b.id and a.entry_type_details_id=c.id and a.warehouse_id=d.id");
+    	$out = DB::select("select a.stock_entry_for,a.id as id,a.entry_description,b.name as store_type,c.name as store_type_details,a.entry_date as created_at,d.name as warehouse_name from stock_entry a,stock_entry_type_master b,stock_entry_type_details c,warehouse_master d where a.entry_type_id = b.id and a.entry_type_details_id=c.id and a.warehouse_id=d.id order by stock_entry_for");
 
     	return json_decode(json_encode($out), true);
+    }
+
+    function getStockEntryFor()
+    {
+        $out = DB::select("select * from stock_entry_for");
+
+        return json_decode(json_encode($out), true);
     }
 
     function getStockEntryTypeMaster()
@@ -70,7 +77,7 @@ class Stock_class
     }
 
     
-    function addStock($uid,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$stockEntryWarehouseId)
+    function addStock($uid,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$table_product_is_sample_uom,$stockEntryWarehouseId,$stockEntryFor,$vendor_code)
     {
     	$maxStockEntryId = $this->maxStockEntryId();
     	
@@ -83,7 +90,7 @@ class Stock_class
 
     	//dd($entry_date);
 
-    	$out = DB::insert("insert into stock_entry (id,entry_date,entry_type_id,entry_type_details_id,entry_description,warehouse_id,created_at,created_by) values('$maxStockEntryId','$entry_date','$stockEntryType','$stockEntryTypeDetails','$stock_entry_description','$stockEntryWarehouseId','$this->created_at',' $uid')");
+    	$out = DB::insert("insert into stock_entry (id,entry_date,entry_type_id,entry_type_details_id,entry_description,warehouse_id,created_at,created_by,stock_entry_for,vendor_code) values('$maxStockEntryId','$entry_date','$stockEntryType','$stockEntryTypeDetails','$stock_entry_description','$stockEntryWarehouseId','$this->created_at','$uid','$stockEntryFor','$vendor_code')");
 
     	$countTable = count($table_product_name);
 
@@ -99,6 +106,8 @@ class Stock_class
 
         foreach ($table_product_sample_uom as $key_uom => $value_uom) { $product_sample_uom[] = $value_uom['product_sample_uom']; }
 
+        foreach ($table_product_is_sample_uom as $is_key_uom => $is_value_uom) { $product_is_sample_uom[] = $is_value_uom['product_is_sample_uom']; }
+
         for($i=0;$i<$countTable;$i++)
         {
             $product_code_sample = $product_code[$i];
@@ -113,12 +122,14 @@ class Stock_class
 
             $product_sample_uom_sample = $product_sample_uom[$i];
 
+            $product_is_sample_uom_sample = $product_is_sample_uom[$i];
+
             $maxStockItemsDetailsId = $this->maxStockItemsDetailsId();
 
-            $out = DB::insert("insert into stock_items_details (id,stock_entry_id,item_code,item_name,method,item_qty,item_uom,control_qty,control_uom) values('$maxStockItemsDetailsId','$maxStockEntryId','$product_code_sample','$product_code_sample','$product_method_sample','$product_qty_sample','$product_uom_sample','$product_sample_qty_sample','$product_sample_uom_sample')");
+            $out = DB::insert("insert into stock_items_details (id,stock_entry_id,item_code,item_name,method,item_qty,item_uom,control_qty,control_uom,is_control_sample) values('$maxStockItemsDetailsId','$maxStockEntryId','$product_code_sample','$product_code_sample','$product_method_sample','$product_qty_sample','$product_uom_sample','$product_sample_qty_sample','$product_sample_uom_sample','$product_is_sample_uom_sample')");
         }
 
-        $description ="Transaction being initiated for stock id $maxStockEntryId by $uid.Dated on entry_date for purpose $stockEntryType  $stockEntryTypeDetails";
+        $description ="Transaction being initiated for stock id $maxStockEntryId by $uid.Dated on entry_date for purpose $stockEntryType  $stockEntryTypeDetails.Stock entry for $stockEntryFor vendor code is $vendor_code";
 
         $out = DB::insert("insert into stock_transaction_log(id,stock_entry_id,description,created_at) values('$maxStockTransactionLogId','$maxStockEntryId','$description','$this->created_at')");
 
@@ -134,13 +145,13 @@ class Stock_class
     }
 
 
-    function updateStock($uid,$store_id,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$stockEntryWarehouseId)
+    function updateStock($uid,$store_id,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$table_product_is_sample_uom,$stockEntryWarehouseId,$stockEntryFor,$vendor_code)
     {
     	$entry_date = $this->string_to_date($stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear);
 
     	//$out = DB::insert("insert into stock_entry (id,entry_date,entry_type_id,entry_type_details_id,entry_description,warehouse_id,created_at,created_by) values('$maxStockEntryId','$entry_date','$stockEntryType','$stockEntryTypeDetails','$stock_entry_description','$stockEntryWarehouseId','$this->created_at',' $uid')");
 
-    	$out = DB::update("update stock_entry set entry_date='$entry_date',entry_type_id='$stockEntryType',entry_type_details_id='$stockEntryTypeDetails',entry_description='$stock_entry_description',warehouse_id='$stockEntryWarehouseId' where id='$store_id'");
+    	$out = DB::update("update stock_entry set entry_date='$entry_date',entry_type_id='$stockEntryType',entry_type_details_id='$stockEntryTypeDetails',entry_description='$stock_entry_description',warehouse_id='$stockEntryWarehouseId',stock_entry_for='$stockEntryFor',vendor_code='$vendor_code' where id='$store_id'");
 
     	$out_1 = DB::insert("delete from stock_items_details where stock_entry_id='$store_id'");
 
@@ -158,6 +169,8 @@ class Stock_class
 
         foreach ($table_product_sample_uom as $key_uom => $value_uom) { $product_sample_uom[] = $value_uom['product_sample_uom']; }
 
+        foreach ($table_product_is_sample_uom as $is_key_uom => $is_value_uom) { $product_is_sample_uom[] = $is_value_uom['product_is_sample_uom']; }
+
         for($i=0;$i<$countTable;$i++)
         {
             $product_code_sample = $product_code[$i];
@@ -172,9 +185,11 @@ class Stock_class
 
             $product_sample_uom_sample = $product_sample_uom[$i];
 
+            $product_is_sample_uom_sample = $product_is_sample_uom[$i];
+
             $maxStockItemsDetailsId = $this->maxStockItemsDetailsId();
 
-            $out = DB::insert("insert into stock_items_details (id,stock_entry_id,item_code,item_name,method,item_qty,item_uom,control_qty,control_uom) values('$maxStockItemsDetailsId','$store_id','$product_code_sample','$product_code_sample','$product_method_sample','$product_qty_sample','$product_uom_sample','$product_sample_qty_sample','$product_sample_uom_sample')");
+               $out = DB::insert("insert into stock_items_details (id,stock_entry_id,item_code,item_name,method,item_qty,item_uom,control_qty,control_uom,is_control_sample) values('$maxStockItemsDetailsId','$store_id','$product_code_sample','$product_code_sample','$product_method_sample','$product_qty_sample','$product_uom_sample','$product_sample_qty_sample','$product_sample_uom_sample','$product_is_sample_uom_sample')");
         }
     }
 
@@ -201,4 +216,12 @@ class Stock_class
 
         return json_decode(json_encode($out), true);
     }
+
+    function gettingStockInfoByStockId($stockId)
+    {
+        $out = DB::select("select a.id as stock_entry_id,b.name as stock_entry_type,c.name as entry_type_details_id,d.stock_entry_for,a.entry_date,e.name as warehouse_name,a.vendor_code,a.vendor_batch_number,a.raw_material_batch_number,a.r_d_batch_number,g.name as product_name,g.scrientific_name,h.name as method_name,f.item_code from stock_entry a,stock_entry_type_master b,stock_entry_type_details c,stock_entry_for d,warehouse_master e,stock_items_details f,product_master g,product_method_master h where a.id='$stockId' and a.entry_type_id = b.id and a.entry_type_details_id = c.id and a.stock_entry_for = d.id and a.warehouse_id = e.id and a.id=f.stock_entry_id and f.item_code=g.code and f.method = h.id");
+
+        return json_decode(json_encode($out), true);
+    }
+
 }

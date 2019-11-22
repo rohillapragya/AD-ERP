@@ -120,6 +120,8 @@ class Dispatch_class
             
                 $out = DB::insert("insert into dispatch_attachments (id,dispatch_details_id,attached_docx_name,created_at,created_by) values('$maxDispatchAttachmentsId','$maxDispatchDetailsId','$doc_name','$this->created_at','$user_id')");
             }
+
+            
         }
     }
 

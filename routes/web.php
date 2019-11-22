@@ -27,6 +27,10 @@ Route::post('/erpuser/save','UserRegistration@save');
 Route::get('/erpuser/edit/{erpUserID}','UserRegistration@show');
 Route::post('/erpuser/update','UserRegistration@update');
 Route::post('/erpUser/changeStatus','UserRegistration@changeERPUserStatus');
+
+Route::get('/dashboard/addVendor','UserRegistration@addVendor');
+Route::get('/user/userContactInformation','UserRegistration@getUserContactInformation');
+Route::post('/dashboard/addVendor','UserRegistration@saveVendor');
 // Registration route section end  here
 
 
@@ -49,6 +53,7 @@ Route::post('/production/bmr','Production@saveBMR');
 Route::get('/dashboard/customerSampleQC','QC@pendingQCDetailList');
 Route::get('/sample/qc/QCDetails/{sampleId}','QC@ReadyForQCDetails');
 Route::post('/qcDetails/qcSave','QC@saveQCDetails');
+Route::post('/qcDetails/qcStockInfoSave','QC@qcStockInfoSave');
 
 
 Route::get('/dashboard/addNewVendorSample','Sample@addVendorSample');
@@ -90,6 +95,7 @@ Route::get('/warehouse/getCityList','Warehouse@getCityList');
 Route::post('/warehouse/save','Warehouse@save');
 Route::get('/warehouse/edit/{warehouseId}','Warehouse@show');
 Route::post('/warehouse/update','Warehouse@update');
+Route::get('/warehouse/getWarehouseList','Warehouse@getWarehouseList');
 // warehouse route section  end  here
 
 
@@ -104,6 +110,7 @@ Route::get('/store/edit/{warehouseId}','Stock@show');
 Route::post('/stock/update','Stock@update');
 Route::get('/dashboard/StockReport','Stock@reportIndex');
 Route::get('/stock/getStockByWarehouseId','Stock@getStockByWarehouseId');
+Route::get('/stock/qc/QCDetails/{sampleId}','QC@StockReadyForQCDetails');
 // store route section  end  here
 
 
@@ -115,15 +122,60 @@ Route::get('/mrn/checkMRNRequestId','MRN@checkMRNRequestId');
 Route::post('/mrn/addNewPurpose','MRN@addNewPurpose');
 Route::get('/mrn/getPurposeList','MRN@getPurposeList');
 Route::get('/mrn/{mrnID}/stockEntry','MRN@mrnStockEntry');
+Route::get('/mrn/{mrnID}/prnEntry','MRN@prnEntry');
 // MRN route section end here
 
 
 // PRN route section start here
 Route::get('/dashboard/prnInit','PRN@index');
 Route::get('/dashboard/addNewPRN','PRN@addNew');
+Route::post('/prn/save','PRN@savePRN');
+Route::get('/prn/edit/{prnId}','PRN@show');
+Route::post('/prn/update','PRN@update');
+Route::get('/dashoard/prn/verify','PRN@showVerifyPRN');
+Route::get('/prn/show/{prnId}','PRN@showPRN');
+Route::post('/prn/verifyPRN','PRN@verifyPRN');
 // PRN route section end here
 
 
+// BOM route section start here
+Route::get('/dashboard/BOM','BOM@index');
+Route::get('/dashboard/addBom','BOM@addNew');
+Route::post('/bom/save','BOM@save');
+Route::get('/bom/edit/{bomID}','BOM@show');
+Route::post('/bom/update','BOM@update');
+Route::get('/production/checkBOM','BOM@checkBom');
+Route::get('/bom/{bomId}/production','BOM@BomToProduction');
+// BOM route section end here
+
+
+// Production route section start here
+Route::get('/dashboard/production','Production@index');
+Route::get('/dashboard/addProduction','Production@addProduction');
+Route::post('/production/save','Production@save');
+Route::get('/production/edit/{productionId}','Production@show');
+Route::post('/production/update','Production@update');
+// Production route section start here
+
+
+// Purchase route section start here
+Route::get('/dashboard/pI','PurchaseIndent@index');
+Route::get('/pi/inquiry/{inquiryId}','PurchaseIndent@showInquiryDetails');
+Route::post('/pi/save','PurchaseIndent@save');
+Route::get('/pi/{piID}/action','PurchaseIndent@action');
+Route::post('/pi/action/save','PurchaseIndent@action_save');
+Route::get('/pi/{piID}/SampleRequest','PurchaseIndent@pi_to_SampleRequest');
+Route::post('/dashboard/pi_to_sample_save','PurchaseIndent@pi_to_sample_save');
+// Purchase route section  end here
+
+
+// quotation route section start here
+Route::get('/dashoard/qutationInit','Quotation@index');
+Route::get('/prn/{pID}/quotation/create','Quotation@add');
+Route::post('/quotation/save','Quotation@save');
+// quotation route section end here
+
+
 // Route::get('/sendbasicemail','MailController@basic_email');
-// Route::get('/sendhtmlemail','MailController@html_email');
+Route::get('/sendhtmlemail','MailController@html_email');
 // Route::get('/sendattachmentemail','MailController@attachment_email');

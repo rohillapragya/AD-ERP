@@ -19,9 +19,7 @@ class Product_class
     function __construct()
 	{
         $this->info = null;
-       // $this->created_by = Session::get('role_id');
-
-      //  dd($this->created_by);
+       
         $this->created_at =  date("Y/m/d");
     }
 
@@ -115,7 +113,6 @@ class Product_class
         $request_date = $this->string_to_date($samplerequestDay,$samplerequestMonth,$samplerequestyear);
         $delivery_date = $this->string_to_date($sampledeliveryDay,$sampledeliveryMonth,$sampledeliveryyear);
     
-
         $out = DB::insert("insert into sample_master (id,sample_number,type,request_date,delivered_date,status,any_behalf_of,created_at,created_by) values('$this->sample_max_id','$sample_number','$type','$request_date','$delivery_date','CUSTOMER_SAMPLE_REQUEST','$behalf_of','$this->created_at','$this->created_by')");
     }
 
@@ -403,6 +400,13 @@ class Product_class
 
             $out = DB::insert("insert into sample_items_details (id,sample_id,item_code,method,qunatity,uom) values('$max_id','$sampleId','$product_code_sample','$product_method_sample','$product_qty_sample','$product_uom_sample')");
         }
+    }
+
+    function getProductCategory()
+    {
+        $out = DB::select("select * from product_category_master");
+
+        return json_decode(json_encode($out), true);
     }
 
 }

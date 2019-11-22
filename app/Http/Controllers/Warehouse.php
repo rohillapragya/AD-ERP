@@ -65,6 +65,7 @@ class Warehouse extends Controller
        $output = $this->warehouse->save($user_id,$warehouse_name,$warehouse_address,$warehouseCity,$primary_contact_first_name,$primary_contact_last_name,$primary_contact_mobile,$primary_contact_phone,$primary_contact_email);
 
         $data['message'] ='Warehouse Information Added Successfully. Go to  Dashboard using button';
+        $data['text'] = '';
 
         return view('dashboard_return.success',$data);
     }
@@ -109,8 +110,16 @@ class Warehouse extends Controller
         $output = $this->warehouse->update($user_id,$warehouseId,$warehouse_name,$warehouse_address,$warehouseCity,$primary_contact_first_name,$primary_contact_last_name,$primary_contact_mobile,$primary_contact_phone,$primary_contact_email);
 
         $data['message'] ='Warehouse Information Added Successfully. Go to  Dashboard using button';
+        $data['text'] = '';
 
         return view('dashboard_return.success',$data);
+    }
+
+    public function getWarehouseList()
+    {
+        $output = $this->warehouse->showWarehouseList();
+
+        return $output;
     }
 
 }

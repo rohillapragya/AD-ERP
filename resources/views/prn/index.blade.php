@@ -23,7 +23,7 @@
     </nav>
 
     <div class="container box-shadow">
-
+        @if($user_role_id=='3' || $user_role_id=='13')
         <div class="form-group row">
             <div class="col-sm-12">
                 <a href="/dashboard/addNewPRN" style="float: right" class="btn btn-default">Add New PRN</a>
@@ -36,11 +36,9 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Purchase Requization No</th>
-                        <th scope="col">Required Date</th>
-                        <th scope="col">Request Date</th>
-                        <th scope="col">Verified From Purchase Dept</th>
-                        <th scope="col">Action</th>
-                        <!-- <th scope="col">Edit</th> -->
+                        <th scope="col">Required Date(YYYY-MM_DD)</th>
+                        <th scope="col">Request Date(YYYY-MM_DD)</th>
+                        <th scope="col">Edit</th>
                     </tr>
                 </thead>
                 <tbody style="font-size: 14px;" >
@@ -48,12 +46,10 @@
                         @for ($i = 0; $i < count($output); $i++)
                             <tr>
                                 <td>{{($i+1)}}</td>
-                                <td>{{$output[$i]['material_request_no']}}</td>
+                                <td>{{$output[$i]['purchase_request_no']}}</td>
                                 <td>{{$output[$i]['required_date']}}</td>
                                 <td>{{$output[$i]['request_date']}}</td>
-                                <td><a href="/prn/{{$output[$i]['id']}}/stockEntry" class="btn btn-default">Stock_Entry</a></td>
-                                <td><a href="#" class="btn btn-default">Call For Supplier Qutation</a></td>
-                                <!-- <td><a href="/mrn/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a></td>  -->
+                                <td><a href="/prn/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a></td> 
                             </tr>
                         @endfor
                     @else  
@@ -64,6 +60,9 @@
                 </tbody>
             </table>
         </div>
+        @else
+            <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
+        @endif
     </div>
 
 @stop

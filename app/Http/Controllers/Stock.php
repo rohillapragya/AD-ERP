@@ -48,8 +48,10 @@ class Stock extends Controller
     	$getStockEntryTypeMasterDetails = $this->stock->getStockEntryTypeMasterDetails($stockEntryTypeDetailsId);
 
     	$getWarehouseList = $this->warehouse->getWarehouseList();
+
+        $getStockEntryFor = $this->stock->getStockEntryFor();
     	
-    	return view('stock.new',compact('getStockEntryTypeMaster','getStockEntryTypeMasterDetails','getWarehouseList'));
+    	return view('stock.new',compact('getStockEntryTypeMaster','getStockEntryTypeMasterDetails','getWarehouseList','getStockEntryFor'));
     }
 
     public function getStockEntryTypeDetails(Request $request)
@@ -96,13 +98,20 @@ class Stock extends Controller
     	
     	$table_product_sample_uom = request('product_sample_uom');
 
+        $table_product_is_sample_uom = request('product_is_sample_uom');
+
         $user_id = Session::get('UID');
 
-    	$output = $this->stock->addStock($user_id,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$stockEntryWarehouseId);
+        $stockEntryFor = request('stockEntryFor');
+
+        $vendor_code = request('vendor_code');
+
+    	$output = $this->stock->addStock($user_id,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$table_product_is_sample_uom,$stockEntryWarehouseId,$stockEntryFor,$vendor_code);
 
     	//dd("Save");
 
     	$data['message'] ='Stock Added Successfully. Go to  Dashboard using button';
+        $data['text'] = '';
 
         return view('dashboard_return.success',$data);
     }
@@ -127,8 +136,10 @@ class Stock extends Controller
         $method = $this->product->getMethod();
 
         $uom = $this->product->getUOM();
+
+        $getStockEntryFor = $this->stock->getStockEntryFor();
     	
-    	return view('stock.edit',compact('getStockEntryTypeMaster','getStockEntryTypeMasterDetails','getWarehouseList','getStockInfoByStockId','product','method','uom'));
+    	return view('stock.edit',compact('getStockEntryTypeMaster','getStockEntryTypeMasterDetails','getWarehouseList','getStockInfoByStockId','product','method','uom','getStockEntryFor'));
     }
 
     public function update(Request $request)
@@ -163,11 +174,18 @@ class Stock extends Controller
     	
     	$table_product_sample_uom = request('product_sample_uom');
 
+        $table_product_is_sample_uom = request('product_is_sample_uom');
+
         $user_id = Session::get('UID');
 
-    	$output = $this->stock->updateStock($user_id,$store_id,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$stockEntryWarehouseId);
+        $stockEntryFor = request('stockEntryFor');
+
+        $vendor_code = request('vendor_code');
+
+    	$output = $this->stock->updateStock($user_id,$store_id,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$table_product_is_sample_uom,$stockEntryWarehouseId,$stockEntryFor,$vendor_code);
 
     	$data['message'] ='Stock updated Successfully. Go to  Dashboard using button';
+        $data['text'] = '';
 
         return view('dashboard_return.success',$data);
     }

@@ -81,6 +81,7 @@ class MRN extends Controller
         $output = $this->mrn->saveMRN($mrn_request_type,$mrn_object_request_id,$mrnrequiredDay,$mrnrequiredMonth,$mrnrequiredyear,$mrn_purpose_type,$mrn_remark,$product_name,$product_method,$product_qty,$product_uom,$product_sample_qty,$product_sample_uom,$user_id);
 
         $data['message'] ='Material Requaztion Note Added Successfully. Go to  Dashboard using button';
+        $data['text'] = '';
 
         return view('dashboard_return.success',$data);
     }
@@ -127,5 +128,20 @@ class MRN extends Controller
         $uom = $this->product->getUOM();
 
         return view('mrn.mrnEntryAsStockEntry',compact('mrnDetails','getStockEntryTypeMaster','getStockEntryTypeMasterDetails','getWarehouseList','product','method','uom'));
+    }
+
+    public function prnEntry(Request $request)
+    {
+        $mrnID = $request->segment(2);
+
+        $output = $this->mrn->mrnStockEntry($mrnID);
+
+        $product = $this->product->getProuductList();
+
+        $method = $this->product->getMethod();
+
+        $uom = $this->product->getUOM();
+
+        return view('prn.createPRNBefalfOfMRN',compact('output','product','method','uom'));
     }
 }

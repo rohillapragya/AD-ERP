@@ -33,8 +33,8 @@
                 <thead style="background-color: #eef1ed;font-size: 14px;">
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Inquiry Number</th>
-                        <th scope="col">Inquiry Date</th>
+                        <th scope="col">Sample Number</th>
+                        <th scope="col">Sample Date</th>
                         <th scope="col">Delivery Date</th>
                         <th scope="col">Customer Info</th>
                         <th scope="col">Status</th>

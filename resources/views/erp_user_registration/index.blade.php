@@ -29,7 +29,7 @@ $user_role_id = Session::get('role_id');
                 <a href="/dashboard/addNewERPUser" style="float: right" class="btn btn-default">Add New ERP User</a>
             </div>
         </div>
-
+        @if($user_role_id=='3')
         <div class="form-group row">
             <table class="table table-bordered" id="erpUserTableList">
                 <thead style="background-color: #eef1ed;font-size: 14px;">
@@ -80,6 +80,9 @@ $user_role_id = Session::get('role_id');
                 </tbody>
             </table>
         </div>
+        @else
+            <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
+        @endif
     </div>
     
 @stop

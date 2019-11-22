@@ -13,13 +13,18 @@ use App\lib\Dispatch_class;
 
 use App\lib\Product_class;
 
+use App\lib\cron_job_email;
+
+
 class Dispatch extends Controller
 {
-    public function __construct(Dispatch_class $dispatch,Product_class $product) 
+    public function __construct(Dispatch_class $dispatch,Product_class $product,cron_job_email $cron) 
     {
         $this->dispatch = $dispatch;
 
         $this->product = $product;
+
+        $this->cron = $cron;
     }
 
     public function serviceIndex()
@@ -63,6 +68,7 @@ class Dispatch extends Controller
         $output = $this->dispatch->saveService($dispatch_full_name,$dispatch_mobile,$dispatch_email,$user_id);
 
         $data['message'] ='Dispatch Service Added Successfully. Go to  Dashboard using button';
+        $data['text'] = '';
 
         return view('dashboard_return.success',$data);
         // dd("dispatch_full_name-".$dispatch_full_name."-dispatch_mobile".$dispatch_mobile."-dispatch_email".$dispatch_email);
@@ -93,6 +99,7 @@ class Dispatch extends Controller
         $output = $this->dispatch->editService($dispatch_full_name,$dispatch_mobile,$dispatch_email,$dispatchId);
 
         $data['message'] ='Dispatch Service updated Successfully. Go to  Dashboard using button';
+        $data['text'] = '';
 
         return view('dashboard_return.success',$data);
         //dd("dispatch_full_name -".$dispatch_full_name."-dispatch_mobile-".$dispatch_mobile."-dispatch_email-".$dispatch_email."-dispatchId-".$dispatchId);
@@ -170,16 +177,20 @@ class Dispatch extends Controller
         {
            // echo "DISPATCH";
             $output = $this->dispatch->saveDispatchInfo($sampleId,$object_type,$user_id,$dispatchService,$dispatch_amount,$dispatchdateDay,$dispatchDateMonth,$dispatchDateyear,$deliverydateDay,$deliveryDateMonth,$deliveryDateyear,$dispatch_docx_number,$dispatchStatus,$docx_receipt_attacment,$document_name);
+
+            $this->cron->save($user_id,'SAMPLE_INQUIRY_DISPATCH','PENDING',$sampleId);
         }
         else
         {
             //echo "DELIVERIED";
              $output = $this->dispatch->editDispatchInfo($sampleId,$object_type,$user_id,$dispatchStatus);
+             $this->cron->save($user_id,'SAMPLE_INQUIRY_DELIVERED','PENDING',$sampleId);
         }
        // dd($dispatchStatus);
        // dd('Saved');
 
         $data['message'] ='Dispatch Information saved Successfully. Go to  Dashboard using button';
+        $data['text'] = 'Dispatch';
 
         return view('dashboard_return.success',$data);
     }
