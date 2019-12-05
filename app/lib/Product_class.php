@@ -15,17 +15,20 @@ class Product_class
     var $session;
     var $sample_max_id;
     var $created_by;
+    var $product_id_for_Wish_table;
 	
     function __construct()
 	{
         $this->info = null;
        
         $this->created_at =  date("Y/m/d");
+
+        $this->product_id_for_Wish_table ='';
     }
 
     function getMethod()
     {
-        $out = DB::select("select id,name from product_method_master");
+        $out = DB::select("select id,name,is_active from product_method_master");
 
         return json_decode(json_encode($out), true);
     }
@@ -37,12 +40,172 @@ class Product_class
         return json_decode(json_encode($out), true);
     }
 
+    function gettingFullProuductList()
+    {
+        $out = DB::select("select * from product_master order by id desc");
+
+        return json_decode(json_encode($out), true);
+    }
+
+    function activeCategoryList()
+    {
+        $out = DB::select("select * from product_category_master where is_active='Y'");
+
+        return json_decode(json_encode($out), true);
+    }
+
+    
+    function activeMethodList()
+    {
+        $out = DB::select("select * from product_method_master where is_active='Y'");
+
+        return json_decode(json_encode($out), true);
+    }
+
+
     function getUOM()
     {
         $out = DB::select("select id,name from UOM_master where is_active='Y' order by name");
 
         return json_decode(json_encode($out), true);
     }
+
+    function getProductCategory()
+    {
+        $out = DB::select("select * from product_category_master");
+
+        return json_decode(json_encode($out), true);
+    }
+
+   
+
+
+    function maxProductMasterId()
+    {
+        $out = DB::select("select COALESCE(max(id), 0) + 1 as max_id from product_master");
+        $result = json_decode(json_encode($out), true);
+        foreach ($result as $key => $value) 
+        {
+            return $value['max_id'];
+        }
+    }
+
+    function addProduct($user_id,$product_code,$product_name,$product_botanical_name,$product_specification,$product_application,$product_category,$product_method,$product_max_price,$product_min_price,$priceValidDay,$priceValidMonth,$priceValidyear,$hsn_code,$product_image,$product_ratio_based)
+    {
+        $maxProductMasterId = $this->maxProductMasterId();
+
+        $this->product_id_for_Wish_table = $maxProductMasterId;
+
+        $valid_till = $this->string_to_date($priceValidDay,$priceValidMonth,$priceValidyear);
+
+        $type='1'; // type 1 is product type, type 2 for wish product
+
+        $out = DB::insert("insert into product_master(id,code,name,scrientific_name,specification,application,category,ratio_based,method,min_price,max_price,valid_till,hsn_code,image,active,type,created_at) values('$maxProductMasterId','$product_code','$product_name','$product_botanical_name','$product_specification','$product_application','$product_category','$product_ratio_based','$product_method','$product_min_price','$product_max_price','$valid_till','$hsn_code','$product_image','Y','$type','$this->created_at')");
+    }
+
+    function addProductIDInWishMaster($wishID)
+    {
+        $status = 'WISH-PROCEED-AS-PRODUCT';
+
+        DB::update("update user_wish_master set product_id='$this->product_id_for_Wish_table',status='$status' where id='$wishID'");
+    }
+
+    function editProduct($user_id,$productID,$product_name,$product_botanical_name,$product_specification,$product_application,$product_category,$product_method,$product_max_price,$product_min_price,$priceValidDay,$priceValidMonth,$priceValidyear,$hsn_code,$product_image,$product_ratio_based)
+    {
+        $valid_till = $this->string_to_date($priceValidDay,$priceValidMonth,$priceValidyear);
+
+        $out = DB::update("update product_master set name='$product_name',scrientific_name='$product_botanical_name',specification='$product_specification',application='$product_application',category='$product_category',ratio_based='$product_ratio_based',method='$product_method',min_price='$product_min_price',max_price='$product_max_price',valid_till='$valid_till',hsn_code='$hsn_code',image='$product_image',updated_at='$this->created_at' where id='$productID'");
+    }
+
+    function gettingProductDetailsByProductID($productID)
+    {
+        $out = DB::select("select * from product_master where id='$productID'");
+        return json_decode(json_encode($out), true);
+    }
+
+    function removeproductImage($updated_by,$productId)
+    {
+        DB::update("update product_master set image=NULL,updated_at='$this->created_at' where id='$productId'");
+    }
+   
+    function maxProductCategoryId()
+    {
+        $out = DB::select("select COALESCE(max(id), 0) + 1 as max_id from product_category_master");
+        $result = json_decode(json_encode($out), true);
+        foreach ($result as $key => $value) 
+        {
+            return $value['max_id'];
+        }
+    }
+
+    function maxProductMethodId()
+    {
+        $out = DB::select("select COALESCE(max(id), 0) + 1 as max_id from product_method_master");
+        $result = json_decode(json_encode($out), true);
+        foreach ($result as $key => $value) 
+        {
+            return $value['max_id'];
+        }
+    }
+
+    function saveCategory($user_id,$category_name)
+    {
+        $maxProductCategoryId = $this->maxProductCategoryId();
+        $out = DB::insert("insert into product_category_master(id,name,created_at,is_active) values('$maxProductCategoryId','$category_name','$this->created_at','Y')");
+    }
+
+    function editCategory($user_id,$categoryId,$category_name)
+    {
+        $out = DB::update("update product_category_master set name='$category_name',modified_at='$this->created_at' where id='$categoryId'");
+    }
+
+    function showCategoryDetails($categoryId)
+    {
+        $out = DB::select("select * from product_category_master where id='$categoryId'");
+        return json_decode(json_encode($out), true);
+    }
+
+    function editProductCategoryStatus($updated_by,$id,$status)
+    {
+        $out = DB::update("update product_category_master set is_active='$status',modified_at='$this->created_at' where id='$id'");
+    }
+
+    function editProductActiveStatus($updated_by,$id,$status)
+    {
+        $out = DB::update("update product_master set active='$status',updated_at='$this->created_at' where id='$id'");
+    }
+
+    function saveMethod($user_id,$method_name)
+    {
+        $maxProductMethodId = $this->maxProductMethodId();
+        $out = DB::insert("insert into product_method_master(id,name,created_at,is_active) values('$maxProductMethodId','$method_name','$this->created_at','Y')");
+    }
+
+    function showMethodDetails($methodId)
+    {
+        $out = DB::select("select * from product_method_master where id='$methodId'");
+        return json_decode(json_encode($out), true);
+    }
+
+    function editMethod($user_id,$methodId,$method_name)
+    {
+        $out = DB::update("update product_method_master set name='$method_name',updated_at='$this->created_at' where id='$methodId'");
+    }
+
+    function editProductMethodStatus($updated_by,$id,$status)
+    {
+         $out = DB::update("update product_method_master set is_active='$status',updated_at='$this->created_at' where id='$id'");
+    }
+
+    function getProductByCategoryId($categoryId)
+    {
+        $out = DB::select("select a.*,b.name as category_name,c.name as method_name from product_master a,product_category_master b,product_method_master c where a.category='$categoryId' and a.category=b.id and a.method=c.id and a.active='Y'");
+        return json_decode(json_encode($out), true);
+    }
+
+
+
+    /*Sample function start from here*/
 
     function maxSampleId()
     {
@@ -400,13 +563,6 @@ class Product_class
 
             $out = DB::insert("insert into sample_items_details (id,sample_id,item_code,method,qunatity,uom) values('$max_id','$sampleId','$product_code_sample','$product_method_sample','$product_qty_sample','$product_uom_sample')");
         }
-    }
-
-    function getProductCategory()
-    {
-        $out = DB::select("select * from product_category_master");
-
-        return json_decode(json_encode($out), true);
     }
 
 }

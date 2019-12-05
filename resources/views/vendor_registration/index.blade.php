@@ -23,7 +23,7 @@ $user_role_id = Session::get('role_id');
 
 	
     <div class="container box-shadow">
-    	@if($user_role_id=='3' || $user_role_id=='7')
+    	@if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
 	        <div class="form-group row">
 	            <div class="col-sm-12">
 	                <a href="/dashboard/addVendor" style="float: right" class="btn btn-default">Add Vendor</a>
@@ -35,11 +35,11 @@ $user_role_id = Session::get('role_id');
 	                <thead style="background-color: #eef1ed;font-size: 14px;">
 	                    <tr>
 	                        <th scope="col">#</th>
-	                        <th scope="col">company_name</th>
-	                        <th scope="col">mobile</th>
-	                        <th scope="col">email</th>
-	                        <th scope="col">city_code</th>
-	                        <th scope="col">address</th>
+	                        <th scope="col">Company Name</th>
+	                        <th scope="col">Mobile</th>
+	                        <th scope="col">Email</th>
+	                        <th scope="col">City</th>
+	                        <th scope="col">Address</th>
 	                        <th scope="col">Edit</th>
 	                    </tr>
 	                </thead>
@@ -51,10 +51,14 @@ $user_role_id = Session::get('role_id');
 	                                <td>{{$output[$i]['company_name']}}</td>
 	                                <td>{{$output[$i]['mobile']}}</td>
 	                                <td>{{$output[$i]['email']}}</td>
-	                                <td>{{$output[$i]['city_code']}}</td>
+	                                <td>{{$output[$i]['city_name']}}</td>
 	                                <td>{{$output[$i]['address']}}</td>
-	                                <td><a href="#"><span class="glyphicon glyphicon-pencil"></a></td>
-	                                <!-- <td><a href="/mrn/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a></td> --> 
+	                              
+	                               	@if($user_role_id=='3' || $user_role_id=='7')
+		                                <td><a href="/vendor/edit/{{$output[$i]['Id']}}"><span class="glyphicon glyphicon-pencil"></a></td> 
+		                            @else
+		                                <td><span class="glyphicon glyphicon-pencil"></td>
+		                            @endif
 	                            </tr>
 	                        @endfor
 	                    @else  

@@ -23,7 +23,7 @@
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id=='3' || $user_role_id=='7'|| $user_role_id=='8' || $user_role_id=='10')
+        @if($user_role_id=='3' || $user_role_id=='7'|| $user_role_id=='11')
         <div class="form-group row">
             <div class="col-sm-12">
                 <a href="/dashboard/addNewMRN" style="float: right" class="btn btn-default">Add New MRN</a>

@@ -18,8 +18,24 @@ Route::get('dashboard','Dashboard@show')->name('dashboard');
 // dashboard route section end  here
 
 
+// inquiry route section start
+Route::get('/inquiry/init','Inquiry@index');
+Route::post('/inquiry/addProductInCart','Inquiry@addProductInCart');
+Route::get('/inquiry/getCartCount','Inquiry@getCartCount');
+Route::get('/inquiry/proceedCart','Inquiry@proceedCart');
+Route::post('/inquiry/save','Inquiry@save');
+Route::get('/inquiry/{productId}/inactiveProductInCart','Inquiry@inactiveProductInCart');
+
+Route::get('/inquiry/proceedCart','Inquiry@proceedCart')->name('/inquiry/proceedCart');
+
+Route::get('/user/IsCompanyExits','UserRegistration@IsCompanyExits');
+Route::get('/user/IsGSTNExits','UserRegistration@IsGSTNExits');
+Route::get('/user/checkRole','Login@checkRole');
+// inquiry route section  end
+
+
 // Registration Route section start here
-Route::get('/dashbaord/customerRegistration','UserRegistration@index');
+Route::get('/dashbaord/customerRegistration','UserRegistration@customer_index');
 Route::get('/dashbaord/vendorRegistration','UserRegistration@vendor_index');
 Route::get('/dashbaord/erpUserRegistration','UserRegistration@erp_user_index');
 Route::get('/dashboard/addNewERPUser','UserRegistration@addNewERPUser');
@@ -30,7 +46,16 @@ Route::post('/erpUser/changeStatus','UserRegistration@changeERPUserStatus');
 
 Route::get('/dashboard/addVendor','UserRegistration@addVendor');
 Route::get('/user/userContactInformation','UserRegistration@getUserContactInformation');
-Route::post('/dashboard/addVendor','UserRegistration@saveVendor');
+Route::post('/dashboard/saveVendor','UserRegistration@saveVendor');
+
+Route::get('/vendor/edit/{vendorId}','UserRegistration@showVendor');
+Route::post('/dashboard/editVendor','UserRegistration@editVendor');
+
+
+Route::get('/dashboard/addCustomer','UserRegistration@addCustomer');
+Route::post('/dashboard/saveCustomer','UserRegistration@saveCustomer');
+Route::get('/customer/edit/{customerId}','UserRegistration@showCustomer');
+Route::post('/dashboard/editCustomer','UserRegistration@editCustomer');
 // Registration route section end  here
 
 
@@ -81,17 +106,56 @@ Route::get('/dispatch/save/{sampleId}','Dispatch@saveDispatchInfo');
 
 
 // product Route section start here
+Route::get('/product/productIndex','Product@productIndex');
+Route::get('/product/addProduct','Product@addProduct');
+Route::post('/product/saveProduct','Product@saveProduct');
+Route::get('/product/edit/{productID}','Product@showProduct');
+Route::post('/product/removeproductImage','Product@removeproductImage');
+Route::post('/product/editProduct','Product@editProduct');
+Route::post('/product/product/changeStatus','Product@editProductActiveStatus');
+Route::get('/product/getProductByCategoryId','Product@getProductByCategoryId');
+
+
 Route::get('/product/getProductList','Product@getProductList');
 Route::get('/product/getMethodList','Product@getMethod');
 Route::get('/product/uom','Product@getUOM');
+Route::get('/product/categoryIndex','Product@categoryIndex');
+Route::get('/product/addCategory','Product@addCategory');
+Route::post('/product/saveCategory','Product@saveCategory');
+Route::get('/product/category/edit/{categoryId}','Product@showCategory');
+Route::post('/product/editCategory','Product@editCategory');
+Route::post('/product/category/changeStatus','Product@editProductCategoryStatus');
+
+Route::get('/product/methodIndex','Product@methodIndex');
+Route::get('/product/addMethod','Product@addMethod');
+Route::post('/product/saveMethod','Product@saveMethod');
+Route::get('/product/method/edit/{methodId}','Product@showMethod');
+Route::post('/product/editMethod','Product@editMethod');
+Route::post('/product/method/changeStatus','Product@editProductMethodStatus');
 // product route section end  here
 
+
+// wish route section start here
+Route::get('/wish/index','Wish_Master@index');
+Route::get('/wish/add','Wish_Master@add');
+Route::post('/wish/save','Wish_Master@save');
+Route::get('wish/edit/{wishId}','Wish_Master@show');
+Route::post('/wish/removeWishImage','Wish_Master@removeWishImage');
+Route::post('/wish/edit','Wish_Master@edit');
+Route::get('/wish/action/{wishId}','Wish_Master@action');
+
+Route::get('/wish/{wishId}/proceedAsProduct','Wish_Master@proceedAsProduct');
+Route::get('/wish/{wishId}/discardProduct','Wish_Master@discardProduct');
+Route::post('/wish/proceedAs/product','Wish_Master@wishAddedAsProduct');
+// wish route section start here
 
 // warehouse route section start here
 
 Route::get('/dashboard/warehouseInit','Warehouse@index');
 Route::get('/dashboard/addNewWarehouse','Warehouse@addNew');
 Route::get('/warehouse/getCityList','Warehouse@getCityList');
+Route::get('/warehouse/getStateList','Warehouse@getStateList');
+Route::get('/warehouse/gettingCityStateCountry','Warehouse@gettingCityStateCountry');
 Route::post('/warehouse/save','Warehouse@save');
 Route::get('/warehouse/edit/{warehouseId}','Warehouse@show');
 Route::post('/warehouse/update','Warehouse@update');

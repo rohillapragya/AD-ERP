@@ -187,3 +187,38 @@ function validateAddress()
     console.log("address_string-"+address_string);
     address.value = address_string;
 }
+
+
+function checkDiffrentRole()
+{
+    var authKey = document.getElementById("authKey").value;
+
+    if(authKey)
+    {
+        $.ajax({
+            type: 'GET',
+            url: '/user/checkRole',
+            dataType: 'json',
+            data : ({authKey:authKey}),
+            success: function (resp) 
+            {
+                var length = resp.length;
+                console.log("length-"+length);
+                role_div = document.getElementsByClassName("role_div");
+                if(length >1)
+                {
+                    role_div[0].style.display="block";
+                    $("#role_id").empty();
+                    for (var i = 0; i < length; i++) {
+                        $('#role_id').append("<option value="+resp[i].id+">"+resp[i].name+"</option>");
+                    }
+                }
+                else
+                {
+                    role_div[0].style.display="none";
+                }
+            },
+            error:function(){  console.log('error');}
+        });
+    }
+}

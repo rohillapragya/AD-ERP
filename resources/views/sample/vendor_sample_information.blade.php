@@ -26,7 +26,7 @@ $behalf_of = $output[0]["any_behalf_of"];
 
 
     <div class="container box-shadow"> 
-        <!-- /customer/sample/readyForDispatch -->
+        @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
         <form method="post" action="/vendor/sample/proceedVendorSampleTOStore">
             {{ csrf_field() }}
             
@@ -178,6 +178,9 @@ $behalf_of = $output[0]["any_behalf_of"];
             </div>    
             
         </form>    
+        @else
+            <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
+        @endif
     </div>
     
 @stop

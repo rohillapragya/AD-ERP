@@ -30,7 +30,7 @@
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id=='3' || $user_role_id=='7'|| $user_role_id=='8' || $user_role_id=='10')
+         @if($user_role_id=='3' || $user_role_id=='7'|| $user_role_id=='11')
         <form method="post" action="/warehouse/update">
             {{ csrf_field() }}
             <!-- <input type="hidden" id="warehouseId" name="warehouseId" value="{{$output[0]['id']}}"> -->

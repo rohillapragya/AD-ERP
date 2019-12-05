@@ -23,6 +23,7 @@ $user_role_id = Session::get('role_id');
     </nav>
 
      <div class="container box-shadow">
+        @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
         <div class="form-group row">
             <div class="col-sm-12">
                 <a href="/dashboard/addNewVendorSample" style="float: right" class="btn btn-default">Add New Vendor Sample</a>
@@ -74,6 +75,9 @@ $user_role_id = Session::get('role_id');
                 </tbody>
             </table>
         </div>
+         @else
+            <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
+        @endif
     </div>
 @stop
 

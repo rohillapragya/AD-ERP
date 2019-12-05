@@ -32,6 +32,8 @@ class Login extends Controller
         $email = request('authKey');
         $password = request('authValue');
 
+        $role_id = request('role_id');
+
         if(empty($email) || empty($password)) 
         {
             $data['message'] ='Both Email and password should not be blank';
@@ -50,7 +52,7 @@ class Login extends Controller
 
                 $out = $this->log->write_log($module);
 
-                $this->user->populate($email);
+                $this->user->populate($email,$role_id);
 
                 return redirect()->route('dashboard');
 
@@ -67,5 +69,16 @@ class Login extends Controller
 
         Session::flush();
         return redirect()->route('login');
+    }
+
+    public function checkRole(Request $request)
+    {
+        $authKey = $request->input('authKey');
+
+        $output = $this->user->checkRole($authKey);
+
+      // dd($output);
+
+        return $output;
     }
 }

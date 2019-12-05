@@ -23,7 +23,7 @@
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id=='3' || $user_role_id=='7'|| $user_role_id=='8' || $user_role_id=='10')
+         @if($user_role_id=='3' || $user_role_id=='7'|| $user_role_id=='11')
         <form method="post" action="/stock/save">
             {{ csrf_field() }}
             <div class="form-group row">

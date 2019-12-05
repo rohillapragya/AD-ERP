@@ -103,4 +103,11 @@ class Warehouse_class
         DB::update("update warehouse_contacts_details set primary_contacts_person_first_name = '$primary_contact_first_name',primary_contacts_person_last_name = '$primary_contact_last_name',primary_contacts_person_mobile = '$primary_contact_mobile',primary_contacts_person_phone_no = '$primary_contact_phone',primary_contacts_person_email = '$primary_contact_email' where warehouse_id ='$warehouseId'");
     }
 
+    function gettingCityStateCountry($cityVal)
+    {
+        $out = DB::select("select a.id as city_code,a.name as city_name,b.id as state_code,b.name as state_name,c.id as country_id,c.name as city_name from  city_master a,state_master b,country_master c where a.id='$cityVal' and a.state_id=b.id and b.country_id=c.id");
+
+        return json_decode(json_encode($out), true);
+    }
+
 }

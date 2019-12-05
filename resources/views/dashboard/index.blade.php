@@ -9,7 +9,7 @@
 
 @section('content')
 
-<!-- <div>session div role_name - {{ Session::get('role_id')}}</div> -->
+<!-- <div>session div cart_id - {{ Session::get('cart_id')}}</div> -->
 
 @php
 $user_role_id = Session::get('role_id');
@@ -24,11 +24,15 @@ $user_role_id = Session::get('role_id');
             <div class="panel-body panel-class">
 
             <!-- customer sample start -->
-                <a href="/dashboard/customerSample" class="panel-content"><span>Customer</span></a>
+                @if($user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
+                    <a href="/dashboard/customerSample" class="panel-content"><span>Customer</span></a>
+                @else
+                    <span class="panel-content">Customer</span>
+                @endif    
             <!-- customer sample end -->
 
             <!-- vendor sample start -->
-                @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='10' || $user_role_id=='11')
+                @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
                     <a href="/dashboard/vendorSample" class="panel-content" style="margin-bottom: 12%"><span >Vendor</span></a>
                 @else
                     <span class="panel-content" style="margin-bottom: 12%">Vendor</span>
@@ -45,18 +49,18 @@ $user_role_id = Session::get('role_id');
             <div class="panel-body panel-class">
 
             <!-- customer registration start -->
-                @if($user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
-                   <!--  <a href="/dashbaord/customerRegistration" class="panel-content"><span style="color: #c48d07;">Customer</span></a> -->
-                    <a href="#" class="panel-content"><span style="color: #c48d07;">Customer</span></a>
+                @if($user_role_id=='3' || $user_role_id=='5')
+                    <a href="/dashbaord/customerRegistration" class="panel-content"><span>Customer</span></a>
+                    <!-- <a href="#" class="panel-content"><span style="color: #c48d07;">Customer</span></a> -->
                 @else
                     <span class="panel-content">Customer</span>
                 @endif
             <!-- customer registration end     -->
 
             <!-- vendor registration start -->
-                @if($user_role_id=='3' || $user_role_id=='7')
-                    <!-- <a href="/dashbaord/vendorRegistration" class="panel-content"><span>Vendor</span></a> -->
-                   <a href="#" class="panel-content"><span style="color: #c48d07;">Vendor</span></a> 
+                @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
+                    <a href="/dashbaord/vendorRegistration" class="panel-content"><span>Vendor</span></a>
+                  <!--  <a href="#" class="panel-content"><span style="color: #c48d07;">Vendor</span></a>  -->
 
                 @else
                     <span class="panel-content">Vendor</span>
@@ -99,10 +103,11 @@ $user_role_id = Session::get('role_id');
             <div class="panel-body panel-class">
             
             <!-- product ,category , method section start here -->
-                @if($user_role_id=='3' || $user_role_id=='11')
-                    <a href="#" class="panel-content"><span style="color: #c48d07;">Product</span></a>
-                    <a href="#" class="panel-content"><span style="color: #c48d07;">Category</span></a>
-                    <a href="#" class="panel-content"><span style="color: #c48d07;">Method</span></a>
+                @if($user_role_id=='3' || $user_role_id=='14')
+                    <a href="/product/productIndex" class="panel-content"><span>Product</span></a>
+                    <!-- <a href="#" class="panel-content"><span style="color: #c48d07;">Category</span></a> -->
+                    <a href="/product/categoryIndex" class="panel-content"><span>Category</span></a>
+                    <a href="/product/methodIndex" class="panel-content"><span>Method</span></a>
                 @else
                     <span class="panel-content">Product</span>
                     <span class="panel-content">Category</span>
@@ -119,7 +124,11 @@ $user_role_id = Session::get('role_id');
             <!-- product price and valid till section end here -->
 
             <!-- Add wish list section start here -->
-                    <a href="#" class="panel-content"><span style="color: #c48d07;">Wish List</span></a>
+                @if($user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7' || $user_role_id=='11')
+                    <a href="/wish/index" class="panel-content"><span>Wish List</span></a>
+                @else
+                    <span class="panel-content">Wish List</span>
+                @endif    
             <!-- Add wish list section end here   --> 
                 
             <!-- stock, warehouse section start here -->
@@ -133,7 +142,7 @@ $user_role_id = Session::get('role_id');
             <!-- stock, warehouse section end here     -->
 
             <!-- Material Requization Note (MRN) section start here -->
-                @if($user_role_id=='3' || $user_role_id=='7'|| $user_role_id=='8' || $user_role_id=='10')
+                @if($user_role_id=='3' || $user_role_id=='7'|| $user_role_id=='11')
                     <a href="/dashboard/mrnInit" class="panel-content"><span>Material Requization Note (MRN)</span></a>
                 @else
                     <span class="panel-content">Material Requization Note (MRN)</span>
@@ -189,13 +198,13 @@ $user_role_id = Session::get('role_id');
 
             <!-- purchase indent,purchase order,performa invoice section start here -->
                 @if($user_role_id=='3' || $user_role_id=='7')
-                    <a href="/dashboard/pI" class="panel-content"><span>Purchase Indent</span></a>
-                    <a href="#" class="panel-content"><span style="color: #c48d07;">Purchase Order (PO) Information</span></a>
-                    <a href="#" class="panel-content" style="margin-bottom: 48%"><span style="color: #c48d07;">Performa Invoice</span></a>
+                    <a href="/dashboard/pI" class="panel-content" style="margin-bottom: 80%"><span>Purchase Indent</span></a>
+                    <!-- <a href="#" class="panel-content"><span style="color: #c48d07;">Purchase Order (PO) Information</span></a>
+                    <a href="#" class="panel-content" style="margin-bottom: 48%"><span style="color: #c48d07;">Performa Invoice</span></a> -->
                 @else
-                    <span class="panel-content">Purchase Indent</span>
-                    <span class="panel-content">Purchase Order (PO) Information</span>
-                    <span style="margin-bottom: 48%">Performa Invoice</span>
+                    <span class="panel-content" style="margin-bottom: 80%">Purchase Indent</span>
+                    <!-- <span class="panel-content">Purchase Order (PO) Information</span>
+                    <span style="margin-bottom: 48%">Performa Invoice</span> -->
                 @endif
             <!-- purchase indent,purchase order,performa invoice section end here     -->
             </div>
@@ -211,12 +220,12 @@ $user_role_id = Session::get('role_id');
                 @if($user_role_id=='3' || $user_role_id=='8')
                     <a href="/dashboard/BOM" class="panel-content"><span>Bill of Materials (BOM)</span></a>
                     <a href="/dashboard/production" class="panel-content"><span>Production Plan Details</span></a>
-                    <a href="/dashboard/customerSampleBMRList" class="panel-content" style="margin-bottom: 97%"><span>BMR Number</span></a>
+                    <a href="/dashboard/customerSampleBMRList" class="panel-content" style="margin-bottom: 103%"><span>BMR Number</span></a>
                     <!-- <a href="#" class="panel-content" style="margin-bottom: 97%"><span>BMR Number</span></a> -->
                 @else
                     <span class="panel-content">Bill of Materials (BOM)</span>
                     <span class="panel-content">Production Plan Details</span>
-                    <span style="margin-bottom: 97%">BMR Number</span>
+                    <span style="margin-bottom: 103%">BMR Number</span>
                 @endif    
             <!-- Bill of Materials , Production planing details section end here     -->
             </div>
@@ -229,8 +238,11 @@ $user_role_id = Session::get('role_id');
             <div class="panel-body panel-class">
             
             <!-- add inquiry section start -->
-
-                <a href="#" class="panel-content" style="margin-bottom: 13%"><span style="color: #c48d07;">Inquiry</span></a>
+                @if($user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
+                    <a href="/inquiry/init" class="panel-content" style="margin-bottom: 13%"><span>Inquiry</span></a>
+                @else
+                    <span class="panel-content">Inquiry</span>
+                @endif 
             <!-- add inquiry section end     -->
             </div>
         </div>
@@ -243,7 +255,7 @@ $user_role_id = Session::get('role_id');
 
             <!-- QC section start here -->
 
-                @if($user_role_id=='3' || $user_role_id=='10')
+                @if($user_role_id=='3' || $user_role_id=='10' || $user_role_id=='14')
                     <a href="/dashboard/customerSampleQC" class="panel-content"  style="margin-bottom: 13%"><span>QC Details</span></a>
                 @else
                     <span class="panel-content">QC Details</span>

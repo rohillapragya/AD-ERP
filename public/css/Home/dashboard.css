@@ -116,3 +116,13 @@
     font-size: 18px;
     font-weight: 600;
 }
+.userCartCount{
+    width: 21px;
+    height: 20px;
+    /* border: 1px solid black; */
+    border-radius: 10px;
+    background-color: #DDD;
+    margin: -111% 0% 0% 97%;
+    font-size: 13px;
+    text-align: center;
+}

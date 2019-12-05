@@ -120,9 +120,9 @@
                         </tbody>
                     </table>
 
-                    <div class="container">
+                    <!-- <div class="container">
                         <button type="button" class="btn btn-default" onclick="addSampleNewRow()">Add New Row</button>
-                    </div>
+                    </div> -->
                 </div> 
             </div>  
 

@@ -40,6 +40,24 @@ class Warehouse extends Controller
         return $city;
     }
 
+    public function getStateList(Request $request)
+    {
+        $CountyrVal = $request->input('CountyrVal');
+
+        $state = $this->warehouse->getStateList($CountyrVal);
+
+        return $state;
+    }
+
+    public function gettingCityStateCountry(Request $request)
+    {
+        $cityVal = $request->input('cityVal');
+
+        $output = $this->warehouse->gettingCityStateCountry($cityVal);
+
+        return $output;
+    }
+
     public function save(Request $request)
     {
         // dd('AS');

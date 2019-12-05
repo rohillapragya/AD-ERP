@@ -20,7 +20,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <!-- <script src="{{ asset('js/online/popper.min.js') }}"></script> -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <!-- <script src="{{ asset('js/online/bootstrap.min.js')}}"></script> -->
+        <script src="{{ asset('js/Home/dashboard.js')}}"></script>
         <style>
         .footer {
         position: fixed;
@@ -48,6 +48,10 @@
                     </span>
                     <span class="glyphicon glyphicon-user font-30" style="margin-right: 50px;"></span>
                     <span class="glyphicon glyphicon-bell font-30" style="margin-right: 50px;"></span>
+                    <a href="/inquiry/proceedCart">
+                        <span class="glyphicon glyphicon-shopping-cart font-30" style="margin-right: 50px;margin-top: -13px;"><div id="userCartCount" class="userCartCount">0</div></span>    
+                    </a>
+                    
                     <a href="/signoff" style="padding: 0px;"> <span class="glyphicon glyphicon-log-out font-30"></span></a>
                    
                 </div>

@@ -39,8 +39,8 @@ $user_role_id = Session::get('role_id');
                         <th scope="col">Email</th>
                         <th scope="col">Mobile</th>
                         <th scope="col">Role</th>
+                        <th scope="col">Active </th>
                         <th scope="col">Edit</th>
-                        <th scope="col">Active</th>
                         <th scope="col">Change Active</th>
                     </tr>
                 </thead>

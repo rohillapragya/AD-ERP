@@ -61,8 +61,8 @@
     @endif
 
     <div class="container box-shadow">
-
-    <form method="post" action="/dashboard/editVendorSampleRequest" enctype="multipart/form-data">
+        @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
+        <form method="post" action="/dashboard/editVendorSampleRequest" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <input type="hidden" value="{{$output[0]['sample_id']}}" name="sampleId">
             <!-- @if(count($output) > 0) -->
@@ -275,6 +275,9 @@
                <div class="no-data-found">Not found</div>
             @endif       -->
         </form>
+         @else
+            <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
+        @endif
     </div>
 
 @stop

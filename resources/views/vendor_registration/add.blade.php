@@ -37,9 +37,9 @@ $user_role_id = Session::get('role_id');
     @endif
 	
     <div class="container box-shadow">
-    	<form method="post" action="/dashboard/addVendor">
+    	@if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
+    	<form method="post" action="/dashboard/saveVendor">
            	{{ csrf_field() }}
-	    	@if($user_role_id=='3' || $user_role_id=='7')
 
 	    <!-- name / address of the business section start -->
 	    	<div class="form-group row">
@@ -324,12 +324,10 @@ $user_role_id = Session::get('role_id');
                     <button type="button" class="btn btn-secondary btn-lg" style="width: 40%;">Cancel</button>
                 <div>
             </div>
-
-	        @else
-	            <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
-	        @endif
-
     	</form>
+    	@else
+            <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
+        @endif
     </div>
     
 @stop
