@@ -37,7 +37,7 @@ class User_Registration
     
    function getERPUserList()
    {
-        $out = DB::select("select distinct a.id,a.first_name,a.last_name,a.offical_email,a.offical_mobile,a.email as personal_email,a.mobile as personal_mobile,a.is_active,c.name as role_name from user_master a,app_user_role_map b,app_role_master c where a.id=b.user_id and b.role_id in (3,4,5,7,8,9,10,11,12,13) and b.role_id=c.id and a.id not in ('1') order by id");
+        $out = DB::select("select distinct a.id,a.first_name,a.last_name,a.offical_email,a.offical_mobile,a.email as personal_email,a.mobile as personal_mobile,a.is_active,c.name as role_name from user_master a,app_user_role_map b,app_role_master c where a.id=b.user_id and b.role_id in (3,4,5,7,8,9,10,11,12,13,14) and b.role_id=c.id and a.id not in ('1') order by id");
 
         return json_decode(json_encode($out), true);
    }
