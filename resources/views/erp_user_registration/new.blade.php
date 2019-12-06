@@ -11,6 +11,7 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $user_id = Session::get('UID');
 @endphp
 
     <!-- <input type="hidden" id="roleId" name="roleId" value={{$user_role_id}}> -->
@@ -38,7 +39,7 @@
     </nav>
 
     <div class="container box-shadow">
-         @if($user_role_id=='3')
+         @if($user_id=='1')
         <form method="post" action="/erpuser/save">
             {{ csrf_field() }}
             <div class="form-group row">

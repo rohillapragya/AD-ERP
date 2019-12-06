@@ -13,6 +13,8 @@
 
 @php
 $user_role_id = Session::get('role_id');
+
+$user_id = Session::get('UID');
 @endphp
 
 <div class="container">    
@@ -68,7 +70,7 @@ $user_role_id = Session::get('role_id');
             <!-- vendor registration end -->
 
             <!-- user registration start -->
-                @if($user_role_id=='3')
+                @if($user_id=='1')
                     <a href="/dashbaord/erpUserRegistration"><span >User</span></a>
                 @else
                     <span>User</span>
