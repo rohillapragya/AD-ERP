@@ -55,7 +55,7 @@ $user_role_id = Session::get('role_id');
                                 <td>{{$output[$i]['customer_status']}}</td>
                                 <td><a href="/sample/vendor/show/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
 
-                            @if($user_role_id=='3' || $user_role_id=='7')
+                             @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
                                 <td><a href="/sample/vendor/saveVendorSample/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a></td>
                             @else
                                 <td><span class="glyphicon glyphicon-tag"></td>

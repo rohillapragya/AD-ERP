@@ -48,7 +48,7 @@
                                 <td>{{$output[$i]['delivered_date']}}</td>
                                 <td>{{$output[$i]['customer_status']}}</td>
 
-                                @if($user_role_id=='3' || $user_role_id=='10')
+                                @if($user_role_id=='3' || $user_role_id=='10' || $user_role_id=='14')
                                     @if($output[$i]['req_type']=='SAMPLE')
                                         <td><a href="/sample/qc/QCDetails/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a></td>
                                     @else

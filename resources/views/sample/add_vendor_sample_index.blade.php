@@ -85,7 +85,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Source name form Team (If Any ...)</label>
                 <div class="col-sm-8">
-                    <input type="input" class="form-control" id="behalf_of" name="behalf_of" placeholder="behalf of (if any..)">
+                    <input type="input" class="form-control" id="behalf_of" name="behalf_of" placeholder="behalf of (if any..)" value="{{ old('behalf_of') }}">  
                 </div>
             </div>
 
@@ -94,28 +94,28 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Full Name</label>
                 <div class="col-sm-8">
-                    <input type="input" class="form-control" id="full_name" name="full_name" placeholder="Full Name" required="required">
+                    <input type="input" class="form-control" id="full_name" name="full_name" placeholder="Full Name" value="{{ old('full_name') }}" required="required">
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Mobile</label>
                 <div class="col-sm-8">
-                    <input type="input" class="form-control" id="mobile" name="mobile" placeholder="mobile" required="required">
+                    <input type="input" class="form-control" id="mobile" name="mobile" placeholder="mobile" required="required" value="{{ old('mobile') }}">
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Email</label>
                 <div class="col-sm-8">
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required="required">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required="required" value="{{ old('email') }}">
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Address</label>
                 <div class="col-sm-8">
-                    <textarea class="form-control" rows="3" id="address" name="address" onblur="validateAddress()" required="required"></textarea>
+                    <textarea class="form-control" rows="3" id="address" name="address" onblur="validateAddress()" required="required">{{ old('address') }}</textarea>
                 </div>
             </div>
 
