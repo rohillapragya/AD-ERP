@@ -193,8 +193,16 @@
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Attachment (.pdf,.jpg,.jpeg,.png with max 2 MB size)</label>
                     <div class="col-sm-8">
-                        <div class="custom-file">
+                        <div class="custom-file" style="display: flex;">
                             <input type="file" class="form-control-file" id="sample_attacment" name="sample_attacment">
+
+                            @if($output[0]['attachment_1'])
+                                <div style="width: 200px;border: 2px solid black;height: 130px;">
+                                    <img src="{{ asset('sample_img/'.$output[0]['attachment_1']) }}" style="object-fit: fill;width: 100%;height: 100%;">
+                                    <div> {{$output[0]['attachment_1']}}</div>
+                                    <span class="glyphicon glyphicon-remove-circle" style="margin: -100% 0% 0% -22%;font-size: 25px;cursor: pointer;" onclick="onclickRemoveSampleAttachment('{{$output[0]['sample_id']}}','{{ $output[0]['attachment_1'] }}')"></span>
+                                </div>
+                            @endif
                         </div>
                         <!-- <div class="input-group-append">
                             <button class="btn btn-outline-secondary" type="button">Button</button>
@@ -226,23 +234,42 @@
 
                                             <th>
                                                 <select name='product_name[][product_code]' class="form-control" id='product_name' style="width: 360px">
-                                                    <option value="0">NA</option>
+                                                    <@for ($ix = 0; $ix < count($product); $ix++) 
+                                                        @if($output[$i]['code']==$product[$ix]['id'])
+                                                             <option  selected value="{{ $product[$ix]['id']}}">{{ $product[$ix]['name']}}</option>
+                                                        @else
+                                                             <option value="{{ $product[$ix]['id']}}">{{ $product[$ix]['name']}}</option>
+                                                        @endif
+                                                       
+                                                    @endfor
                                                 </select>
 
                                             </th>
 
                                             <th>
                                                 <select name="product_method[][method]" class="form-control" id='method' style="width:140px">
-                                                    <option value="0">Select Method</option>
+                                                    @for ($ix = 0; $ix < count($method); $ix++) 
+                                                        @if($output[$i]['method']==$method[$ix]['id'])
+                                                             <option  selected value="{{ $method[$ix]['id']}}">{{ $method[$ix]['name']}}</option>
+                                                        @else
+                                                             <option value="{{ $method[$ix]['id']}}">{{ $method[$ix]['name']}}</option>
+                                                        @endif
+                                                    @endfor
                                                 </select>
                                             </th>
 
                                             <th>
-                                                <input class="form-control qty" id="qty" type="number" name="product_qty[][qty]" placeholder="qty" style="width:140px" required="required" min="0">
+                                                <input class="form-control qty" id="qty" type="number" name="product_qty[][qty]" placeholder="qty" style="width:140px" required="required" min="0" value="{{$output[$i]['qunatity']}}">
                                             </th>
                                             <th>
                                                 <select id="uom" class="form-control" name="product_uom[][uom]">
-                                                    <option value="1">KG</option>
+                                                    @for ($ix = 0; $ix < count($uom); $ix++) 
+                                                        @if($output[$i]['uom']==$uom[$ix]['id'])
+                                                            <option selected value="{{ $uom[$ix]['id']}}">{{ $uom[$ix]['name']}}</option>
+                                                        @else
+                                                            <option value="{{ $uom[$ix]['id']}}">{{ $uom[$ix]['name']}}</option>
+                                                        @endif
+                                                    @endfor
                                                 </select>
                                             </th>
                                             <th><span class="glyphicon glyphicon-remove" id={{($i)}} onclick=ondeleteProductFromTable(this)></span></th>
@@ -250,7 +277,7 @@
                                         @endfor 
                                 @else  
                                     <tr>
-                                        <td colspan="6" class="no-data-found">No Inquiry found</td>
+                                        <td colspan="6" class="no-data-found">No Sample found</td>
                                     </tr>
                                 @endif       
                             </tbody>
@@ -283,7 +310,7 @@
 @stop
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="{{ asset('js/custom/sample_request_edit.js') }}"></script>
+<script src="{{ asset('js/custom/vendor_sample_request_edit.js') }}"></script>
 <!-- <script src="{{ asset('js/custom/custom.js') }}"></script> -->
 
 

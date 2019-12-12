@@ -93,7 +93,7 @@ class Sample extends Controller
         {
             $imageName = time().'.'.request()->sample_attacment->getClientOriginalExtension();
 
-            request()->sample_attacment->move(storage_path() . '/sample', $imageName);
+            request()->sample_attacment->move(public_path() . '/sample_img', $imageName);
         }
         else
         {
@@ -182,7 +182,7 @@ class Sample extends Controller
         {
             $imageName = time().'.'.request()->sample_attacment->getClientOriginalExtension();
 
-            request()->sample_attacment->move(storage_path() . '/sample', $imageName);
+            request()->sample_attacment->move(public_path() . '/sample_img', $imageName);
         }
         else
         {
@@ -313,7 +313,8 @@ class Sample extends Controller
         {
             $imageName = time().'.'.request()->sample_attacment->getClientOriginalExtension();
 
-            request()->sample_attacment->move(storage_path() . '/sample', $imageName);
+            //request()->sample_attacment->move(storage_path() . '/sample', $imageName);
+            request()->sample_attacment->move(public_path() . '/sample_img', $imageName);
         }
         else
         {
@@ -352,6 +353,8 @@ class Sample extends Controller
         $mobile = $mobile;
         $email = $email;
         $address = $address;
+
+       // dd($delivery_date);
     
         $this->log->write_sample_log($module,$request_date,$delivery_date,$befalf_of,$name,$mobile,$email,$address);
         // log generation process
@@ -412,7 +415,8 @@ class Sample extends Controller
         {
             $imageName = time().'.'.request()->sample_attacment->getClientOriginalExtension();
 
-            request()->sample_attacment->move(storage_path() . '/sample', $imageName);
+            //request()->sample_attacment->move(storage_path() . '/sample', $imageName);
+            request()->sample_attacment->move(public_path() . '/sample_img', $imageName);
         }
         else
         {
@@ -498,6 +502,30 @@ class Sample extends Controller
 
         return view('dashboard_return.success',$data);
         //dd("Sample Id -".$sampleId.'-readyForDispatch'.$readyForDispatch);
+    }
+
+
+    public function removeSampleAttachment(Request $request)
+    {
+        $updated_by = Session::get('UID');
+
+        $sampleId = $request->input('sampleId');
+
+        $sampleAttachment = $request->input('sampleAttachment');
+
+        $image_path = 'sample_img/'. $sampleAttachment;
+
+        if (file_exists($image_path)) 
+        {
+            @unlink($image_path);
+            \File::delete($image_path);
+        }
+
+        $out = $this->product->removeSampleAttachment($updated_by,$sampleId);
+
+        $output = $this->product->getProductCategory();
+
+        return $output;
     }
 
 }

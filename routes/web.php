@@ -68,6 +68,7 @@ Route::get('/sample/customer/show/{sampleId}','Sample@showSample');
 Route::post('/dashboard/editSampleRequest','Sample@editSampleRequest');
 Route::get('/sample/customer/readyForDispatch/{sampleId}','Sample@ReadyForDispatch');
 Route::post('/customer/sample/readyForDispatch','Sample@proceedForDispatch');
+Route::post('/sample/removeSampleAttachment','Sample@removeSampleAttachment');
 
 
 Route::get('/dashboard/customerSampleBMRList','Production@pendingBMRList');

@@ -1,74 +1,72 @@
 $(document).ready(function(){
-    $.ajax({
-        type: 'GET', //THIS NEEDS TO BE GET
-        url: '/product/getMethodList',
-        dataType: 'json',
-        success: function (resp) 
-        {
-           // console.log('success-'+resp);
-            var length = resp.length;
-            //console.log(resp[0].name);
+    // $.ajax({
+    //     type: 'GET', //THIS NEEDS TO BE GET
+    //     url: '/product/getMethodList',
+    //     dataType: 'json',
+    //     success: function (resp) 
+    //     {
+    //        // console.log('success-'+resp);
+    //         var length = resp.length;
+    //         //console.log(resp[0].name);
             
-            $("#method").empty();
-            for(var i=0;i<length;i++)
-            {
-               // console.log("name-"+name);
-                $('#method').append("<option value="+resp[i].id+">"+resp[i].name+"</option>");
-            }
-        },
-        error:function()
-        { 
-             console.log('error');
-        }
-    });
+    //         $("#method").empty();
+    //         for(var i=0;i<length;i++)
+    //         {
+    //            // console.log("name-"+name);
+    //             $('#method').append("<option value="+resp[i].id+">"+resp[i].name+"</option>");
+    //         }
+    //     },
+    //     error:function()
+    //     { 
+    //          console.log('error');
+    //     }
+    // });
 
-    $.ajax({
-        type: 'GET', //THIS NEEDS TO BE GET
-        url: '/product/uom',
-        dataType: 'json',
-        success: function (resp) 
-        {
-           // console.log('success-'+resp);
-            var length = resp.length;
-            //console.log(resp[0].name);
+    // $.ajax({
+    //     type: 'GET', //THIS NEEDS TO BE GET
+    //     url: '/product/uom',
+    //     dataType: 'json',
+    //     success: function (resp) 
+    //     {
+    //        // console.log('success-'+resp);
+    //         var length = resp.length;
+    //         //console.log(resp[0].name);
             
-            $("#uom").empty();
-            for(var i=0;i<length;i++)
-            {
-               // console.log("name-"+name);
-                $('#uom').append("<option value="+resp[i].id+">"+resp[i].name+"</option>");
-            }
-        },
-        error:function()
-        { 
-             console.log('error');
-        }
-    });
+    //         $("#uom").empty();
+    //         for(var i=0;i<length;i++)
+    //         {
+    //            // console.log("name-"+name);
+    //             $('#uom').append("<option value="+resp[i].id+">"+resp[i].name+"</option>");
+    //         }
+    //     },
+    //     error:function()
+    //     { 
+    //          console.log('error');
+    //     }
+    // });
 
-    $.ajax({
-        type: 'GET', //THIS NEEDS TO BE GET
-        url: '/product/getProductList',
-        dataType: 'json',
-        success: function (resp) 
-        {
-           // console.log('success-'+resp);
-            var length = resp.length;
-           // console.log(resp[0].name);
+    // $.ajax({
+    //     type: 'GET', //THIS NEEDS TO BE GET
+    //     url: '/product/getProductList',
+    //     dataType: 'json',
+    //     success: function (resp) 
+    //     {
+    //        // console.log('success-'+resp);
+    //         var length = resp.length;
+    //        // console.log(resp[0].name);
             
-            $("#product_name").empty();
-            for(var i=0;i<length;i++)
-            {
-               // console.log("name-"+name);
-                $('#product_name').append("<option value="+resp[i].id+">"+resp[i].name+"</option>");
-            }
-
-           
-        },
-        error:function()
-        { 
-             console.log('error');
-        }
-    });  
+    //         $("#product_name").empty();
+    //         for(var i=0;i<length;i++)
+    //         {
+    //            // console.log("name-"+name);
+    //             $('#product_name').append("<option value="+resp[i].id+">"+resp[i].name+"</option>");
+    //         }
+    //     },
+    //     error:function()
+    //     { 
+    //          console.log('error');
+    //     }
+    // });  
 });
 
 function addSampleNewRow()

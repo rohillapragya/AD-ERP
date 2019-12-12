@@ -443,7 +443,7 @@ class Product_class
         $request_date = $this->string_to_date($samplerequestDay,$samplerequestMonth,$samplerequestyear);
         $delivery_date = $this->string_to_date($samplereceivedDay,$samplereceivedMonth,$samplereceivedyear);
     
-
+        //dd($request_date);
         $out = DB::insert("insert into sample_master (id,sample_number,type,request_date,received_date,status,any_behalf_of,created_at,created_by) values('$this->sample_max_id','$sample_number','$type','$request_date','$delivery_date','VENDOR_SAMPLE_RECEIVED','$behalf_of','$this->created_at','$this->created_by')");
     }
 
@@ -563,6 +563,11 @@ class Product_class
 
             $out = DB::insert("insert into sample_items_details (id,sample_id,item_code,method,qunatity,uom) values('$max_id','$sampleId','$product_code_sample','$product_method_sample','$product_qty_sample','$product_uom_sample')");
         }
+    }
+
+    function removeSampleAttachment($updated_by,$sampleId)
+    {
+        DB::update("update sample_details set attachment_1=NULL where sample_id='$sampleId'");
     }
 
 }
