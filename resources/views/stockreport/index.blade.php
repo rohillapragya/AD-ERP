@@ -26,7 +26,7 @@
      <div class="container box-shadow">
         @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='9' || $user_role_id=='11')
         <div class="form-group row">
-            <div class="col-sm-1">Search :</div>
+            <div class="col-sm-1 searchClass">Search</div>
             <div class="col-sm-4">
                 <select class="form-control" id="warehouseid">
                     <option  value='ALL'>All Warehouse</option>
@@ -35,8 +35,18 @@
                     @endfor
                 </select>
             </div>
+            
+            <div class="col-sm-6">
+                <select class="form-control" id="productCode">
+                    <option  value='ALL'>All Products</option>
+                    @for ($i=0;$i < count($product);$i++)
+                        <option  value={{ $product[$i]["id"]}}> {{$product[$i]["name"]}}</option>
+                    @endfor
+                </select>
+            </div>
 
-             <div class="col-sm-7">
+
+            <div class="col-sm-1">
                 <button class="btn btn-default" onclick="onClickStockByWarehouseId()">Search</button>
             </div>
         </div>
@@ -46,7 +56,7 @@
                 <thead style="background-color: #eef1ed;font-size: 14px;">
                     <tr>
                         <th scope="col" style="vertical-align: initial">#</th>
-                        <th scope="col" style="vertical-align: initial">Code</th>
+                        <th scope="col" style="vertical-align: initial;width: 110px;">Code</th>
                         <th scope="col" style="vertical-align: initial">Name</th>
                         <th scope="col" style="vertical-align: initial">Botanical Name</th>
                         <th scope="col" style="vertical-align: initial">Warehouse</th>
@@ -56,7 +66,7 @@
                         <th scope="col" style="vertical-align: initial">Outward Control Qty</th>
                         <th scope="col" style="vertical-align: initial">Qty Diff</th>
                         <th scope="col" style="vertical-align: initial">Qty UOM</th>
-                        <th scope="col" style="vertical-align: initial">Control Qty Diff</th>
+                        <!-- <th scope="col" style="vertical-align: initial">Control Qty Diff</th> -->
                     </tr>
                 </thead>
                 <tbody style="font-size: 14px;" id="stockListTbody">
@@ -68,13 +78,13 @@
                                 <td>{{$output[$i]['product_name']}}</td>
                                 <td>{{$output[$i]['botanical_name']}}</td>
                                 <td>{{$output[$i]['warehouse_name']}}</td>
-                                <td><span class="item_qty_inward_class">{{$output[$i]['Inward_item_qty']}}</span></td>
-                                <td><span class="item_qty_outward_class">{{$output[$i]['Inward_control_qty']}}</span></td>
-                                <td><span class="item_qty_inward_control_class">{{$output[$i]['Outward_item_qty']}}</span></td>
-                                <td><span class="item_qty_outward_control_class">{{$output[$i]['Outward_control_qty']}}</span></td>
-                                <td><span class="item_qty_inward_class_diff"></span></td>
-                                <td>{{$output[$i]['item_uom']}}</td>
-                                <td><span class="item_qty_outward_class_diff"></span></td>
+                                <td style="text-align: right;"><span class="item_qty_inward_class">{{$output[$i]['Inward_item_qty']}}</span></td>
+                                <td style="text-align: right;"><span class="item_qty_outward_class">{{$output[$i]['Inward_control_qty']}}</span></td>
+                                <td style="text-align: right;"><span class="item_qty_inward_control_class">{{$output[$i]['Outward_item_qty']}}</span></td>
+                                <td style="text-align: right;"><span class="item_qty_outward_control_class">{{$output[$i]['Outward_control_qty']}}</span></td>
+                                <td style="text-align: right;"><span class="item_qty_inward_class_diff"></span></td>
+                                <td style="text-align: right;">{{$output[$i]['item_uom']}}</td>
+                                <!-- <td><span class="item_qty_outward_class_diff"></span></td> -->
                             </tr>
                         @endfor
                     @else  

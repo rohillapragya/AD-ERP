@@ -126,3 +126,35 @@
     font-size: 13px;
     text-align: center;
 }
+.showdasboard
+{
+    background: -webkit-linear-gradient(-265deg, #1e5799 0%,#207cca 0%,#207cca 0%,#2ddfef 24%,#19a08e 62%,#166e8e 84%,#207cca 100%,#7db9e8 100%);
+    margin-bottom: 2%;
+    width: 218px;
+    height: 68px;
+    padding: 2%;
+    border-radius: 10px;
+}
+.showdashboardInnerText
+{
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+}
+.countDivClass
+{
+    margin: -14% 0% 0% 26%;
+    width: 30px;
+    height: 28px;
+    background-color: red;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+}
+
+.moduleChartDiv
+{
+    border: 1px solid green;
+    border-radius: 10px;
+    padding: 2%;
+}

@@ -24,6 +24,24 @@ class PRN_class
         return json_decode(json_encode($out), true);
     }
 
+
+    function verifyPRNCount()
+    {
+        $out = DB::select("select count(*) as total from purchase_request_note where is_verifed_from_purchase_dept is null");
+
+        return json_decode(json_encode($out), true);
+    }
+
+
+
+    function getPRNCount()
+    {
+        $out = DB::select("select count(*) as total from purchase_request_note where is_verifed_from_purchase_dept is null");
+
+        return json_decode(json_encode($out), true);
+    }
+
+
     function string_to_date($day,$month,$year)
     {
         $odate = "$day-$month-$year";

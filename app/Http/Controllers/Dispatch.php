@@ -112,6 +112,11 @@ class Dispatch extends Controller
         return view('dispatch.dispatch_pending_list',compact('output'));
     }
 
+    public function getdispatchCount()
+    {
+        return $this->dispatch->getdispatchCount();
+    }
+
     public function saveDispatchInfo(Request $request)
     {
         $sampleId = $request->segment(3);

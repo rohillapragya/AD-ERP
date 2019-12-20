@@ -33,6 +33,23 @@ class Wish_Master_class
         return json_decode(json_encode($out), true);
     }
 
+
+    function getWishCount($role_id,$user_id)
+    {
+        if($role_id=='3') /*Role id 3 for adminsitrator... If role is administrator he /she can see every wish list otherwise will see indvisual*/
+        {
+            $out = DB::select("select count(*) as total from user_wish_master a,user_master b where a.user_id=b.id and status='WISH-CREATED'");
+        }
+        else
+        {
+            $out = DB::select("select count(*) as total from user_wish_master a,user_master b where a.user_id=b.id and a.created_by='$user_id' and status='WISH-CREATED'");
+        }
+        
+        return json_decode(json_encode($out), true);
+    }
+
+
+
     function getActiveUOM()
     {
         $out = DB::select("select * from UOM_master where is_active='Y'");

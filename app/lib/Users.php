@@ -61,7 +61,7 @@ class Users
 
     function populate($email,$role_id)
     {
-        $out = DB::select("select distinct a.id as user_id,b.first_name,b.last_name,d.id as role_id,d.name as role_name  from user_auth a,user_master b,app_user_role_map c,app_role_master d  where a.auth_key='$email' and a.user_id=b.id and a.user_id=c.user_id and c.role_id=d.id and b.is_active='Y'");
+        $out = DB::select("select distinct a.user_id as user_id,b.first_name,b.last_name,d.id as role_id,d.name as role_name  from user_auth a,user_master b,app_user_role_map c,app_role_master d  where a.auth_key='$email' and a.user_id=b.id and a.user_id=c.user_id and c.role_id=d.id and b.is_active='Y'");
 
         Session::put('EMAIL',$email);
 
@@ -90,7 +90,12 @@ class Users
             }
         }
 
-        $this->createCart();
+        if($role_id=='3' || $role_id=='5' || $role_id=='7')
+        {
+            $this->createCart();
+        }
+
+        
     }
 
 

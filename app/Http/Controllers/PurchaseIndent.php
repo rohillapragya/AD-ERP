@@ -31,6 +31,13 @@ class PurchaseIndent extends Controller
         return view('purchaseIndent.show_pending_inquiry',compact('output'));
     }
 
+
+    public function getPICount()
+    {
+        return $this->purchase_indent->getPICount();
+    }
+
+
     public function showInquiryDetails(Request $request)
     {
         $InuiryNo = $request->segment(3);

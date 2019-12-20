@@ -159,6 +159,14 @@
                 </div>
             </div>
            
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Min Quantity</label>
+                <div class="col-sm-8">
+                     <input type="input" class="form-control" id="min_quantity" name="min_quantity" placeholder="min quantity" value="{{ old('min_quantity')}}">
+                </div>
+            </div>
+
  
            <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Image (.jpg,.jpeg,.png with max 2 MB size)</label>

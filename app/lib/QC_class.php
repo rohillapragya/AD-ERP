@@ -34,6 +34,14 @@ class QC_class
         return json_decode(json_encode($out), true);
     }
 
+    function getQCDetailsCount()
+    {
+        $out = DB::select("select count(*) as total from (select * from (select * from (select 'SAMPLE' as req_type,c.description as customer_status,a.id,a.sample_number,a.type,a.request_date,a.delivered_date from sample_master a, sample_details b,process_status c where a.status in ('CUSTOMER_SAMPLE_REQUEST','VENDOR_SAMPLE_RECEIVED') and a.id =b.sample_id and a.status=c.status) sample where sample.id not in (select object_id from qc_details where object_type='SAMPLE') union select 'STOCK' as req_type,'--' as customer_status,id,'--' as number,'--' as type,entry_date,created_at from stock_entry where vendor_batch_number is null or raw_material_batch_number is null or r_d_batch_number is null) sample) qc_details");
+        
+        return json_decode(json_encode($out), true);
+    }
+
+
     function getCustomerQCInfoBySampleId($sampleId)
     {
         //$out = DB::select("select * from sample_master a,sample_details b, sample_items_details c where a.id='$sampleId' and a.id =b.sample_id and a.id = c.sample_id");

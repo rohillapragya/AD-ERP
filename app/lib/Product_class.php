@@ -90,7 +90,7 @@ class Product_class
         }
     }
 
-    function addProduct($user_id,$product_code,$product_name,$product_botanical_name,$product_specification,$product_application,$product_category,$product_method,$product_max_price,$product_min_price,$priceValidDay,$priceValidMonth,$priceValidyear,$hsn_code,$product_image,$product_ratio_based)
+    function addProduct($user_id,$product_code,$product_name,$product_botanical_name,$product_specification,$product_application,$product_category,$product_method,$product_max_price,$product_min_price,$priceValidDay,$priceValidMonth,$priceValidyear,$hsn_code,$product_image,$product_ratio_based,$min_quantity)
     {
         $maxProductMasterId = $this->maxProductMasterId();
 
@@ -100,7 +100,7 @@ class Product_class
 
         $type='1'; // type 1 is product type, type 2 for wish product
 
-        $out = DB::insert("insert into product_master(id,code,name,scrientific_name,specification,application,category,ratio_based,method,min_price,max_price,valid_till,hsn_code,image,active,type,created_at) values('$maxProductMasterId','$product_code','$product_name','$product_botanical_name','$product_specification','$product_application','$product_category','$product_ratio_based','$product_method','$product_min_price','$product_max_price','$valid_till','$hsn_code','$product_image','Y','$type','$this->created_at')");
+        $out = DB::insert("insert into product_master(id,code,name,scrientific_name,specification,application,category,ratio_based,method,min_price,max_price,valid_till,hsn_code,image,active,type,created_at,min_qty) values('$maxProductMasterId','$product_code','$product_name','$product_botanical_name','$product_specification','$product_application','$product_category','$product_ratio_based','$product_method','$product_min_price','$product_max_price','$valid_till','$hsn_code','$product_image','Y','$type','$this->created_at','$min_quantity')");
     }
 
     function addProductIDInWishMaster($wishID)
@@ -110,11 +110,11 @@ class Product_class
         DB::update("update user_wish_master set product_id='$this->product_id_for_Wish_table',status='$status' where id='$wishID'");
     }
 
-    function editProduct($user_id,$productID,$product_name,$product_botanical_name,$product_specification,$product_application,$product_category,$product_method,$product_max_price,$product_min_price,$priceValidDay,$priceValidMonth,$priceValidyear,$hsn_code,$product_image,$product_ratio_based)
+    function editProduct($user_id,$productID,$product_name,$product_botanical_name,$product_specification,$product_application,$product_category,$product_method,$product_max_price,$product_min_price,$priceValidDay,$priceValidMonth,$priceValidyear,$hsn_code,$product_image,$product_ratio_based,$min_quantity)
     {
         $valid_till = $this->string_to_date($priceValidDay,$priceValidMonth,$priceValidyear);
 
-        $out = DB::update("update product_master set name='$product_name',scrientific_name='$product_botanical_name',specification='$product_specification',application='$product_application',category='$product_category',ratio_based='$product_ratio_based',method='$product_method',min_price='$product_min_price',max_price='$product_max_price',valid_till='$valid_till',hsn_code='$hsn_code',image='$product_image',updated_at='$this->created_at' where id='$productID'");
+        $out = DB::update("update product_master set name='$product_name',scrientific_name='$product_botanical_name',specification='$product_specification',application='$product_application',category='$product_category',ratio_based='$product_ratio_based',method='$product_method',min_price='$product_min_price',max_price='$product_max_price',valid_till='$valid_till',hsn_code='$hsn_code',image='$product_image',updated_at='$this->created_at',min_qty='$min_quantity' where id='$productID'");
     }
 
     function gettingProductDetailsByProductID($productID)
@@ -352,6 +352,28 @@ class Product_class
         }
     }
 
+    function getCustomerCount($role_id,$user_id)
+    {
+        if($role_id)
+        {
+            if($role_id=='3' || $role_id=='7')
+            {
+                $out = DB::select("select count(*) as total from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.status=c.status");
+    
+            }
+            else
+            {
+                $out = DB::select(" select count(*) as total from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.created_by='$user_id' and a.status=c.status");
+            }
+           
+            return json_decode(json_encode($out), true);
+        }
+        else
+        {
+            return redirect()->route('login');
+        }
+    }
+
 
     function getCustomerSampleInfoBySampleId($sampleId)
     {
@@ -429,6 +451,13 @@ class Product_class
     function getVendorSampleList()
     {
         $out = DB::select("select c.description as customer_status,a.*,b.* from sample_master a, sample_details b,process_status c  where a.status='VENDOR_SAMPLE_RECEIVED' and a.id =b.sample_id and a.status=c.status");
+
+        return json_decode(json_encode($out), true);
+    }
+
+    function getVendorCount()
+    {
+        $out = DB::select("select count(*) as total from sample_master a, sample_details b,process_status c  where a.status='VENDOR_SAMPLE_RECEIVED' and a.id =b.sample_id and a.status=c.status");
 
         return json_decode(json_encode($out), true);
     }

@@ -32,6 +32,14 @@ class Production_class
         return json_decode(json_encode($out), true);
     }
 
+
+    function getBMRCount()
+    {
+        $out = DB::select("select count(*) as total from (select * from (select c.description as customer_status,a.id,a.sample_number,a.type,a.request_date,a.received_date,a.delivered_date,a.status,a.any_behalf_of,a.source_at_team,b.id as sample_details_id,b.ref_name,b.ref_address,b.ref_mobile,b.ref_email,b.city,b.sample_response,b.status as sample_details_status  from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.status=c.status) sample where sample.id not in (select object_id from sample_store_details where object_type='SAMPLE')) smp");
+        
+        return json_decode(json_encode($out), true);
+    }
+
     function getCustomerSampleInfoBySampleId($sampleId)
     {
         //$out = DB::select("select * from sample_master a,sample_details b, sample_items_details c where a.id='$sampleId' and a.id =b.sample_id and a.id = c.sample_id");

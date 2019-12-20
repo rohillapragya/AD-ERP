@@ -34,6 +34,12 @@ class MRN extends Controller
         return view('mrn.index',compact('output'));
     }
 
+    public function mrnCount()
+    {
+        return $this->mrn->mrnCount();
+    }
+
+
     public function addNew()
     {
         $purposeList = $this->mrn->getPurposeList();

@@ -37,6 +37,18 @@ class Sample extends Controller
     
         return view('sample.customer_sample_index',compact('output'));
     }
+
+    public function getCustomerCount()
+    {
+        $role_id = Session::get('role_id');
+
+        $user_id = Session::get('UID');
+
+        $output = $this->product->getCustomerCount($role_id,$user_id);
+    
+        return $output;
+    }
+
     
     public function vendorSampleIndex()
     {
@@ -44,6 +56,14 @@ class Sample extends Controller
 
         return view('sample.vendor_sample_index',compact('output'));
     }
+
+    public function getVendorCount()
+    {
+        $output = $this->product->getVendorCount();
+
+        return $output;
+    }
+
 
     public function addSample()
     {
@@ -271,7 +291,7 @@ class Sample extends Controller
 
         $output = $this->product->proceedForDispatch($sampleId,$user_id,$status);
 
-        $data['message'] ='QC Details Added Successfully. Go to  Dashboard using button';
+        $data['message'] ='Sample is ready for dispatch. Dispatch Sample under Dispatch -> Dispatch Info. Go to  Dashboard using button';
         $data['text'] = '';
 
         return view('dashboard_return.success',$data);

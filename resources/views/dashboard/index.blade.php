@@ -2,7 +2,6 @@
 
 <link rel="stylesheet" href="{{ asset('css/Home/dashboard.css') }}">
 
-
 @section('dashboard-home')
     @parent
 @stop
@@ -12,22 +11,30 @@
 <!-- <div>session div cart_id - {{ Session::get('cart_id')}}</div> -->
 
 @php
-$user_role_id = Session::get('role_id');
+    $user_role_id = Session::get('role_id');
 
-$user_id = Session::get('UID');
+    $user_id = Session::get('UID');
 @endphp
 
 <div class="container">    
+
+    <div class="row">
+        <div class="col-sm-12"> 
+            <a href="/charts" class="btn btn-primary btn-lg" style="float: right;margin-bottom: 2%;"> <span>Show Chart</span></a>
+        </div>
+    </div>
+
   <div class="row">
 
-  <div class="col-lg-4 col-sm-4"> 
+    <div class="col-lg-4 col-sm-4"> 
         <div class="panel panel-default boxShadow">
             <div class="panel-heading panel-heading-class">Sample</div>
             <div class="panel-body panel-class">
 
             <!-- customer sample start -->
                 @if($user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
-                    <a href="/dashboard/customerSample" class="panel-content"><span>Customer</span></a>
+                    <a href="/dashboard/customerSample" class="panel-content"> <span>Customer</span></a>
+                    <div id="customerSampleCount" class="countDivClass" style="background-color: #f2f2f2;">0</div>
                 @else
                     <span class="panel-content">Customer</span>
                 @endif    
@@ -35,7 +42,8 @@ $user_id = Session::get('UID');
 
             <!-- vendor sample start -->
                 @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
-                    <a href="/dashboard/vendorSample" class="panel-content" style="margin-bottom: 12%"><span >Vendor</span></a>
+                    <a href="/dashboard/vendorSample" class="panel-content"><span >Vendor</span></a>
+                    <div id="vendorSampleCount"  class="countDivClass" style="background-color: #f2f2f2;">0</div>
                 @else
                     <span class="panel-content" style="margin-bottom: 12%">Vendor</span>
                 @endif
@@ -72,8 +80,6 @@ $user_id = Session::get('UID');
             <!-- user registration start -->
                 @if($user_id=='1')
                     <a href="/dashbaord/erpUserRegistration"><span >User</span></a>
-                @else
-                    <span>User</span>
                 @endif
             <!-- user registration end     -->
                 
@@ -89,7 +95,8 @@ $user_id = Session::get('UID');
             <!-- dispatch service info section start -->
                 @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='12')
                     <a href="/dashboard/dispatchService" class="panel-content"><span>Dispatch Service</span></a>
-                    <a href="/dashboard/dispatchInfo" class="panel-content" style="margin-bottom: 12%;"><span>Dispatch Info</span></a>
+                    <a href="/dashboard/dispatchInfo" class="panel-content"><span>Dispatch Info</span></a>
+                    <div id="dispatchInfoCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -14% 0% 0% 35%;">0</div>
                 @else
                     <span class="panel-content">Dispatch Service</span>
                     <span>Dispatch Info</span>
@@ -128,6 +135,7 @@ $user_id = Session::get('UID');
             <!-- Add wish list section start here -->
                 @if($user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7' || $user_role_id=='11')
                     <a href="/wish/index" class="panel-content"><span>Wish List</span></a>
+                    <div id="wishCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -14% 0% 0% 28%;">0</div>
                 @else
                     <span class="panel-content">Wish List</span>
                 @endif    
@@ -136,6 +144,8 @@ $user_id = Session::get('UID');
             <!-- stock, warehouse section start here -->
                 @if($user_role_id=='3' || $user_role_id=='11')    
                     <a href="/dashboard/stockEntryInit" class="panel-content"><span>Stock Entry</span></a>
+                    <div id="stockEntryCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -14% 0% 0% 33%;">0</div>
+
                     <a href="/dashboard/warehouseInit" class="panel-content"><span>Warehouse</span></a>
                 @else
                     <span class="panel-content">Stock Entry</span>
@@ -146,6 +156,7 @@ $user_id = Session::get('UID');
             <!-- Material Requization Note (MRN) section start here -->
                 @if($user_role_id=='3' || $user_role_id=='7'|| $user_role_id=='11')
                     <a href="/dashboard/mrnInit" class="panel-content"><span>Material Requization Note (MRN)</span></a>
+                    <div id="mrnCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -14% 0% 0% 86%;">0</div>
                 @else
                     <span class="panel-content">Material Requization Note (MRN)</span>
                 @endif
@@ -155,6 +166,7 @@ $user_id = Session::get('UID');
                 @if($user_role_id=='3' || $user_role_id=='13')
                     <!-- <a href="#" class="panel-content"><span style="color: #c48d07">Purchase Requization Note (PRN)</span></a> -->
                     <a href="/dashboard/prnInit" class="panel-content"><span>Purchase Requization Note (PRN)</span></a>
+                    <div id="prnCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -14% 0% 0% 86%;">0</div>
                 @else
                     <span class="panel-content">Purchase Requization Note (PRN)</span>
                 @endif
@@ -187,6 +199,7 @@ $user_id = Session::get('UID');
             <!-- verify PRN,Qutation,approved vendor list section start here -->
                 @if($user_role_id=='3' || $user_role_id=='13')
                     <a href="/dashoard/prn/verify" class="panel-content"><span>Verify Purchase Requization Note (PRN)</span></a>
+                        <div id="verifyPRNCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -14% 0% 0% 93%;">0</div>
                     <a href="/dashoard/qutationInit" class="panel-content"><span>Qutation</span></a>
                     <a href="#" class="panel-content"><span style="color: #c48d07;">Supplier Quotation</span></a>
                     <a href="#" class="panel-content"><span style="color: #c48d07;">Approved Vendor List</span></a>
@@ -200,7 +213,9 @@ $user_id = Session::get('UID');
 
             <!-- purchase indent,purchase order,performa invoice section start here -->
                 @if($user_role_id=='3' || $user_role_id=='7')
-                    <a href="/dashboard/pI" class="panel-content" style="margin-bottom: 80%"><span>Purchase Indent</span></a>
+                   <!--  <a href="/dashboard/pI" class="panel-content" style="margin-bottom: 80%"><span>Purchase Indent</span></a> -->
+                    <a href="/dashboard/pI" class="panel-content"><span>Purchase Indent</span></a>
+                    <div id="purchaseIndentCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -12% 0% 76% 43%;">0</div>
                     <!-- <a href="#" class="panel-content"><span style="color: #c48d07;">Purchase Order (PO) Information</span></a>
                     <a href="#" class="panel-content" style="margin-bottom: 48%"><span style="color: #c48d07;">Performa Invoice</span></a> -->
                 @else
@@ -221,8 +236,12 @@ $user_id = Session::get('UID');
             <!-- Bill of Materials , Production planing details section start here -->
                 @if($user_role_id=='3' || $user_role_id=='8')
                     <a href="/dashboard/BOM" class="panel-content"><span>Bill of Materials (BOM)</span></a>
+                        <div id="bomCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -14% 0% 0% 60%;">0</div>
+
                     <a href="/dashboard/production" class="panel-content"><span>Production Plan Details</span></a>
-                    <a href="/dashboard/customerSampleBMRList" class="panel-content" style="margin-bottom: 103%"><span>BMR Number</span></a>
+
+                    <a href="/dashboard/customerSampleBMRList" class="panel-content"><span>BMR Number</span></a>
+                        <div id="bmrNumberCount"  class="countDivClass" style="background-color: #f2f2f2;margin : -13% 0% 108% 36%;">0</div>
                     <!-- <a href="#" class="panel-content" style="margin-bottom: 97%"><span>BMR Number</span></a> -->
                 @else
                     <span class="panel-content">Bill of Materials (BOM)</span>
@@ -258,7 +277,8 @@ $user_id = Session::get('UID');
             <!-- QC section start here -->
 
                 @if($user_role_id=='3' || $user_role_id=='10' || $user_role_id=='14')
-                    <a href="/dashboard/customerSampleQC" class="panel-content"  style="margin-bottom: 13%"><span>QC Details</span></a>
+                    <a href="/dashboard/customerSampleQC" class="panel-content"><span>QC Details</span></a>
+                    <div id="qcDetails"  class="countDivClass" style="background-color: #f2f2f2;margin: -13% 0% 11% 28%;">0</div>
                 @else
                     <span class="panel-content">QC Details</span>
                 @endif   
@@ -288,6 +308,7 @@ $user_id = Session::get('UID');
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="{{ asset('js/custom/custom.js') }}"></script>
+
 
 <!-- @extends('layout.dashboard_footer_layout')
 @section('footer')

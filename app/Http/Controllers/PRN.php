@@ -38,6 +38,11 @@ class PRN extends Controller
         return view('prn.index',compact('output'));
     }
 
+    public function getPRNCount()
+    {
+        return $this->prn->getPRNCount();
+    }
+
     public function addNew()
     {
         $purposeList = $this->mrn->getPurposeList();
@@ -126,6 +131,11 @@ class PRN extends Controller
         $output = $this->prn->showPRNList();
 
         return view('prn.showVerifyPRN',compact('output'));
+    }
+
+    public function verifyPRNCount(Request $request)
+    {
+        return $this->prn->verifyPRNCount();
     }
 
     public function showPRN(Request $request)

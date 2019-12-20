@@ -31,6 +31,15 @@ class Wish_Master extends Controller
         return view('wish_master.index',compact('output'));
     }
 
+    public function getWishCount()
+    {
+        $role_id = Session::get('role_id');
+
+        $user_id = Session::get('UID');
+
+        return $this->wish->getWishCount($role_id,$user_id);
+    }
+
     public function add()
     {
         $activeMethodList = $this->product->activeMethodList();

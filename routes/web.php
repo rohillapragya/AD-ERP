@@ -4,6 +4,8 @@
 
 // home page Route section start here
 
+
+
 Route::get('/','Login@show');
 Route::post('/doLogin','Login@doLogin');
 Route::get('/forgotPassword','ForgotPassController@show');
@@ -80,6 +82,7 @@ Route::get('/dashboard/customerSampleQC','QC@pendingQCDetailList');
 Route::get('/sample/qc/QCDetails/{sampleId}','QC@ReadyForQCDetails');
 Route::post('/qcDetails/qcSave','QC@saveQCDetails');
 Route::post('/qcDetails/qcStockInfoSave','QC@qcStockInfoSave');
+Route::get('/qc/getQCDetailsCount','QC@getQCDetailsCount');
 
 
 Route::get('/dashboard/addNewVendorSample','Sample@addVendorSample');
@@ -88,6 +91,8 @@ Route::get('/sample/vendor/show/{sampleId}','Sample@showVendorSample');
 Route::post('/dashboard/editVendorSampleRequest','Sample@editVendorSample');
 Route::get('/sample/vendor/saveVendorSample/{sampleId}','Sample@saveVendorSampleInformation');
 Route::post('/vendor/sample/proceedVendorSampleTOStore','Sample@proceedVendorSampleTOStore');
+Route::get('/sample/getCustomerCount','Sample@getCustomerCount');
+Route::get('/sample/getVendorCount','Sample@getVendorCount');
 // sample route section end  here
 
 
@@ -98,7 +103,7 @@ Route::post('/dispatch/saveService','Dispatch@saveService');
 Route::get('/dispatch/service/edit/{serviceId}','Dispatch@showService');
 Route::post('/dispatch/updateService','Dispatch@editService');
 Route::post('/dispatch/add','Dispatch@addDisaptchInfo');
-
+Route::get('/dispatch/getdispatchCount','Dispatch@getdispatchCount');
 
 Route::get('/dashboard/dispatchInfo','Dispatch@dispatchInfoIndex');
 Route::get('/dispatch/save/{sampleId}','Dispatch@saveDispatchInfo');
@@ -148,6 +153,8 @@ Route::get('/wish/action/{wishId}','Wish_Master@action');
 Route::get('/wish/{wishId}/proceedAsProduct','Wish_Master@proceedAsProduct');
 Route::get('/wish/{wishId}/discardProduct','Wish_Master@discardProduct');
 Route::post('/wish/proceedAs/product','Wish_Master@wishAddedAsProduct');
+
+Route::get('/wish/getWishCount','Wish_Master@getWishCount');
 // wish route section start here
 
 // warehouse route section start here
@@ -176,6 +183,8 @@ Route::post('/stock/update','Stock@update');
 Route::get('/dashboard/StockReport','Stock@reportIndex');
 Route::get('/stock/getStockByWarehouseId','Stock@getStockByWarehouseId');
 Route::get('/stock/qc/QCDetails/{sampleId}','QC@StockReadyForQCDetails');
+Route::get('/stock/getStockEntryCount','Stock@getStockEntryCount');
+
 // store route section  end  here
 
 
@@ -188,6 +197,7 @@ Route::post('/mrn/addNewPurpose','MRN@addNewPurpose');
 Route::get('/mrn/getPurposeList','MRN@getPurposeList');
 Route::get('/mrn/{mrnID}/stockEntry','MRN@mrnStockEntry');
 Route::get('/mrn/{mrnID}/prnEntry','MRN@prnEntry');
+Route::get('/mrn/mrnCount','MRN@mrnCount');
 // MRN route section end here
 
 
@@ -200,6 +210,8 @@ Route::post('/prn/update','PRN@update');
 Route::get('/dashoard/prn/verify','PRN@showVerifyPRN');
 Route::get('/prn/show/{prnId}','PRN@showPRN');
 Route::post('/prn/verifyPRN','PRN@verifyPRN');
+Route::get('/prn/getPRNCount','PRN@getPRNCount');
+Route::get('/prn/verifyPRNCount','PRN@verifyPRNCount');
 // PRN route section end here
 
 
@@ -211,6 +223,7 @@ Route::get('/bom/edit/{bomID}','BOM@show');
 Route::post('/bom/update','BOM@update');
 Route::get('/production/checkBOM','BOM@checkBom');
 Route::get('/bom/{bomId}/production','BOM@BomToProduction');
+Route::get('/production/getBOMCount','BOM@getBOMCount');
 // BOM route section end here
 
 
@@ -220,6 +233,8 @@ Route::get('/dashboard/addProduction','Production@addProduction');
 Route::post('/production/save','Production@save');
 Route::get('/production/edit/{productionId}','Production@show');
 Route::post('/production/update','Production@update');
+Route::get('/production/getBMRCount','Production@getBMRCount');
+
 // Production route section start here
 
 
@@ -231,6 +246,8 @@ Route::get('/pi/{piID}/action','PurchaseIndent@action');
 Route::post('/pi/action/save','PurchaseIndent@action_save');
 Route::get('/pi/{piID}/SampleRequest','PurchaseIndent@pi_to_SampleRequest');
 Route::post('/dashboard/pi_to_sample_save','PurchaseIndent@pi_to_sample_save');
+Route::get('/pi/getPICount','PurchaseIndent@getPICount');
+
 // Purchase route section  end here
 
 
@@ -244,3 +261,10 @@ Route::post('/quotation/save','Quotation@save');
 // Route::get('/sendbasicemail','MailController@basic_email');
 Route::get('/sendhtmlemail','MailController@html_email');
 // Route::get('/sendattachmentemail','MailController@attachment_email');
+
+
+// chart route section start here
+Route::get('/charts','Chart@index');
+Route::get('/chart/sample','Chart@sample');
+Route::get('/chart/inquiry','Chart@inquiry');
+// chart route section  end  here

@@ -32,6 +32,13 @@ class BOM extends Controller
         return view('BOM.index',compact('output'));
     }
 
+
+    public function getBOMCount()
+    {
+        return $this->BOM->getBOMCount();
+    }
+
+
     public function addNew()
     {
         return view('BOM.new');

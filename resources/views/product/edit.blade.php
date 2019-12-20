@@ -188,6 +188,14 @@
                      <input type="input" class="form-control" id="hsn_code" name="hsn_code" placeholder="hsn code" required='required' value="{{ isset($output[0]['hsn_code']) ? $output[0]['hsn_code'] : '' }}">
                 </div>
             </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Min Quantity</label>
+                <div class="col-sm-8">
+                     <input type="input" class="form-control" id="min_quantity" name="min_quantity" placeholder="min quantity" value="{{ isset($output[0]['min_qty']) ? $output[0]['min_qty'] : '' }}">
+                </div>
+            </div>
            
  
            <div class="form-group row">

@@ -27,6 +27,14 @@ class BOM_class
         return json_decode(json_encode($out), true);
     }
 
+    function getBOMCount()
+    {
+
+        $out = DB::select("select count(*) as total from BOM where status='BOM_CREATED' order by id desc");
+
+        return json_decode(json_encode($out), true);
+    }
+
     function maxBomID()
     {
         $out = DB::select("select COALESCE(max(id), 0) + 1 as max_id from BOM");

@@ -95,11 +95,12 @@ class Product extends Controller
             $priceValidyear = request('priceValidyear');
             $hsn_code = request('hsn_code');
             $product_ratio_based = request('product_ratio_based');
+            $min_quantity = request('min_quantity');
 
             if($product_min_price==null){ $product_min_price=0; }
             if($product_max_price==null){ $product_max_price=0; }
 
-            $out = $this->product->addProduct($user_id,$product_code,$product_name,$product_botanical_name,$product_specification,$product_application,$product_category,$product_method,$product_max_price,$product_min_price,$priceValidDay,$priceValidMonth,$priceValidyear,$hsn_code,$imageName,$product_ratio_based);
+            $out = $this->product->addProduct($user_id,$product_code,$product_name,$product_botanical_name,$product_specification,$product_application,$product_category,$product_method,$product_max_price,$product_min_price,$priceValidDay,$priceValidMonth,$priceValidyear,$hsn_code,$imageName,$product_ratio_based,$min_quantity);
 
             $data['message'] ='Product Added. Go to  Dashboard using button';
 
@@ -192,11 +193,12 @@ class Product extends Controller
             $priceValidyear = request('priceValidyear');
             $hsn_code = request('hsn_code');
             $product_ratio_based = request('product_ratio_based');
+            $min_quantity = request('min_quantity');
 
             if($product_min_price==null){ $product_min_price=0; }
             if($product_max_price==null){ $product_max_price=0; }
 
-            $out = $this->product->editProduct($user_id,$productID,$product_name,$product_botanical_name,$product_specification,$product_application,$product_category,$product_method,$product_max_price,$product_min_price,$priceValidDay,$priceValidMonth,$priceValidyear,$hsn_code,$imageName,$product_ratio_based);
+            $out = $this->product->editProduct($user_id,$productID,$product_name,$product_botanical_name,$product_specification,$product_application,$product_category,$product_method,$product_max_price,$product_min_price,$priceValidDay,$priceValidMonth,$priceValidyear,$hsn_code,$imageName,$product_ratio_based,$min_quantity);
 
             $data['message'] ='Product Information Edit. Go to  Dashboard using button';
 

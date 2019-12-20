@@ -24,6 +24,14 @@ class MRN_class
         return json_decode(json_encode($out), true);
     }
 
+    function mrnCount()
+    {
+        $out = DB::select("select count(*) as total from material_request_note");
+
+        return json_decode(json_encode($out), true);
+    }
+
+
     function getPurposeList()
     {
         $out = DB::select("select * from material_request_purpose");

@@ -61,6 +61,16 @@ class Dispatch_class
         return json_decode(json_encode($out), true);
     }
 
+
+    function getdispatchCount()
+    {
+        $out = DB::select("select count(*) as total from sample_master a,process_status b where a.status in ('CUSTOMER_SAMPLE_READY_FOR_DISPATCH','CUSTOMER_SAMPLE_DISPATCH_TO_CUSTOMER') and a.status=b.status");
+        
+        return json_decode(json_encode($out), true);
+    }
+
+
+
     function string_to_date($day,$month,$year)
     {
         $odate = "$day-$month-$year";

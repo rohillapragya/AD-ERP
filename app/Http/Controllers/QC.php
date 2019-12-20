@@ -26,6 +26,11 @@ class QC extends Controller
        return view('qc.pending_qc_details',compact('output'));
     }
    
+    public function getQCDetailsCount()
+    {
+        return $this->qc->getQCDetailsCount();
+    }
+
     public function ReadyForQCDetails(Request $request)
     {
         $sampleId = $request->segment(4);

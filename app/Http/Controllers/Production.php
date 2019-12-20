@@ -29,6 +29,12 @@ class Production extends Controller
 
        return view('production.pending_BMR_List',compact('output'));
     }
+
+    public function getBMRCount()
+    {
+        return $this->production->getBMRCount();
+    }
+
    
     public function ReadyForBMR(Request $request)
     {

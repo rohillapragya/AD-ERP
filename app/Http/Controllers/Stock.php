@@ -39,6 +39,13 @@ class Stock extends Controller
         return view('stock.index',compact('output'));
     }
 
+
+    public function getStockEntryCount()
+    {
+        return $this->stock->getStockEntryCount();
+    }
+
+
     public function addNew()
     {
     	$stockEntryTypeDetailsId = '1';
@@ -205,14 +212,20 @@ class Stock extends Controller
         //dd($output);
         $warehouse = $this->warehouse->showWarehouseList();
 
-        return view('stockreport.index',compact('output','warehouse'));
+        $product = $this->product->getProuductList();
+
+        return view('stockreport.index',compact('output','warehouse','product'));
     }
 
     public function getStockByWarehouseId(Request $request)
     {
         $warehouseID = $request->input('warehouseID');
 
-        $output = $this->stock->getStockQtyByWareHouseId($warehouseID);
+        $productCode = $request->input('productCode');
+
+        $output = $this->stock->getStockQtyByWareHouseIdPrdudct($warehouseID,$productCode);
+
+       // $output = $this->stock->getStockQtyByWareHouseId($warehouseID);
 
         return $output;
     }
