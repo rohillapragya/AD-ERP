@@ -174,8 +174,8 @@
 
             <!-- Goods Receipt Note (GRN - Material Receipt Note) section start here -->
                 @if($user_role_id=='3' || $user_role_id=='11')
-                    <!-- <a href="/dashboard/grnInit" class="panel-content"><span>Goods Receipt Note (GRN - Material Receipt Note)</span></a> -->
-                    <a href="#" class="panel-content"><span style="color: #c48d07;">Goods Receipt Note (GRN - Material Receipt Note)</span></a>
+                    <a href="/dashboard/grnInit" class="panel-content"><span>Goods Receipt Note (GRN - Material Receipt Note)</span></a>
+                    <!-- <a href="#" class="panel-content"><span style="color: #c48d07;">Goods Receipt Note (GRN - Material Receipt Note)</span></a> -->
                 @else
                     <span class="panel-content">Goods Receipt Note (GRN - Material Receipt Note)</span>
                 @endif
