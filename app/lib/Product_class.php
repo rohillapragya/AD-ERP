@@ -77,8 +77,6 @@ class Product_class
         return json_decode(json_encode($out), true);
     }
 
-   
-
 
     function maxProductMasterId()
     {
@@ -379,7 +377,7 @@ class Product_class
     {
         //$out = DB::select("select * from sample_master a,sample_details b, sample_items_details c where a.id='$sampleId' and a.id =b.sample_id and a.id = c.sample_id");
 
-       $out = DB::select("select g.first_name as user_first_name,g.last_name as user_last_name, e.name as method_name,f.name as uom_name,a.*,b.*,c.*,d.* from sample_master a,sample_details b, sample_items_details c,product_master d,product_method_master e,UOM_master f,user_master g  where a.id='$sampleId' and a.id =b.sample_id and a.id = c.sample_id and c.item_code=d.code and c.method=e.id and c.uom=f.id and a.created_by=g.id and g.is_active='Y'");
+       $out = DB::select("select a.id as object_id,g.first_name as user_first_name,g.last_name as user_last_name, e.name as method_name,f.name as uom_name,a.*,b.*,c.*,d.* from sample_master a,sample_details b, sample_items_details c,product_master d,product_method_master e,UOM_master f,user_master g  where a.id='$sampleId' and a.id =b.sample_id and a.id = c.sample_id and c.item_code=d.code and c.method=e.id and c.uom=f.id and a.created_by=g.id and g.is_active='Y'");
         
         return json_decode(json_encode($out), true);
     }
@@ -599,4 +597,16 @@ class Product_class
         DB::update("update sample_details set attachment_1=NULL where sample_id='$sampleId'");
     }
 
+    function getCustomerInquiryInfoByInquiryId($inquiry_id)
+    {
+        //$out = DB::select("select a.id as object_id,g.first_name as user_first_name,g.last_name as user_last_name,g.email as user_email,g.mobile as user_mobile,g.address as shippig_address,e.name as method_name,f.name as uom_name,a.*,b.*,c.*,d.*,'Customer' as any_behalf_of  from inquiry_master a,user_cart b,user_cart_detail c,product_master d,product_method_master e,UOM_master f,user_master g where a.id='$inquiry_id' and a.id = b.inquiry_number and b.id=c.cart_id and c.is_product_active_in_cart='Y' and c.product_id=d.id and d.method=e.id and c.quantity_unit=f.id and b.user_id=g.id and g.is_active='Y'");
+
+        $out = DB::select("select a.id as object_id,g.first_name as user_first_name,g.last_name as user_last_name,g.email as user_email,g.mobile as user_mobile,g.address as shippig_address,e.name as method_name,f.name as uom_name,a.*,b.*,c.*,d.*,'Customer' as any_behalf_of,i.company_name as ref_name,i.address as ref_address,i.email as ref_email,i.mobile as ref_mobile,j.name as city_name,k.name as state_name,l.name as country_name from inquiry_master a,user_cart b,user_cart_detail c,product_master d,product_method_master e,UOM_master f,user_master g,inquiry_address h,user_master i,city_master j,state_master k,country_master l where a.id='$inquiry_id' and a.id = b.inquiry_number and b.id=c.cart_id and c.is_product_active_in_cart='Y' and c.product_id=d.id and d.method=e.id and c.quantity_unit=f.id and b.user_id=g.id and g.is_active='Y'and a.id=h.inquiry_no and h.address_type='2' and h.full_name=i.id and h.city=j.id and j.state_id=k.id and k.country_id = l.id");
+
+        return json_decode(json_encode($out), true);
+    }
+
 }
+
+
+

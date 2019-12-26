@@ -12,7 +12,12 @@
 
 @php
     $user_role_id = Session::get('role_id');
-    $behalf_of = $output[0]["any_behalf_of"];
+    
+    if($output[0]["any_behalf_of"])
+    {
+        $behalf_of = $output[0]["any_behalf_of"];
+    }
+  
     $dis_year =  2019;
     $dis_month =  01;
     $dis_day =  1;
@@ -49,12 +54,27 @@
 		</ol>
 	</nav>
 
+    @if($errors->all())
+
+        <div class="alert alert-danger" role="alert">
+            <div class="row">
+                
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{$error}}</li>
+                        @endforeach
+                    </ul>
+               
+            </div>
+        </div>
+    @endif
+
 	<div class="container box-shadow">
 	 	@if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='12')
          <form method="post" action="/dispatch/add" enctype="multipart/form-data">
             {{ csrf_field() }}
             
-            <input type="hidden" id="sampleId" name="sampleId" value="{{$output[0]['sample_id']}}">
+            <input type="hidden" id="sampleId" name="sampleId" value="{{$output[0]['object_id']}}">
 
              <div class="form-group row">
                  <div class="col-sm-12">
@@ -69,7 +89,7 @@
                            
                             <div class="row">
                                 <div class="col-md-4 card-block-header">Request Date (YYYY-MM-DD) </div>
-                                <div class="col-md-8 card-block-detail">{{$output[0]["request_date"]}}</div>
+                                <div class="col-md-8 card-block-detail">{{ isset($output[0]["request_date"] ) ? $output[0]["request_date"]  : $output[0]["created_at"] }}</div>
                             </div>
 
                           
@@ -105,7 +125,7 @@
                                             <td>{{$output[$i]['name']}}</td>
                                             <td>{{$output[$i]['scrientific_name']}}</td>
                                             <td>{{$output[$i]['method_name']}}</td>
-                                            <td>{{$output[$i]['qunatity']}}</td>
+                                            <td>{{ isset($output[0]["qunatity"] ) ? $output[0]["qunatity"]  : $output[0]["quantity"] }}</td>
                                             <td>{{$output[$i]['uom_name']}}</td>
                                         </tr>
                                         @endfor    
@@ -118,29 +138,29 @@
 
                             <div class="row">
                                 <div class="col-md-4 card-block-header">Full Name</div>
-                                <div class="col-md-8 card-block-detail">{{$output[0]["ref_name"]}}</div>
+                                <div class="col-md-8 card-block-detail">{{ isset($output[0]["ref_name"]) ? $output[0]["ref_name"] : $output[0]["user_first_name"].' '.$output[0]["user_last_name"] }}</div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-4 card-block-header">Address</div>
-                                <div class="col-md-8 card-block-detail">{{$output[0]["ref_address"]}}</div>
+                                <div class="col-md-8 card-block-detail">{{ isset($output[0]["ref_address"]) ? $output[0]["ref_address"] : $output[0]["shippig_address"]}}</div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-4 card-block-header">Email</div>
-                                <div class="col-md-8 card-block-detail">{{$output[0]["ref_email"]}}</div>
+                                <div class="col-md-8 card-block-detail">{{ isset($output[0]["ref_email"]) ? $output[0]["ref_email"] : $output[0]["user_email"]}}</div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-4 card-block-header">Mobile</div>
-                                <div class="col-md-8 card-block-detail">{{$output[0]["ref_mobile"]}}</div>
+                                <div class="col-md-8 card-block-detail">{{ isset($output[0]["ref_mobile"]) ? $output[0]["ref_mobile"] : $output[0]["user_mobile"]}}</div>
                             </div>
 
                             <div class="row"> <div class="col-md-12 card-block-full"></div> </div>
 
                             <div class="row">
-                                <div class="col-md-4 card-block-header">Sample Number</div>
-                                <div class="col-md-8 card-block-detail">{{$output[0]["sample_number"]}}</div>
+                                <div class="col-md-4 card-block-header">Sample / Inquiry Number</div>
+                                <div class="col-md-8 card-block-detail">{{ $output[0]["object_id"]}}</div>
                             </div>
 
                             <div class="row">
@@ -163,7 +183,7 @@
                             <div class="row">
                                 <div class="col-md-4 card-block-header">Amount (Only ₹)</div>
                                 <div class="col-md-8 card-block-detail">
-                                     <input class="form-control" id="dispatch_amount" type="number" name="dispatch_amount" placeholder="dispatch amount" required="required" min="1" value="{{ isset($dispatch_details[0]['amount'] ) ? $dispatch_details[0]['amount']  : '' }}">
+                                     <input class="form-control" id="dispatch_amount" type="number" name="dispatch_amount" placeholder="dispatch amount" required="required" min="0" value="{{ isset($dispatch_details[0]['amount'] ) ? $dispatch_details[0]['amount']  : '' }}">
                                 </div>
                             </div>
 

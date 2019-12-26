@@ -37,19 +37,19 @@ class Inquiry extends Controller
 
    	public function addProductInCart(Request $request)
    	{
-   		$user_id = Session::get('UID');
+      $user_id = Session::get('UID');
 
-        $product_id = $request->input('product_id');
+      $product_id = $request->input('product_id');
 
-        $product_qty = $request->input('product_qty');
+      $product_qty = $request->input('product_qty');
 
-        $cart_id = $request->input('cart_id');
+      $cart_id = $request->input('cart_id');
 
-        $out = $this->inquiry->addProductInCart($cart_id,$product_id,$product_qty,$user_id);
+      $out = $this->inquiry->addProductInCart($cart_id,$product_id,$product_qty,$user_id);
 
-        $output = $this->inquiry->getCartCountByCartId($cart_id);
+      $output = $this->inquiry->getCartCountByCartId($cart_id);
 
-        return $output;
+      return $output;
    	}
 
    	public function getCartCount()

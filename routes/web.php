@@ -184,7 +184,7 @@ Route::get('/dashboard/StockReport','Stock@reportIndex');
 Route::get('/stock/getStockByWarehouseId','Stock@getStockByWarehouseId');
 Route::get('/stock/qc/QCDetails/{sampleId}','QC@StockReadyForQCDetails');
 Route::get('/stock/getStockEntryCount','Stock@getStockEntryCount');
-
+Route::get('/stock/checkIsStockObjectExist','Stock@checkIsStockObjectExist');
 // store route section  end  here
 
 
@@ -213,6 +213,15 @@ Route::post('/prn/verifyPRN','PRN@verifyPRN');
 Route::get('/prn/getPRNCount','PRN@getPRNCount');
 Route::get('/prn/verifyPRNCount','PRN@verifyPRNCount');
 // PRN route section end here
+
+
+// GRN route section start here
+Route::get('/dashboard/grnInit','GRN@index');
+Route::get('/dashboard/addNewGRN','GRN@addNew');
+Route::post('/grn/save','GRN@save');
+Route::get('grn/edit/{grnId}','GRN@show');
+Route::post('/grn/update','GRN@update');
+// GRN route section end here
 
 
 // BOM route section start here

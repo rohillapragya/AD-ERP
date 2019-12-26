@@ -119,17 +119,29 @@ class Dispatch extends Controller
 
     public function saveDispatchInfo(Request $request)
     {
-        $sampleId = $request->segment(3);
+        $id = $request->segment(3);
 
-        $object_type ='SAMPLE';
+        $para_len = strlen($id);
 
-        $output = $this->product->getCustomerSampleInfoBySampleId($sampleId);
+        if($para_len > 10)  { $object_type ='INQUIRY'; }
+        else { $object_type ='SAMPLE'; }
 
         $dispatch_service_list = $this->dispatch->getDispatchServiceList();
 
-        $dispatch_details = $this->dispatch->getDispatchDetails($object_type,$sampleId);
-        
-       // dd($dispatch_details);
+        if($object_type =='SAMPLE')
+        {
+            $output = $this->product->getCustomerSampleInfoBySampleId($id);
+
+            $dispatch_details = $this->dispatch->getDispatchDetails($object_type,$id);
+        }
+        else
+        {
+            $output = $this->product->getCustomerInquiryInfoByInquiryId($id);
+        }
+
+        $dispatch_details = $this->dispatch->getDispatchDetails($object_type,$id);
+
+        //dd($dispatch_details);
 
         return view('dispatch.save_dispatch',compact('output','dispatch_service_list','dispatch_details'));
     }
@@ -138,12 +150,20 @@ class Dispatch extends Controller
     {
         $sampleId = request('sampleId');
 
-        if(request('sampleId')) {
-            $object_type='SAMPLE';
-        }   
-        else{
-             $object_type='INQUIRY';
-        }    
+       // dd($sampleId);
+
+        $para_len = strlen($sampleId);
+
+        if($para_len > 10)  { $object_type ='INQUIRY'; }
+        else { $object_type ='SAMPLE'; }
+
+
+        // if(request('sampleId')) {
+        //     $object_type='SAMPLE';
+        // }   
+        // else{
+        //      $object_type='INQUIRY';
+        // }    
 
         $user_id = Session::get('UID');
 
@@ -152,6 +172,19 @@ class Dispatch extends Controller
             $request->validate([
                 'docx_receipt_attacment' => 'mimes:jpeg,png,jpg,pdf|max:2048',
                 ]);
+        }
+
+        $docx_receipt_attacment = request('docx_receipt_attacment');
+
+        if($docx_receipt_attacment)
+        {
+            $imageName = time().'.'.request()->docx_receipt_attacment->getClientOriginalExtension();
+
+            request()->docx_receipt_attacment->move(public_path() . '/dispatch_img', $imageName);
+        }
+        else
+        {
+            $imageName ='';
         }
 
         $dispatchService = request('dispatchService');
@@ -172,6 +205,8 @@ class Dispatch extends Controller
 
         $dispatch_docx_number = request('dispatch_docx_number');
 
+        //dd($dispatch_docx_number);
+
         $dispatchStatus = request('dispatchStatus');
 
         $docx_receipt_attacment = request('docx_receipt_attacment');
@@ -181,7 +216,7 @@ class Dispatch extends Controller
         if($dispatchStatus=='DISPATCH')
         {
            // echo "DISPATCH";
-            $output = $this->dispatch->saveDispatchInfo($sampleId,$object_type,$user_id,$dispatchService,$dispatch_amount,$dispatchdateDay,$dispatchDateMonth,$dispatchDateyear,$deliverydateDay,$deliveryDateMonth,$deliveryDateyear,$dispatch_docx_number,$dispatchStatus,$docx_receipt_attacment,$document_name);
+            $output = $this->dispatch->saveDispatchInfo($sampleId,$object_type,$user_id,$dispatchService,$dispatch_amount,$dispatchdateDay,$dispatchDateMonth,$dispatchDateyear,$deliverydateDay,$deliveryDateMonth,$deliveryDateyear,$dispatch_docx_number,$dispatchStatus,$imageName,$document_name);
 
             $this->cron->save($user_id,'SAMPLE_INQUIRY_DISPATCH','PENDING',$sampleId);
         }

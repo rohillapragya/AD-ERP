@@ -57,8 +57,10 @@ class Stock extends Controller
     	$getWarehouseList = $this->warehouse->getWarehouseList();
 
         $getStockEntryFor = $this->stock->getStockEntryFor();
+
+        $getStockEntryBehalfOf = $this->stock->getStockEntryBehalfOf();
     	
-    	return view('stock.new',compact('getStockEntryTypeMaster','getStockEntryTypeMasterDetails','getWarehouseList','getStockEntryFor'));
+    	return view('stock.new',compact('getStockEntryTypeMaster','getStockEntryTypeMasterDetails','getWarehouseList','getStockEntryFor','getStockEntryBehalfOf'));
     }
 
     public function getStockEntryTypeDetails(Request $request)
@@ -78,6 +80,13 @@ class Stock extends Controller
         {
             $output = $this->mrn->updateMRNStockEntry($stockEntryMRNID);
         }
+
+        $request->validate([
+                'entryBehalfOfID' => 'required',
+                'stock_entry_description' => 'required',
+                'vendor_code' => 'required',
+            ]
+        );
 
     	$stockEntrydateDay = request('stockEntrydateDay');
 
@@ -113,7 +122,11 @@ class Stock extends Controller
 
         $vendor_code = request('vendor_code');
 
-    	$output = $this->stock->addStock($user_id,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$table_product_is_sample_uom,$stockEntryWarehouseId,$stockEntryFor,$vendor_code);
+        $stockEntryBehalfOf = request('stockEntryBehalfOf');
+
+        $entryBehalfOfID = request('entryBehalfOfID');
+
+    	$output = $this->stock->addStock($user_id,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$table_product_is_sample_uom,$stockEntryWarehouseId,$stockEntryFor,$vendor_code,$stockEntryBehalfOf,$entryBehalfOfID);
 
     	//dd("Save");
 
@@ -146,9 +159,11 @@ class Stock extends Controller
 
         $getStockEntryFor = $this->stock->getStockEntryFor();
 
+        $getStockEntryBehalfOf = $this->stock->getStockEntryBehalfOf();
+
         //dd($getStockInfoByStockId);
     	
-    	return view('stock.edit',compact('getStockEntryTypeMaster','getStockEntryTypeMasterDetails','getWarehouseList','getStockInfoByStockId','product','method','uom','getStockEntryFor'));
+    	return view('stock.edit',compact('getStockEntryTypeMaster','getStockEntryTypeMasterDetails','getWarehouseList','getStockInfoByStockId','product','method','uom','getStockEntryFor','getStockEntryBehalfOf'));
     }
 
     public function update(Request $request)
@@ -191,7 +206,11 @@ class Stock extends Controller
 
         $vendor_code = request('vendor_code');
 
-    	$output = $this->stock->updateStock($user_id,$store_id,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$table_product_is_sample_uom,$stockEntryWarehouseId,$stockEntryFor,$vendor_code);
+        $stockEntryBehalfOf = request('stockEntryBehalfOf');
+
+        $entryBehalfOfID = request('entryBehalfOfID');
+
+    	$output = $this->stock->updateStock($user_id,$store_id,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$table_product_is_sample_uom,$stockEntryWarehouseId,$stockEntryFor,$vendor_code,$stockEntryBehalfOf,$entryBehalfOfID);
 
     	$data['message'] ='Stock updated Successfully. Go to  Dashboard using button';
         $data['text'] = '';
@@ -229,4 +248,16 @@ class Stock extends Controller
 
         return $output;
     }
+
+    public function checkIsStockObjectExist(Request $request)
+    {
+        $objectId = $request->input('objectId');
+
+        $objectType = $request->input('objectType');
+
+        $output = $this->stock->checkIsStockObjectExist($objectId,$objectType);
+
+        return $output;
+    }
+
 }

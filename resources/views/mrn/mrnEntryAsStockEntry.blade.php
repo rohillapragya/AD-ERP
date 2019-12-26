@@ -1,6 +1,7 @@
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/stock/stock.css') }}">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/sweetalert2/5.3.5/sweetalert2.min.css">
 
 
 @section('dashboard-home')
@@ -26,6 +27,20 @@
          @if($user_role_id=='3' || $user_role_id=='7'|| $user_role_id=='11')
         <form method="post" action="/stock/save">
             {{ csrf_field() }}
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Entry For</label>
+                <div class="col-sm-8">
+                    <div class="day-month-yaer-class">
+                        <select class="form-control" id="stockEntryFor" name="stockEntryFor">
+                            @for ($i = 0; $i < count($getStockEntryFor); $i++)  
+                                <option value={{ $getStockEntryFor[$i]["id"]}}>{{ $getStockEntryFor[$i]["stock_entry_for"]}}</option> 
+                            @endfor
+                        </select>
+                    </div> 
+                </div>
+            </div>
+
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Date</label>
                 <div class="col-md-8 card-block-detail">
@@ -55,6 +70,35 @@
             </div>
 
             <input type="hidden" id="stockEntryMRNID" value={{$mrnDetails[0]['id']}}>
+
+            
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Entry Behalf Of</label>
+                <div class="col-sm-8">
+                    <div class="day-month-yaer-class">
+                        <select class="form-control" id="stockEntryBehalfOf" name="stockEntryBehalfOf">
+                            @for ($i = 0; $i < count($getStockEntryBehalfOf); $i++)  
+                                
+                                @if($mrnDetails[0]['object_type']== $getStockEntryBehalfOf[$i]["id"])
+                                   <option selected value={{ $getStockEntryBehalfOf[$i]["id"]}}>{{ $getStockEntryBehalfOf[$i]["name"]}}</option>
+                                @else
+                                    <option value={{ $getStockEntryBehalfOf[$i]["id"]}}>{{ $getStockEntryBehalfOf[$i]["name"]}}</option>
+                                @endif
+                            @endfor
+                        </select>
+                    </div> 
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Entry Behalf Of ID</label>
+                <div class="col-sm-8">
+                    <div class="day-month-yaer-class">
+                        <input type="text" class="form-control" id="entryBehalfOfID" name="entryBehalfOfID" placeholder="entry behalf of ID" required="required" onblur="validateObjectID(this)" value="{{$mrnDetails[0]['object_id']}}">
+                    </div> 
+                </div>
+            </div>
+
 
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Entry Type</label>
@@ -98,6 +142,14 @@
             </div>
             
 
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Vendor Code</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="vendor_code" name="vendor_code" placeholder="vendor code" required="required">
+                </div>
+            </div>
+
+
             <div class="form-group row" style="margin-top: 4%"> <label class="col-sm-12 col-form-label">Items Details</label> </div>
 
            
@@ -112,9 +164,10 @@
                                 <th scope="col" style="vertical-align: middle;">Method</th>
                                 <th scope="col" style="vertical-align: middle;">Qty</th>
                                 <th scope="col" style="vertical-align: middle;">UOM</th>
+                                <th scope="col" style="vertical-align: middle;">Control Sample</th>
                                 <th scope="col" style="vertical-align: middle;">Control Sample Qty</th>
                                 <th scope="col" style="vertical-align: middle;">Control Sample UOM</th>
-                                <th scope="col" style="vertical-align: middle;">Action</th>
+                                <!-- <th scope="col" style="vertical-align: middle;">Action</th> -->
                             </tr>
                         </thead>
                         <tbody style="font-size: 14px;">
@@ -166,7 +219,14 @@
                                     </select>
                                 </th>
 
-                                 <th>
+                                <th>
+                                    <select id="product_is_sample_uom" class="form-control" name="product_is_sample_uom[][product_is_sample_uom]">
+                                        <option value="Y">YES</option>
+                                        <option value="N">NO</option>
+                                    </select>
+                                </th>
+
+                                <th>
                                     <input class="form-control qty" id="product_sample_qty" type="number" name="product_sample_qty[][product_sample_qty]" placeholder="sample qty" required="required" min="0" value="{{ $mrnDetails[$i]['control_qty']}}">
                                 </th>
 
@@ -182,15 +242,15 @@
                                     </select>
                                 </th>
 
-                                <th><span class="glyphicon glyphicon-remove" style="display:none"></span></th>
+                                <!-- <th><span class="glyphicon glyphicon-remove" style="display:none"></span></th> -->
                             </tr>
                              @endfor
                         </tbody>
                     </table>
 
-                    <div class="container">
+                    <!-- <div class="container">
                         <button type="button" class="btn btn-default" onclick="addSampleNewRow()">Add New Row</button>
-                    </div>
+                    </div> -->
                 </div> 
             </div>   
 
@@ -209,10 +269,10 @@
     </div>
 
 @stop
-
+<script src="https://cdn.jsdelivr.net/sweetalert2/5.3.5/sweetalert2.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="{{ asset('js/stock/stock.js') }}"></script>
-
+<script src="{{ asset('js/stock/function.js') }}"></script>
 <!-- @extends('layout.dashboard_footer_layout')
 @section('footer')
     @parent

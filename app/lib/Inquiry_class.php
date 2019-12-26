@@ -85,7 +85,7 @@ class Inquiry_class
 
         $seq_id = $this->maxInquiryNumberSeq();
 
-        $out = DB::select("insert into inquiry_master(id,date,status,type,customer_id,created_at,seq_id) values('$inquiry_number','$this->created_at','PENDING','1','$customerName','$this->created_at','$seq_id')");
+        $out = DB::select("insert into inquiry_master(id,date,status,type,customer_id,created_at,seq_id,sales_executive_id) values('$inquiry_number','$this->created_at','PENDING','1','$customerName','$this->created_at','$seq_id','$user_id')");
 
         $out = DB::update("update user_cart set inquiry_number='$inquiry_number',status='INQUIRY-RECEIVED',updated_at='$this->created_at' where id='$cart_id'");
 

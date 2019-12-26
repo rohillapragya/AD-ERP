@@ -142,7 +142,7 @@
             <!-- Add wish list section end here   --> 
                 
             <!-- stock, warehouse section start here -->
-                @if($user_role_id=='3' || $user_role_id=='11')    
+                @if($user_role_id=='3' || $user_role_id=='11' || $user_role_id=='7')    
                     <a href="/dashboard/stockEntryInit" class="panel-content"><span>Stock Entry</span></a>
                     <div id="stockEntryCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -14% 0% 0% 33%;">0</div>
 
@@ -174,6 +174,7 @@
 
             <!-- Goods Receipt Note (GRN - Material Receipt Note) section start here -->
                 @if($user_role_id=='3' || $user_role_id=='11')
+                    <!-- <a href="/dashboard/grnInit" class="panel-content"><span>Goods Receipt Note (GRN - Material Receipt Note)</span></a> -->
                     <a href="#" class="panel-content"><span style="color: #c48d07;">Goods Receipt Note (GRN - Material Receipt Note)</span></a>
                 @else
                     <span class="panel-content">Goods Receipt Note (GRN - Material Receipt Note)</span>

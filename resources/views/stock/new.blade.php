@@ -1,6 +1,7 @@
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/stock/stock.css') }}">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/sweetalert2/5.3.5/sweetalert2.min.css">
 
 
 @section('dashboard-home')
@@ -22,8 +23,23 @@
     </ol>
     </nav>
 
+    @if($errors->all())
+
+        <div class="alert alert-danger" role="alert">
+            <div class="row">
+                
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{$error}}</li>
+                        @endforeach
+                    </ul>
+               
+            </div>
+        </div>
+    @endif
+
     <div class="container box-shadow">
-        @if($user_role_id=='3' || $user_role_id=='11')
+       @if($user_role_id=='3' || $user_role_id=='11' || $user_role_id=='7')
         <form method="post" action="/stock/save">
             {{ csrf_field() }}
 
@@ -70,6 +86,26 @@
             </div>
 
             <input type="hidden" id="stockEntryMRNID" value="0">
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Entry Behalf Of</label>
+                <div class="col-sm-8">
+                    <div class="day-month-yaer-class">
+                        <select class="form-control" id="stockEntryBehalfOf" name="stockEntryBehalfOf">
+                            @for ($i = 0; $i < count($getStockEntryBehalfOf); $i++)  <option value={{ $getStockEntryBehalfOf[$i]["id"]}}>{{ $getStockEntryBehalfOf[$i]["name"]}}</option> @endfor
+                        </select>
+                    </div> 
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Entry Behalf Of ID</label>
+                <div class="col-sm-8">
+                    <div class="day-month-yaer-class">
+                        <input type="text" class="form-control" id="entryBehalfOfID" name="entryBehalfOfID" placeholder="entry behalf of ID" required="required" onblur="validateObjectID(this)">
+                    </div> 
+                </div>
+            </div>
 
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Entry Type</label>
@@ -208,8 +244,11 @@
 
 @stop
 
+<script src="https://cdn.jsdelivr.net/sweetalert2/5.3.5/sweetalert2.min.js"></script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="{{ asset('js/stock/stock.js') }}"></script>
+<script src="{{ asset('js/stock/function.js') }}"></script>
 
 <!-- @extends('layout.dashboard_footer_layout')
 @section('footer')

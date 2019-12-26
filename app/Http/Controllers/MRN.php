@@ -133,7 +133,11 @@ class MRN extends Controller
 
         $uom = $this->product->getUOM();
 
-        return view('mrn.mrnEntryAsStockEntry',compact('mrnDetails','getStockEntryTypeMaster','getStockEntryTypeMasterDetails','getWarehouseList','product','method','uom'));
+        $getStockEntryFor = $this->stock->getStockEntryFor();
+
+        $getStockEntryBehalfOf = $this->stock->getStockEntryBehalfOf();
+
+        return view('mrn.mrnEntryAsStockEntry',compact('mrnDetails','getStockEntryTypeMaster','getStockEntryTypeMasterDetails','getWarehouseList','product','method','uom','getStockEntryBehalfOf','getStockEntryFor'));
     }
 
     public function prnEntry(Request $request)

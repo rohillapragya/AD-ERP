@@ -56,7 +56,9 @@ class Dispatch_class
 
     function getDispatchPendingList()
     {
-        $out = DB::select("select a.id as sample_id,a.sample_number as sample_number,a.type as type,a.request_date as request_date,'Sample' as dispatch_type,b.description as status from sample_master a,process_status b where a.status in ('CUSTOMER_SAMPLE_READY_FOR_DISPATCH','CUSTOMER_SAMPLE_DISPATCH_TO_CUSTOMER') and a.status=b.status");
+        //$out = DB::select("select a.id as sample_id,a.sample_number as sample_number,a.type as type,a.request_date as request_date,'Sample' as dispatch_type,b.description as status from sample_master a,process_status b where a.status in ('CUSTOMER_SAMPLE_READY_FOR_DISPATCH','CUSTOMER_SAMPLE_DISPATCH_TO_CUSTOMER') and a.status=b.status");
+
+        $out = DB::select("select * from (select a.id as sample_id,a.sample_number as sample_number,a.type as type,a.request_date as request_date,'Sample' as dispatch_type,b.description as status from sample_master a,process_status b where a.status in ('CUSTOMER_SAMPLE_READY_FOR_DISPATCH','CUSTOMER_SAMPLE_DISPATCH_TO_CUSTOMER') and a.status=b.status union select a.inquiry_no as id,a.inquiry_no,'INQUIRY' as type,a.created_at as request_date,'Inquiry' as dispatch_type,b.description as status from purchase_indent a,process_status b where a.is_ready_for_pre_dispatch_docx_list='Y' and a.status=b.status) a");
         
         return json_decode(json_encode($out), true);
     }
@@ -64,7 +66,7 @@ class Dispatch_class
 
     function getdispatchCount()
     {
-        $out = DB::select("select count(*) as total from sample_master a,process_status b where a.status in ('CUSTOMER_SAMPLE_READY_FOR_DISPATCH','CUSTOMER_SAMPLE_DISPATCH_TO_CUSTOMER') and a.status=b.status");
+        $out = DB::select("select count(*) as total from (select a.id as sample_id,a.sample_number as sample_number,a.type as type,a.request_date as request_date,'Sample' as dispatch_type,b.description as status from sample_master a,process_status b where a.status in ('CUSTOMER_SAMPLE_READY_FOR_DISPATCH','CUSTOMER_SAMPLE_DISPATCH_TO_CUSTOMER') and a.status=b.status union select a.inquiry_no as id,a.inquiry_no,'INQUIRY' as type,a.created_at as request_date,'Inquiry' as dispatch_type,b.description as status from purchase_indent a,process_status b where a.is_ready_for_pre_dispatch_docx_list='Y' and a.status=b.status) a");
         
         return json_decode(json_encode($out), true);
     }
