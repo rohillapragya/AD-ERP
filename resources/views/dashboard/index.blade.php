@@ -182,7 +182,7 @@
             <!-- Goods Receipt Note (GRN - Material Receipt Note) section end here -->
 
             <!-- Stock Report section start here -->
-                @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='9' || $user_role_id=='11')
+                @if($user_role_id=='3' || $user_role_id=='7' ||  $user_role_id=='11')
                     <a href="/dashboard/StockReport"><span>Stock Report</span></a>
                 @else
                     <span class="panel-content">Stock Report</span>
