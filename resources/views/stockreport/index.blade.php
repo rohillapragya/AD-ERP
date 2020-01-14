@@ -24,7 +24,7 @@
 
 
      <div class="container box-shadow">
-        @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='9' || $user_role_id=='11')
+        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7' || $user_role_id=='9' || $user_role_id=='11')
         <div class="form-group row">
             <div class="col-sm-1 searchClass">Search</div>
             <div class="col-sm-4">

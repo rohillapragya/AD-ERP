@@ -23,7 +23,10 @@ class Stock_class
     {
     	//$out = DB::select("select * from stock_entry order by id desc");
 
-    	$out = DB::select("select a.stock_entry_for,a.id as id,a.entry_description,b.name as store_type,c.name as store_type_details,a.entry_date as created_at,d.name as warehouse_name from stock_entry a,stock_entry_type_master b,stock_entry_type_details c,warehouse_master d where a.entry_type_id = b.id and a.entry_type_details_id=c.id and a.warehouse_id=d.id order by stock_entry_for");
+    	$out = DB::select("select a.stock_entry_for,a.id as id,a.entry_description,b.name as store_type,c.name as store_type_details,a.entry_date as created_at,d.name as warehouse_name,e.item_code,f.name as product_name from stock_entry a,stock_entry_type_master b,stock_entry_type_details c,warehouse_master d,stock_items_details e,product_master f where a.entry_type_id = b.id and a.entry_type_details_id=c.id and a.warehouse_id=d.id and a.id=e.stock_entry_id and e.item_code=f.code order by f.name,e.item_code");
+
+
+        //$out = DB::select("select a.stock_entry_for,a.id as id,a.entry_description,b.name as store_type,c.name as store_type_details,a.entry_date as created_at,d.name as warehouse_name from stock_entry a,stock_entry_type_master b,stock_entry_type_details c,warehouse_master d where a.entry_type_id = b.id and a.entry_type_details_id=c.id and a.warehouse_id=d.id order by stock_entry_for");
 
     	return json_decode(json_encode($out), true);
     }

@@ -23,7 +23,7 @@ $user_role_id = Session::get('role_id');
 	</nav>
 
 	<div class="container box-shadow">
-        @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='12')
+        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7' || $user_role_id=='12')
 	 	<table class="table table-bordered">
             <thead style="background-color: #eef1ed;font-size: 14px;">
                 <tr>

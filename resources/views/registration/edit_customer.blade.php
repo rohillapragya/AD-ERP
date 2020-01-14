@@ -38,7 +38,7 @@ $user_role_id = Session::get('role_id');
     @endif
 	
     <div class="container box-shadow">
-    	@if($user_role_id=='3' || $user_role_id=='5')
+    	@if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='5')
     	<form method="post" action="/dashboard/editCustomer">
            	{{ csrf_field() }}
 	    	 

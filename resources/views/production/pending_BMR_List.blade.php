@@ -23,7 +23,7 @@
     </nav>
 
     <div class="container box-shadow">
-         @if($user_role_id=='3' || $user_role_id=='8')
+         @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='8')
         <div class="form-group row">
             <table class="table table-bordered" id="sampleItemsList">
                 <thead style="background-color: #eef1ed;font-size: 14px;">

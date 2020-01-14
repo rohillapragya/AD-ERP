@@ -380,4 +380,12 @@ class Product extends Controller
             return $output;
         }
     /*Method Section end here*/
+
+
+        public function list()
+        {
+            $getCategoryList = $this->product->activeCategoryList();
+            
+            return view('product.list',compact('getCategoryList'));
+        }
 }

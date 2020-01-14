@@ -38,7 +38,7 @@
     @endif
 
     <div class="container box-shadow">
-        @if($user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7' || $user_role_id=='11')
+        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7' || $user_role_id=='11')
         <form method="post" action="/wish/save" enctype="multipart/form-data"> 
                 {{ csrf_field() }}
          

@@ -17,7 +17,7 @@
     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <span class="glyphicon glyphicon-map-marker"></span>
-        <li class="breadcrumb-item active" aria-current="page"> <a href="/dashboard"> Dashboard </a> / Quotation / Add</li>
+        <li class="breadcrumb-item active" aria-current="page"> <a href="/dashboard"> Dashboard </a> / Purchase Request / Add</li>
     </ol>
     </nav>
 
@@ -37,7 +37,7 @@
     @endif
 
     <div class="container box-shadow">
-     @if($user_role_id=='3' || $user_role_id=='13')
+     @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='13')
         <form method="post" action="/quotation/save" enctype="multipart/form-data">
             {{ csrf_field() }}
             <div class="form-group row">

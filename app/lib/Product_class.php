@@ -28,7 +28,7 @@ class Product_class
 
     function getMethod()
     {
-        $out = DB::select("select id,name,is_active from product_method_master");
+        $out = DB::select("select id,name,is_active from product_method_master order by name");
 
         return json_decode(json_encode($out), true);
     }
@@ -42,7 +42,7 @@ class Product_class
 
     function gettingFullProuductList()
     {
-        $out = DB::select("select * from product_master order by id desc");
+        $out = DB::select("select * from product_master order by name");
 
         return json_decode(json_encode($out), true);
     }
@@ -57,7 +57,7 @@ class Product_class
     
     function activeMethodList()
     {
-        $out = DB::select("select * from product_method_master where is_active='Y'");
+        $out = DB::select("select * from product_method_master where is_active='Y' order by name");
 
         return json_decode(json_encode($out), true);
     }
@@ -72,7 +72,7 @@ class Product_class
 
     function getProductCategory()
     {
-        $out = DB::select("select * from product_category_master");
+        $out = DB::select("select * from product_category_master order by name");
 
         return json_decode(json_encode($out), true);
     }
@@ -197,7 +197,7 @@ class Product_class
 
     function getProductByCategoryId($categoryId)
     {
-        $out = DB::select("select a.*,b.name as category_name,c.name as method_name from product_master a,product_category_master b,product_method_master c where a.category='$categoryId' and a.category=b.id and a.method=c.id and a.active='Y'");
+        $out = DB::select("select a.*,b.name as category_name,c.name as method_name from product_master a,product_category_master b,product_method_master c where a.category='$categoryId' and a.category=b.id and a.method=c.id and a.active='Y' order by a.name");
         return json_decode(json_encode($out), true);
     }
 
@@ -334,12 +334,12 @@ class Product_class
         {
             if($role_id=='3' || $role_id=='7')
             {
-                $out = DB::select("select c.description as customer_status,a.*,b.* from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.status=c.status");
+                $out = DB::select("select c.description as customer_status,a.*,b.* from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.status=c.status order by a.sample_number,a.created_at desc");
     
             }
             else
             {
-                $out = DB::select(" select c.description as customer_status,a.*,b.* from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.created_by='$user_id' and a.status=c.status");
+                $out = DB::select(" select c.description as customer_status,a.*,b.* from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.created_by='$user_id' and a.status=c.status order by a.sample_number,a.created_at desc");
             }
            
             return json_decode(json_encode($out), true);

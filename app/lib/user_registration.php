@@ -520,7 +520,7 @@ class User_Registration
 
         if($role_id)
         {
-            if($role_id=='3')
+            if($role_id=='1' || $role_id=='3')
             {
                $out = DB::select("select a.*,b.name as city_name from user_master a,city_master b where a.user_master_type='1' and a.city_code=b.id");
     

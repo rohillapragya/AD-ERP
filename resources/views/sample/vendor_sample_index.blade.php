@@ -23,7 +23,7 @@ $user_role_id = Session::get('role_id');
     </nav>
 
      <div class="container box-shadow">
-        @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
+        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
         <div class="form-group row">
             <div class="col-sm-12">
                 <a href="/dashboard/addNewVendorSample" style="float: right" class="btn btn-default">Add New Vendor Sample</a>
@@ -34,8 +34,8 @@ $user_role_id = Session::get('role_id');
                 <thead style="background-color: #eef1ed;font-size: 14px;">
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Inquiry Number</th>
-                        <th scope="col">Inquiry Date</th>
+                        <th scope="col">Sample Number</th>
+                        <th scope="col">Sample Date</th>
                         <th scope="col">Received Date</th>
                         <th scope="col">Customer Info</th>
                         <th scope="col">Status</th>
@@ -55,7 +55,7 @@ $user_role_id = Session::get('role_id');
                                 <td>{{$output[$i]['customer_status']}}</td>
                                 <td><a href="/sample/vendor/show/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
 
-                             @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
+                             @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
                                 <td><a href="/sample/vendor/saveVendorSample/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a></td>
                             @else
                                 <td><span class="glyphicon glyphicon-tag"></td>

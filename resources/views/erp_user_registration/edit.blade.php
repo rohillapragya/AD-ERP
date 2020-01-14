@@ -39,7 +39,7 @@
     </nav>
 
     <div class="container box-shadow">
-        @if($user_id=='1')
+        @if($user_role_id=='1')
         <form method="post" action="/erpuser/update">
             {{ csrf_field() }}
 

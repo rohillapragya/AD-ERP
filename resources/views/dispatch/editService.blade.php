@@ -24,7 +24,7 @@ $is_active = $output[0]['is_active'];
 	</nav>
 
 	 <div class="container box-shadow">
-        @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='12')
+        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7' || $user_role_id=='12')
         <form method="post" action="/dispatch/updateService">
             {{ csrf_field() }}
             <input type="hidden" value="{{$output[0]['id']}}" name="dispatchId">

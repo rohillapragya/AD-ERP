@@ -40,7 +40,7 @@
     <div class="container box-shadow">
         <form method="post" action="/product/editCategory">
             {{ csrf_field() }}
-         @if($user_role_id=='3' || $user_role_id=='14')
+         @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='14')
             <input type="hidden" name="categoryId" value="{{ $output[0]['id'] }}">
          
             <div class="form-group row">

@@ -49,7 +49,7 @@
     @endif
 
     <div class="container box-shadow">
-        @if($user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
+        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
         <form method="post" action="/dashboard/editSampleRequest" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <input type="hidden" value="{{$output[0]['sample_id']}}" name="sampleId">

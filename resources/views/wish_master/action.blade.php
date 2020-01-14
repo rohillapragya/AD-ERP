@@ -23,7 +23,7 @@
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id=='3')
+        @if($user_role_id=='1' || $user_role_id=='3')
             <input type="hidden" name="wishID" value="{{ $output[0]['id'] }}">
 
             <div class="form-group row">

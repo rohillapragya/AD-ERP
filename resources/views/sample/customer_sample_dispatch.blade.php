@@ -26,7 +26,7 @@ $behalf_of = $output[0]["any_behalf_of"];
 
 
     <div class="container box-shadow">
-        @if($user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
+        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
         <form method="post" action="/customer/sample/readyForDispatch">
             {{ csrf_field() }}
             <div class="form-group row">

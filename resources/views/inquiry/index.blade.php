@@ -25,7 +25,7 @@
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
+        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
         <div class="form-group row" style="box-shadow: 7px 4px 10px #f1f1f1;">
             <div class="col-sm-10">  <input type="input" class="form-control" id="product_name"  placeholder="product name"></div>
             

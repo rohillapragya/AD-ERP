@@ -23,7 +23,7 @@
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
+        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
         <div class="form-group row">
             <div class="col-sm-12">
                 <a href="/dashboard/addNewSample" style="float: right" class="btn btn-default">Add New Sample Request</a>
@@ -55,7 +55,7 @@
                                 <td>{{$output[$i]['customer_status']}}</td>
                                 <td><a href="/sample/customer/show/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
 
-                                @if($user_role_id=='3' || $user_role_id=='7')
+                                @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7')
                                     <td><a href="/sample/customer/readyForDispatch/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a></td>
                                 @else
                                     <td><span class="glyphicon glyphicon-tag"></td>

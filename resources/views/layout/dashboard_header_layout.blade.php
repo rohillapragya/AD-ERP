@@ -34,6 +34,10 @@
         }
 </style>
     </head>
+    @php
+        $user_role_id = Session::get('role_id');
+    @endphp
+
     <body>
         @section('dashboard-home')
             <div class="header">
@@ -48,9 +52,12 @@
                     </span>
                     <span class="glyphicon glyphicon-user font-30" style="margin-right: 50px;"></span>
                     <span class="glyphicon glyphicon-bell font-30" style="margin-right: 50px;"></span>
-                    <a href="/inquiry/proceedCart">
-                        <span class="glyphicon glyphicon-shopping-cart font-30" style="margin-right: 50px;margin-top: -13px;"><div id="userCartCount" class="userCartCount">0</div></span>    
-                    </a>
+
+                    @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
+                        <a href="/inquiry/proceedCart">
+                            <span class="glyphicon glyphicon-shopping-cart font-30" style="margin-right: 50px;margin-top: -13px;"><div id="userCartCount" class="userCartCount">0</div></span>
+                        </a>
+                    @endif
                     
                     <a href="/signoff" style="padding: 0px;"> <span class="glyphicon glyphicon-log-out font-30"></span></a>
                    

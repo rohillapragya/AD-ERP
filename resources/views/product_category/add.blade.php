@@ -40,7 +40,7 @@
     <div class="container box-shadow">
         <form method="post" action="/product/saveCategory">
                 {{ csrf_field() }}
-         @if($user_role_id=='3' || $user_role_id=='14')
+         @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='14')
          
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Category Name</label>

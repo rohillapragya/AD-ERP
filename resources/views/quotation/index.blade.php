@@ -23,7 +23,7 @@
     </nav>
 
     <div class="container box-shadow">
-         @if($user_role_id=='3' || $user_role_id=='13')
+         @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='13')
         <div class="form-group row">
             <table class="table table-bordered" id="sampleItemsList">
                 <thead style="background-color: #eef1ed;font-size: 14px;">
@@ -32,7 +32,7 @@
                         <th scope="col">Purchase Requization No</th>
                         <th scope="col">Required Date(YYYY-MM_DD)</th>
                         <th scope="col">Request Date(YYYY-MM_DD)</th>
-                        <th scope="col">Create Quotation</th>
+                        <th scope="col">Create Purchase Request</th>
                     </tr>
                 </thead>
                 <tbody style="font-size: 14px;" >
@@ -43,12 +43,12 @@
                                 <td>{{$output[$i]['purchase_request_no']}}</td>
                                 <td>{{$output[$i]['required_date']}}</td>
                                 <td>{{$output[$i]['created_at']}}</td>
-                                <td><a href="/prn/{{$output[$i]['id']}}/quotation/create" class="btn btn-primary btn-sm">Create Quotation</a></td> 
+                                <td><a href="/prn/{{$output[$i]['id']}}/quotation/create" class="btn btn-primary btn-sm">Create Purchase Request</a></td> 
                             </tr>
                         @endfor
                     @else  
                         <tr>
-                            <td colspan="5" class="no-data-found">No Quotation found</td>
+                            <td colspan="5" class="no-data-found">No Purchase Request found</td>
                         </tr>
                     @endif    
                 </tbody>

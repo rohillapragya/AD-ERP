@@ -23,7 +23,7 @@
     </nav>
 
     <div class="container box-shadow">
-         @if($user_role_id=='3' || $user_role_id=='8')
+         @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='8')
         <div class="form-group row">
             <div class="col-sm-12">
                 <a href="/dashboard/addProduction" style="float: right" class="btn btn-default">Add New Production</a>

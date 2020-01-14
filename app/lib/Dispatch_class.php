@@ -20,7 +20,7 @@ class Dispatch_class
 
     function getDispatchServiceList()
     {
-        $out = DB::select("select * from dispatch_service_master order by id");
+        $out = DB::select("select * from dispatch_service_master order by name");
         return json_decode(json_encode($out), true);
     }
 
@@ -132,8 +132,6 @@ class Dispatch_class
             
                 $out = DB::insert("insert into dispatch_attachments (id,dispatch_details_id,attached_docx_name,created_at,created_by) values('$maxDispatchAttachmentsId','$maxDispatchDetailsId','$doc_name','$this->created_at','$user_id')");
             }
-
-            
         }
     }
 
@@ -146,8 +144,19 @@ class Dispatch_class
 
     function editDispatchInfo($sampleId,$object_type,$user_id,$dispatchStatus)
     {
-        DB::update("update sample_master set status = 'CUSTOMER_SAMPLE_RECEIVED_BY_CUSTOMER',updated_at = '$this->created_at',updated_by = '$user_id' where id ='$sampleId'");
+        if($object_type=='INQUIRY')
+        {
+            DB::update("update inquiry_master set status = 'CUSTOMER_INQUIRY_RECEIVED_BY_CUSTOMER',modified_at = '$this->created_at',updated_by = '$user_id' where id ='$sampleId'");
 
-        DB::update("update dispatch_details set status = 'CUSTOMER_SAMPLE_RECEIVED_BY_CUSTOMER' where object_id ='$sampleId' and object_type='$object_type'");
+            DB::update("update user_cart set status = 'CUSTOMER_INQUIRY_RECEIVED_BY_CUSTOMER',updated_at = '$this->created_at',updated_by = '$user_id' where inquiry_number ='$sampleId'");
+
+            DB::update("update dispatch_details set status = 'CUSTOMER_INQUIRY_RECEIVED_BY_CUSTOMER' where object_id ='$sampleId' and object_type='$object_type'");
+        }
+        else
+        {
+            DB::update("update sample_master set status = 'CUSTOMER_SAMPLE_RECEIVED_BY_CUSTOMER',updated_at = '$this->created_at',updated_by = '$user_id' where id ='$sampleId'");
+
+            DB::update("update dispatch_details set status = 'CUSTOMER_SAMPLE_RECEIVED_BY_CUSTOMER' where object_id ='$sampleId' and object_type='$object_type'");
+        }
     }
 }

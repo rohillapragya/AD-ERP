@@ -51,7 +51,7 @@ class PRN extends Controller
     }
 
 
-    public  function saveprn(Request $request)
+    public function saveprn(Request $request)
     {
         $user_id = Session::get('UID');
 

@@ -26,7 +26,7 @@
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id=='3' || $user_role_id=='13')
+        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='13')
         <form method="post" action="/prn/update">
             {{ csrf_field() }}
             <!-- <input type="hidden" id="warehouseId" name="warehouseId" value="{{$output[0]['id']}}"> -->

@@ -21,7 +21,7 @@ class Warehouse_class
 
     function showWarehouseList()
     {
-        $out = DB::select("select a.id as id,a.name as name,a.address as address,a.city as city_id,a.is_active as is_active,a.created_at as created_at,a.created_by as created_by,b.name as city from warehouse_master a, city_master b where a.city = b.id");
+        $out = DB::select("select a.id as id,a.name as name,a.address as address,a.city as city_id,a.is_active as is_active,a.created_at as created_at,a.created_by as created_by,b.name as city from warehouse_master a, city_master b where a.city = b.id order by a.name");
 
         return json_decode(json_encode($out), true);
     }

@@ -277,3 +277,21 @@ Route::get('/charts','Chart@index');
 Route::get('/chart/sample','Chart@sample');
 Route::get('/chart/inquiry','Chart@inquiry');
 // chart route section  end  here
+
+
+// development route section start here
+Route::get('/development/addRoute','Development@addRouteIndex');
+Route::post('/development/addNewURL','Development@addNewURL');
+Route::get('/development/getURL','Development@getURL');
+Route::post('/development/editURL','Development@editURL');
+
+Route::get('/development/addMenu','Development@addMenuIndex');
+Route::post('/development/addNewMenu','Development@addNewMenu');
+Route::get('/development/getMenu','Development@getMenu');
+Route::post('/development/editMenu','Development@editMenu');
+
+Route::get('/development/menu_route_map','Development@menu_route_map');
+// development route section  end  here
+
+
+Route::get('/product/list','Product@list');

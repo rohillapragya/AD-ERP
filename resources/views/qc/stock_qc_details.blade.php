@@ -26,7 +26,7 @@ $user_role_id = Session::get('role_id');
 
     
     <div class="container box-shadow">
-       @if($user_role_id=='3' || $user_role_id=='10' || $user_role_id=='14')
+       @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='10' || $user_role_id=='14')
         <form method="post" action="/qcDetails/qcStockInfoSave">
             {{ csrf_field() }}
             <div class="form-group row">

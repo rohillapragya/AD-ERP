@@ -24,7 +24,7 @@
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id=='3' || $user_role_id=='13')
+        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='13')
         <form method="post" action="/prn/save">
             {{ csrf_field() }}
     

@@ -30,7 +30,7 @@ $user_id = Session::get('UID');
                 <a href="/dashboard/addNewERPUser" style="float: right" class="btn btn-default">Add New ERP User</a>
             </div>
         </div>
-       @if($user_id=='1')
+       @if($user_role_id=='1')
         <div class="form-group row">
             <table class="table table-bordered" id="erpUserTableList">
                 <thead style="background-color: #eef1ed;font-size: 14px;">
