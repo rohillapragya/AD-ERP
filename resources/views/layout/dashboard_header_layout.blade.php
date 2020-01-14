@@ -51,7 +51,7 @@
                         <span class="font-bold">{{ Session::get('role_name')}} </span>
                     </span>
                     <span class="glyphicon glyphicon-user font-30" style="margin-right: 50px;"></span>
-                    <span class="glyphicon glyphicon-bell font-30" style="margin-right: 50px;"></span>
+                    <!-- <span class="glyphicon glyphicon-bell font-30" style="margin-right: 50px;"></span> -->
 
                     @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
                         <a href="/inquiry/proceedCart">

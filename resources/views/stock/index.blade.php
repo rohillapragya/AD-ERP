@@ -37,9 +37,10 @@
                         <th scope="col" style="vertical-align: baseline;">#</th>
                         <th scope="col" style="vertical-align: baseline;width: 113px;">Product Code</th>
                         <th scope="col" style="vertical-align: baseline;">Product Name</th>
-                        <th scope="col" style="vertical-align: baseline;">Store For</th>
-                        <th scope="col" style="vertical-align: baseline;">Store Type</th>
-                        <th scope="col" style="vertical-align: baseline;">Store Type Details</th>
+                        <th scope="col" style="vertical-align: baseline;width: 65px;">Qty</th>
+                        <th scope="col" style="vertical-align: baseline;">Purpose</th>
+                        <th scope="col" style="vertical-align: baseline;">Type</th>
+                        <th scope="col" style="vertical-align: baseline;">Details</th>
                         <th scope="col" style="vertical-align: baseline;">Description</th>
                         <th scope="col" style="vertical-align: baseline;">Warehouse</th>
                         <th scope="col" style="vertical-align: baseline;width: 90px;">Entry Date</th>
@@ -53,6 +54,7 @@
                                 <td>{{($i+1)}}</td>
                                 <td>{{$output[$i]['item_code']}}</td>
                                 <td>{{$output[$i]['product_name']}}</td>
+                                <td>{{$output[$i]['item_qty']}} Kg</td>
                                 <td>{{$output[$i]['stock_entry_for']}}</td>
                                 <td>{{$output[$i]['store_type']}}</td>
                                 <td>{{$output[$i]['store_type_details']}}</td>

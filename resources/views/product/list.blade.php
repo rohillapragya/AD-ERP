@@ -24,13 +24,13 @@
 
     <div class="container box-shadow">
         @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
-        <div class="form-group row" style="box-shadow: 7px 4px 10px #f1f1f1;">
+        <!-- <div class="form-group row" style="box-shadow: 7px 4px 10px #f1f1f1;">
             <div class="col-sm-10">  <input type="input" class="form-control" id="product_name"  placeholder="product name"></div>
             
             <div class="col-sm-2"><button type="button" class="btn btn-primary btn-sm" style="width: 60%">  
                 <span class="glyphicon glyphicon-search" style="margin-right: 20%"></span>Search</button>
             </div>
-        </div>
+        </div> -->
 
           <div class="form-group row" style="margin: 5% 0% 0% 0%;">
             <div class="list-group" id="myList" role="tablist">
@@ -44,7 +44,7 @@
             </div>
 
             <div class="tab-content">
-                <div class="tab-pane active" id="home" role="tabpanel" style="margin: 0% 0% 0% 6%;padding: 2%;">Home</div>
+                <div class="tab-pane active" id="home" role="tabpanel" style="margin: -2% 0% 0% 6%;padding: 2%;">Home</div>
             </div>
         </div>
         @else

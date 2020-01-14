@@ -50,8 +50,8 @@
                             <tr>
                                 <td>{{($i+1)}}</td>
                                 <td style="text-transform: uppercase;">{{$output[$i]['code']}}</td>
-                                <td style="text-transform: uppercase;">{{$output[$i]['name']}}</td>
-                                <td style="text-transform: uppercase;">{{$output[$i]['scrientific_name']}}</td>
+                                <td style="text-transform: capitalize;">{{$output[$i]['name']}}</td>
+                                <td style="    text-transform: capitalize;font-style: italic;font-weight: 600;">{{$output[$i]['scrientific_name']}}</td>
                                 <td>{{$output[$i]['specification']}}</td>
                                 <td>{{$output[$i]['application']}}</td>
                                 <td>{{$output[$i]['active']}}</td>

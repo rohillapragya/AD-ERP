@@ -196,10 +196,11 @@
         </div>
     </div>
 
+
     <div class="col-lg-4 col-sm-4"> 
         <div class="panel panel-default boxShadow">
             <div class="panel-heading panel-heading-class">Purchase</div>
-            <div class="panel-body panel-class">
+            <div class="panel-body panel-class" style="margin-bottom: 270px">
 
             <!-- verify PRN,Qutation,approved vendor list section start here -->
                 @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='13')
@@ -210,7 +211,7 @@
                     <!-- <a href="#" class="panel-content"><span style="color: #c48d07;">Approved Vendor List</span></a> -->
                 @else
                     <span class="panel-content">Verify Purchase Requization Note (PRN)</span>
-                    <span class="panel-content">Qutation</span>
+                    <span class="panel-content">Purchase Request</span>
                     <span class="panel-content">Supplier Quotation</span>
                     <!-- <span class="panel-content">Approved Vendor List</span> -->
                 @endif
@@ -220,11 +221,11 @@
                 @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7')
                    <!--  <a href="/dashboard/pI" class="panel-content" style="margin-bottom: 80%"><span>Purchase Indent</span></a> -->
                     <a href="/dashboard/pI" class="panel-content"><span>Purchase Indent</span></a>
-                    <div id="purchaseIndentCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -12% 0% 76% 43%;">0</div>
+                    <div id="purchaseIndentCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -11% 0% 0% 40%;">0</div>
                     <!-- <a href="#" class="panel-content"><span style="color: #c48d07;">Purchase Order (PO) Information</span></a>
                     <a href="#" class="panel-content" style="margin-bottom: 48%"><span style="color: #c48d07;">Performa Invoice</span></a> -->
                 @else
-                    <span class="panel-content" style="margin-bottom: 96%">Purchase Indent</span>
+                    <span class="panel-content">Purchase Indent</span>
                     <!-- <span class="panel-content">Purchase Order (PO) Information</span>
                     <span style="margin-bottom: 48%">Performa Invoice</span> -->
                 @endif
@@ -233,10 +234,12 @@
         </div>
     </div>
 
+
+
     <div class="col-lg-4 col-sm-4"> 
         <div class="panel panel-default boxShadow">
             <div class="panel-heading panel-heading-class">Production</div>
-            <div class="panel-body panel-class">
+            <div class="panel-body panel-class" style="margin-bottom: 314px;">
 
             <!-- Bill of Materials , Production planing details section start here -->
                 @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='8')
@@ -246,12 +249,12 @@
                     <a href="/dashboard/production" class="panel-content"><span>Production Plan Details</span></a>
 
                     <a href="/dashboard/customerSampleBMRList" class="panel-content"><span>BMR Number</span></a>
-                        <div id="bmrNumberCount"  class="countDivClass" style="background-color: #f2f2f2;margin : -13% 0% 108% 36%;">0</div>
+                        <div id="bmrNumberCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -13% 0% 0% 37%;">0</div>
                     <!-- <a href="#" class="panel-content" style="margin-bottom: 97%"><span>BMR Number</span></a> -->
                 @else
                     <span class="panel-content">Bill of Materials (BOM)</span>
                     <span class="panel-content">Production Plan Details</span>
-                    <span style="margin-bottom: 107%">BMR Number</span>
+                    <span>BMR Number</span>
                 @endif    
             <!-- Bill of Materials , Production planing details section end here     -->
             </div>
