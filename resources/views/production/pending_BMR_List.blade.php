@@ -47,7 +47,7 @@
                                 <td>{{$output[$i]['delivered_date']}}</td>
                                 <td>{{$output[$i]['ref_name']}}</td>
                                 <td>{{$output[$i]['customer_status']}}</td>
-                                @if($user_role_id=='3' || $user_role_id=='7')
+                                @if($user_role_id=='3' || $user_role_id=='7' || $user_role_id=='8')
                                   <!--   <td><a href="/sample/customer/readyForDispatch/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a></td> -->
                                      <td><a href="/sample/customer/BMRDetails/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a></td>
                                 @else
