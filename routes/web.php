@@ -39,6 +39,7 @@ Route::get('/user/checkRole','Login@checkRole');
 // Registration Route section start here
 Route::get('/dashbaord/customerRegistration','UserRegistration@customer_index');
 Route::get('/dashbaord/vendorRegistration','UserRegistration@vendor_index');
+
 Route::get('/dashbaord/erpUserRegistration','UserRegistration@erp_user_index');
 Route::get('/dashboard/addNewERPUser','UserRegistration@addNewERPUser');
 Route::post('/erpuser/save','UserRegistration@save');
@@ -102,6 +103,7 @@ Route::get('/dashboard/addNewDistapchService','Dispatch@addNewService');
 Route::post('/dispatch/saveService','Dispatch@saveService');
 Route::get('/dispatch/service/edit/{serviceId}','Dispatch@showService');
 Route::post('/dispatch/updateService','Dispatch@editService');
+
 Route::post('/dispatch/add','Dispatch@addDisaptchInfo');
 Route::get('/dispatch/getdispatchCount','Dispatch@getdispatchCount');
 
@@ -180,6 +182,7 @@ Route::get('/stock/getStockEntryTypeDetails','Stock@getStockEntryTypeDetails');
 Route::post('/stock/save','Stock@saveStock');
 Route::get('/store/edit/{storeId}','Stock@show');
 Route::post('/stock/update','Stock@update');
+
 Route::get('/dashboard/StockReport','Stock@reportIndex');
 Route::get('/stock/getStockByWarehouseId','Stock@getStockByWarehouseId');
 Route::get('/stock/qc/QCDetails/{sampleId}','QC@StockReadyForQCDetails');
@@ -207,6 +210,7 @@ Route::get('/dashboard/addNewPRN','PRN@addNew');
 Route::post('/prn/save','PRN@savePRN');
 Route::get('/prn/edit/{prnId}','PRN@show');
 Route::post('/prn/update','PRN@update');
+
 Route::get('/dashoard/prn/verify','PRN@showVerifyPRN');
 Route::get('/prn/show/{prnId}','PRN@showPRN');
 Route::post('/prn/verifyPRN','PRN@verifyPRN');
@@ -291,6 +295,13 @@ Route::get('/development/getMenu','Development@getMenu');
 Route::post('/development/editMenu','Development@editMenu');
 
 Route::get('/development/menu_route_map','Development@menu_route_map');
+Route::post('/development/addMenuUrlMap','Development@addMenuURLMap');
+Route::post('/development/removeMenuUrlMap','Development@removeMenuUrlMap');
+
+Route::get('/development/location','Development@locationIndex');
+Route::post('/development/addNewLocation','Development@addNewLocation');
+Route::get('/development/getLocation','Development@getLocation');
+Route::post('/development/editLocation','Development@editLocation');
 // development route section  end  here
 
 

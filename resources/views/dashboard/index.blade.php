@@ -293,7 +293,7 @@
 
                 @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='10' || $user_role_id=='14')
                     <a href="/dashboard/customerSampleQC" class="panel-content"><span>QC Details</span></a>
-                   <!--  <div id="qcDetails"  class="countDivClass" style="background-color: #f2f2f2;margin: -13% 0% 4% 28%">0</div> -->
+                    <div id="qcDetails"  class="countDivClass" style="background-color: #f2f2f2;margin: -13% 0% 4% 28%">0</div>
                 @else
                     <span class="panel-content">QC Details</span>
                 @endif   
@@ -327,6 +327,7 @@
                     <a href="/development/addRoute" class="panel-content"><span>Add Route (URL)</span></a>
                     <a href="/development/addMenu" class="panel-content"><span>Add Menu</span></a>
                     <a href="/development/menu_route_map" class="panel-content"><span>Menu & Route Map</span></a>
+                    <a href="/development/location" class="panel-content"><span>Add Location</span></a>
                   
                 <!-- contact us section end here     -->
                 </div>
