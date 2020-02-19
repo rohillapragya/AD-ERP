@@ -39,9 +39,10 @@
                 <table class="table table-bordered">
                     <thead style="background-color: #eef1ed;font-size: 14px;">
                         <tr>
-                            <th scope="col">#</th>
+                            <th scope="col" style="width: 70px;">#</th>
                             <th scope="col">Menu</th>
-                            <th scope="col">Edit</th>
+                            <th scope="col" style="width: 70px;">Edit</th>
+                            <th scope="col" style="width: 70px;">Delete</th>
                         </tr>
                     </thead>
                     <tbody style="font-size: 14px;" id="developmentMenuList">
@@ -51,12 +52,14 @@
                                     <td>{{($i+1)}}</td>
                                     <td>{{$output[$i]['name']}}</td>
                                     <td><span class="glyphicon glyphicon-pencil" style="color: #2f8dc9;cursor: pointer;" onclick="onClickMenuEdit({{$output[$i]['id']}})"></span></td> 
-                                    <!-- <td><a href="/development/url/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a></td> --> 
+                                   <td>
+                                        <span class="glyphicon glyphicon-remove" style="color: #2f8dc9;cursor: pointer;" onclick="onClickMenuDelete({{$output[$i]['id']}})"></span>
+                                   </td>
                                 </tr>
                             @endfor
                         @else  
                             <tr>
-                                <td colspan="3" class="no-data-found">No Menu found</td>
+                                <td colspan="4" class="no-data-found">No Menu found</td>
                             </tr>
                         @endif    
                     </tbody>

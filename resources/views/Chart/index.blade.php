@@ -18,7 +18,7 @@
 <div class="container">  
   <div class="row">
     <div class="col-sm-12"> 
-      <a href="/dashboard" class="btn btn-primary btn-lg" style="float: right;margin-bottom: 2%;"> <span>Dashboard</span></a>
+      <a href="/Index" class="btn btn-primary btn-lg" style="float: right;margin-bottom: 2%;"> <span>Dashboard</span></a>
     </div>
   </div>
 
@@ -30,14 +30,15 @@
     function drawChart() 
     {
       var data = google.visualization.arrayToDataTable([
-        ['Language', 'Speakers (in millions)'],
+        ['Website', 'Natura ERP)'],
         ['SAMPLE', 1], 
         ['INQUIRY', 1], 
-        ['DISPATCH', 1],
         ['WISH', 1], 
-        ['MRN', 1], 
-        ['BMR', 1],
-        ['QC', 1]
+
+        // ['DISPATCH', 1],
+        // ['MRN', 1], 
+        // ['BMR', 1],
+        // ['QC', 1]
       ]);
 
       var options = {
@@ -45,11 +46,11 @@
         legend: 'none',
         pieSliceText: 'label',
         is3D: true,
-        slices: {  4: {offset: 0.2},
-          12: {offset: 0.3},
-          14: {offset: 0.4},
-          15: {offset: 0.5},
-        },
+        // slices: {  4: {offset: 0.2},
+        //   12: {offset: 0.3},
+        //   14: {offset: 0.4},
+        //   15: {offset: 0.5},
+        // },
       };
 
       var chart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -155,11 +156,8 @@
             <select class="form-control" id="type">
               <option  value="SAMPLE">SAMPLE</option>
               <option  value="INQUIRY">INQUIRY</option>
-              <option  value="DISPATCH">DISPATCH</option>
+             <!--  <option  value="DISPATCH">DISPATCH</option> -->
               <option  value="WISH">WISH</option>
-              <option  value="MRN">MRN</option>
-              <option  value="BMR">BMR</option>
-              <option  value="QC">QC</option>
             </select>
         </div>
       </div>

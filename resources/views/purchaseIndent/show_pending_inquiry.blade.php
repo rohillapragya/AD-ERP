@@ -1,3 +1,9 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/purchaseIndent/init.css') }}">
@@ -11,6 +17,7 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <!-- <input type="hidden" id="roleId" name="roleId" value={{$user_role_id}}> -->
@@ -23,7 +30,7 @@
     </nav>
 
     <div class="container box-shadow">
-         @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7')
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/pI')=='YES')
        <!--  <div class="form-group row">
             <div class="col-sm-12">
                 <a href="#" style="float: right" class="btn btn-default">Add New Inquiry</a>
@@ -56,28 +63,35 @@
                                 <td style="text-align: center;">{{$output[$i]['first_name']}}  {{$output[$i]['last_name']}}</td>
                                 <td style="text-align: center;">{{$output[$i]['status']}}</td>
                                 <td style="text-align: center;">
-                                    @if($output[$i]['is_sample_request']=='Y')
-                                       <a href="/pi/{{$output[$i]['purchase_indent_id']}}/SampleRequest"><span class="glyphicon glyphicon glyphicon-plus-sign"></span></a>
-                                     @else
-                                       <span class="glyphicon glyphicon glyphicon-plus-sign" style="color: grey;"></span>
-                                     @endif
-                                
+                                    @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/pi/{piID}/SampleRequest')=='YES')
+
+                                        @if($output[$i]['is_sample_request']=='Y')
+                                           <a href="/pi/{{$output[$i]['purchase_indent_id']}}/SampleRequest"><span class="glyphicon glyphicon glyphicon-plus-sign"></span></a>
+                                         @else
+                                           <span class="glyphicon glyphicon glyphicon-plus-sign" style="color: grey;"></span>
+                                         @endif
+
+                                    @endif
                                 </td>
                                 <td style="text-align: center;">
-                                    @if($output[$i]['purchase_indent_number']=='')
-                                       <a href="/pi/inquiry/{{$output[$i]['inquiry_no']}}"><span class="glyphicon glyphicon glyphicon-plus-sign"></a>
-                                     @else
-                                       <span class="glyphicon glyphicon glyphicon-plus-sign" style="color: grey;"></span>
-                                     @endif
-                                    <!-- <a href="/pi/inquiry/{{$output[$i]['inquiry_no']}}"><span class="glyphicon glyphicon glyphicon-plus-sign"></a> -->
+                                    @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/pi/inquiry/{inquiryId}')=='YES')
+                                        @if($output[$i]['purchase_indent_number']=='')
+                                           <a href="/pi/inquiry/{{$output[$i]['inquiry_no']}}"><span class="glyphicon glyphicon glyphicon-plus-sign"></a>
+                                         @else
+                                           <span class="glyphicon glyphicon glyphicon-plus-sign" style="color: grey;"></span>
+                                         @endif
+                                        <!-- <a href="/pi/inquiry/{{$output[$i]['inquiry_no']}}"><span class="glyphicon glyphicon glyphicon-plus-sign"></a> -->
+                                    @endif        
                                 </td> 
                                 <td style="text-align: center;">
-                                    @if($output[$i]['purchase_indent_number']!='')
-                                       <a href="/pi/{{$output[$i]['purchase_indent_id']}}/action"><span class="glyphicon glyphicon glyphicon-triangle-right"></a>
-                                     @else
-                                       <span class="glyphicon glyphicon-triangle-right" style="color: grey;"></span>
-                                     @endif
-                                   <!--  <a href="/pi/inquiry/{{$output[$i]['inquiry_no']}}"><span class="glyphicon glyphicon-triangle-right"></a> -->
+                                    @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/pi/{piID}/action')=='YES')
+                                        @if($output[$i]['purchase_indent_number']!='')
+                                           <a href="/pi/{{$output[$i]['purchase_indent_id']}}/action"><span class="glyphicon glyphicon glyphicon-triangle-right"></a>
+                                         @else
+                                           <span class="glyphicon glyphicon-triangle-right" style="color: grey;"></span>
+                                         @endif
+                                       <!--  <a href="/pi/inquiry/{{$output[$i]['inquiry_no']}}"><span class="glyphicon glyphicon-triangle-right"></a> -->
+                                    @endif    
                                 </td> 
                             </tr>
                         @endfor

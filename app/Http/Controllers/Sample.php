@@ -31,11 +31,19 @@ class Sample extends Controller
 	{
         $role_id = Session::get('role_id');
 
+       // $role_id='5'; // role id 3 is for tempory purpose ... 
+
         $user_id = Session::get('UID');
 
-        $output = $this->product->getCustomerSampleList($role_id,$user_id);
+        $location_id = Session::get('location_id');
+
+        $output = $this->product->getCustomerSampleList($role_id,$user_id,$location_id);
+
+        //dd($output);
     
         return view('sample.customer_sample_index',compact('output'));
+
+        //return view('sample.customer_sample_index');
     }
 
     public function getCustomerCount()
@@ -44,7 +52,9 @@ class Sample extends Controller
 
         $user_id = Session::get('UID');
 
-        $output = $this->product->getCustomerCount($role_id,$user_id);
+        $location_id = Session::get('location_id');
+
+        $output = $this->product->getCustomerCount($role_id,$user_id,$location_id);
     
         return $output;
     }
@@ -52,14 +62,18 @@ class Sample extends Controller
     
     public function vendorSampleIndex()
     {
-        $output = $this->product->getVendorSampleList();
+        $location_id = Session::get('location_id');
+
+        $output = $this->product->getVendorSampleList($location_id);
 
         return view('sample.vendor_sample_index',compact('output'));
     }
 
     public function getVendorCount()
     {
-        $output = $this->product->getVendorCount();
+        $location_id = Session::get('location_id');
+
+        $output = $this->product->getVendorCount($location_id);
 
         return $output;
     }
@@ -89,6 +103,8 @@ class Sample extends Controller
     public function saveSampleRequest(Request $request)
     {
         $user_id = Session::get('UID');
+
+        $location_id = Session::get('location_id');
       // dd($user_id);
 
         $request->validate([
@@ -157,26 +173,34 @@ class Sample extends Controller
         // log generation process 
 
 
-        $sample_request_master = $this->product->saveSampleRequestMaster($type,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$sampledeliveryDay,$sampledeliveryMonth,$sampledeliveryyear,$behalf_of,$user_id);
+        $sample_request_master = $this->product->saveSampleRequestMaster($type,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$sampledeliveryDay,$sampledeliveryMonth,$sampledeliveryyear,$behalf_of,$user_id,$location_id);
 
         $sample_details = $this->product->saveSampleRequestDetails($full_name,$mobile,$email,$address,$imageName);
 
         $sample_items_details = $this->product->saveSampleItemDetails($sample_table_product_code,$sample_table_product_method,$sample_table_product_qty,$sample_table_product_uom);
 
         //echo "Saved";
-        $role_id = Session::get('role_id');
+        // $role_id = Session::get('role_id');
         
-        $user_id = Session::get('UID');
+        // $user_id = Session::get('UID');
 
-        $output = $this->product->getCustomerSampleList($role_id,$user_id);
+        // $output = $this->product->getCustomerSampleList($role_id,$user_id);
     
-        return view('sample.customer_sample_index',compact('output'));
+        // return view('sample.customer_sample_index',compact('output'));
+        
+        $data['message'] ='Customer Sample edit Successfully. Go to  Dashboard using button';
+        $data['text'] = '';
+
+        return view('dashboard_return.success',$data);
     }
 
     
     public function editSampleRequest(Request $request)
     {
         $user_id = Session::get('UID');
+
+        $location_id = Session::get('location_id');
+
         // dd($request->all);
         // $address = request('address');
         // dd($address);
@@ -246,7 +270,7 @@ class Sample extends Controller
         // log generation process
 
 
-        $sample_request_master = $this->product->editSampleRequestMaster($sampleId,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$sampledeliveryDay,$sampledeliveryMonth,$sampledeliveryyear,$behalf_of,$user_id);
+        $sample_request_master = $this->product->editSampleRequestMaster($sampleId,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$sampledeliveryDay,$sampledeliveryMonth,$sampledeliveryyear,$behalf_of,$user_id,$location_id);
 
         $sample_details = $this->product->editSampleRequestDetails($sampleId,$full_name,$mobile,$email,$address,$imageName);
 
@@ -309,6 +333,8 @@ class Sample extends Controller
     public function saveVendorSample(Request $request)
     {
          $user_id = Session::get('UID');
+
+         $location_id = Session::get('location_id');
       // dd($user_id);
 
         $request->validate([
@@ -380,7 +406,7 @@ class Sample extends Controller
         // log generation process
 
 
-        $sample_request_master = $this->product->saveVendorSampleRequestMaster($type,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$samplereceivedDay,$samplereceivedMonth,$samplereceivedyear,$behalf_of,$user_id);
+        $sample_request_master = $this->product->saveVendorSampleRequestMaster($type,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$samplereceivedDay,$samplereceivedMonth,$samplereceivedyear,$behalf_of,$user_id,$location_id);
 
         $sample_details = $this->product->saveVendorSampleRequestDetails($full_name,$mobile,$email,$address,$imageName);
 
@@ -413,6 +439,8 @@ class Sample extends Controller
     public function editVendorSample(Request $request)
     {
         $user_id = Session::get('UID');
+
+        $location_id = Session::get('location_id');
         
         $request->validate([
             'full_name' => 'required',
@@ -480,7 +508,7 @@ class Sample extends Controller
         // log generation process
 
 
-        $sample_request_master = $this->product->editVendorSampleRequestMaster($sampleId,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$samplereceivedDay,$samplereceivedMonth,$samplereceivedyear,$behalf_of,$user_id);
+        $sample_request_master = $this->product->editVendorSampleRequestMaster($sampleId,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$samplereceivedDay,$samplereceivedMonth,$samplereceivedyear,$behalf_of,$user_id,$location_id);
 
         $sample_details = $this->product->editVendorSampleRequestDetails($sampleId,$full_name,$mobile,$email,$address,$imageName);
 
@@ -547,5 +575,18 @@ class Sample extends Controller
 
         return $output;
     }
+
+    // public function pendingCustomerSample(Request $request)
+    // {
+    //     $location_id = $request->input('location_id');
+
+    //     $role_id = Session::get('role_id');
+
+    //     $user_id = Session::get('UID');
+
+    //     $output = $this->product->pendingCustomerSample($user_id,$location_id,$role_id);
+
+    //     return $output;
+    // }
 
 }

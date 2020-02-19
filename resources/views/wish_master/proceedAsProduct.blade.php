@@ -1,3 +1,7 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
 @extends('layout.dashboard_header_layout')
 
 <!-- <link rel="stylesheet" href="{{ asset('css/bom/init.css') }}"> -->
@@ -38,7 +42,7 @@
     @endif
 
     <div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3')
+        @if(Dashboard::isRouteExistForUser('/wish/proceedAs/product')=='YES')
         <form method="post" action="/wish/proceedAs/product" enctype="multipart/form-data"> 
                 {{ csrf_field() }}
 

@@ -4,8 +4,6 @@
 
 // home page Route section start here
 
-
-
 Route::get('/','Login@show');
 Route::post('/doLogin','Login@doLogin');
 Route::get('/forgotPassword','ForgotPassController@show');
@@ -306,3 +304,72 @@ Route::post('/development/editLocation','Development@editLocation');
 
 
 Route::get('/product/list','Product@list');
+
+Route::get('/user/getRole','UserRegistration@getRole');
+Route::get('/user/getRoleExceptAdmin','UserRegistration@getRoleExceptAdmin');
+Route::get('/user/getLocation','UserRegistration@getLocation');
+Route::get('/user/getAccess','UserRegistration@getAccess');
+
+
+Route::post('/erpUser/inactiveERPUserStatus','UserRegistration@inactiveERPUserStatus');
+
+
+// dashboard location Route section start here
+Route::get('selectLocation','Dashboard@showLocation')->name('selectLocation');
+Route::get('/selectedLocation','Dashboard@selectedLocation');
+Route::get('/Index','Dashboard@updatedUserRoute');
+// Route::get('/Index','Dashboard@DashboardIndex');
+// dashboard location route section end  here
+
+// Region route section start here
+Route::get('/development/region','Development@regionIndex');
+Route::post('/development/addNewRegion','Development@addNewRegion');
+Route::get('/development/getRegion','Development@getRegion');
+Route::post('/development/editRegion','Development@editRegion');
+Route::post('/development/changeRegionStatus','Development@changeRegionStatus');
+Route::post('/development/deleteRegion','Development@deleteRegion');
+// Region route section end here
+
+// region_location_map route section start here
+Route::get('/development/region_location_map','Development@region_location_map');
+Route::post('/development/addRegionLocationMap','Development@addRegionLocationMap');
+Route::post('/development/removeRegionLocationMap','Development@removeRegionLocationMap');
+// region_location_map route section start here
+
+
+Route::post('/development/deleteLocation','Development@deleteLocation');
+Route::post('/development/deleteMenu','Development@deleteMenu');
+
+Route::get('/dashboard/userLocation','Login@UserLocation');
+Route::get('/dashboard/latestLocation/{locationID}','Dashboard@UserRouteByLatestLocation');
+
+Route::get('index','Dashboard@updatedUserRoute')->name('index');
+
+
+Route::get('/user/userAllocatedLocation','Login@userAllocatedLocation');
+
+Route::get('/sample/pendingCustomerSample','Sample@pendingCustomerSample');
+
+
+Route::get('/product/priceRange','Product@priceRangeIndex');
+// Route::get('/product/getProductDetailsByProductId','Product@getProductDetails');
+Route::get('/product/{productId}/priceRange','Product@updatePrice');
+Route::post('/product/updatePrice_valid','Product@updatePrice_valid');
+
+Route::get('/product/getpriceRangeCount','Product@getpriceRangeCount');
+
+
+Route::get('/dashoard/vendorQuotationInit','Quotation@vendorQuotationInit');
+Route::get('/quotation/{qID}','Quotation@vendorQuotationAdd');
+
+Route::get('/user/getVendorList','UserRegistration@getVendorList');
+Route::get('/user/getSupplierList','UserRegistration@getSupplierList');
+
+Route::post('/user/addSupplier','Quotation@addSupplier');
+
+Route::get('/getquotataionProductDetails','Quotation@getquotataionProductDetails');
+Route::post('/quotation/save','Quotation@saveQuotation');
+
+Route::get('/quotation/view/{qID}','Quotation@viewQuotation');
+
+Route::get('/chart/wish','Chart@wish');

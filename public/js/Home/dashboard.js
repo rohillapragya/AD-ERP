@@ -10,7 +10,10 @@ $(document).ready(function(){
         	//location.reload(true/false);
         	var cart_count = resp[0].total;
         	var userCartCount = document.getElementById("userCartCount");
-            userCartCount.innerText=cart_count;
+            if(userCartCount)
+            {
+                userCartCount.innerText=cart_count;
+            }
         }
     });
     /*Customer Inquiry get Count section end*/   
@@ -33,6 +36,7 @@ $(document).ready(function(){
                     {
                         customerSampleCount.innerText=count;
                         customerSampleCount.style.backgroundColor='#ff0000';
+                        customerSampleCount.style.color = 'white';
                     }
                     else
                     {
@@ -61,6 +65,7 @@ $(document).ready(function(){
                     {
                         vendorSampleCount.innerText=count;
                         vendorSampleCount.style.backgroundColor='#ff0000';
+                        vendorSampleCount.style.color = 'white';
                     }
                     else
                     {
@@ -90,6 +95,7 @@ $(document).ready(function(){
                     {
                         dispatchInfoCount.innerText=count;
                         dispatchInfoCount.style.backgroundColor='#ff0000';
+                        dispatchInfoCount.style.style.color = 'white';
                     }
                     else
                     {
@@ -119,6 +125,7 @@ $(document).ready(function(){
                     {
                         wishCount.innerText=count;
                         wishCount.style.backgroundColor='#ff0000';
+                        wishCount.style.color = 'white';
                     }
                     else
                     {
@@ -128,7 +135,40 @@ $(document).ready(function(){
                 
             }
         });
-    /*wish count section end*/
+    /*wish count section end*
+
+
+    //*product price is not or valid till is less than count section start*/
+        $.ajax({
+            type: 'GET',
+            url:  '/product/getpriceRangeCount',
+            dataType: 'json',
+            success: function (resp) 
+            {
+                //location.reload(true/false);
+                var count = resp[0].total;
+                var priceRangeCount = document.getElementById("productPriceRangeCount");
+
+                if(priceRangeCount)
+                {
+                    if(count >0)
+                    {
+                        priceRangeCount.innerText=count;
+                        priceRangeCount.style.backgroundColor='#ff0000';
+                        priceRangeCount.style.color = 'white';
+                    }
+                    else
+                    {
+                        priceRangeCount.innerText=count;
+                    } 
+                }
+                
+            }
+        });
+    /*product price is not or valid till is less than count section end*/
+
+
+
 
     /*Stock Entry count section start*/
         $.ajax({
@@ -147,6 +187,7 @@ $(document).ready(function(){
                     {
                         stockEntryCount.innerText=count;
                         stockEntryCount.style.backgroundColor='#ff0000';
+                        stockEntryCount.style.color = 'white';
                     }
                     else
                     {
@@ -175,6 +216,7 @@ $(document).ready(function(){
                     {
                         mrnCount.innerText=count;
                         mrnCount.style.backgroundColor='#ff0000';
+                        mrnCount.style.color = 'white';
                     }
                     else
                     {
@@ -204,6 +246,7 @@ $(document).ready(function(){
                     {
                         prnCount.innerText=count;
                         prnCount.style.backgroundColor='#ff0000';
+                        prnCount.style.color = 'white';
                     }
                     else
                     {
@@ -232,6 +275,7 @@ $(document).ready(function(){
                     {
                         verifyPRNCount.innerText=count;
                         verifyPRNCount.style.backgroundColor='#ff0000';
+                        verifyPRNCount.style.color = 'white';
                     }
                     else
                     {
@@ -261,6 +305,7 @@ $(document).ready(function(){
                     {
                         purchaseIndentCount.innerText=count;
                         purchaseIndentCount.style.backgroundColor='#ff0000';
+                        purchaseIndentCount.style.color = 'white';
                     }
                     else
                     {
@@ -289,6 +334,7 @@ $(document).ready(function(){
                     {
                         bomCount.innerText=count;
                         bomCount.style.backgroundColor='#ff0000';
+                        bomCount.style.color = 'white';
                     }
                     else
                     {
@@ -318,6 +364,7 @@ $(document).ready(function(){
                     {
                         bmrNumberCount.innerText=count;
                         bmrNumberCount.style.backgroundColor='#ff0000';
+                        bmrNumberCount.style.color = 'white';
                     }
                     else
                     {
@@ -346,6 +393,7 @@ $(document).ready(function(){
                     {
                         qcDetails.innerText=count;
                         qcDetails.style.backgroundColor='#ff0000';
+                        qcDetails.style.color = 'white';
                     }
                     else
                     {

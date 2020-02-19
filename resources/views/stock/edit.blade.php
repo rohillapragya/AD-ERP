@@ -1,3 +1,7 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/stock/stock.css') }}">
@@ -11,6 +15,7 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 
     $entry_date = $getStockInfoByStockId[0]['entry_date'];
     $entry_date_arr = explode("-",$entry_date);
@@ -29,7 +34,7 @@
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='11' || $user_role_id=='7')
+       @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/stock/update')=='YES')
         <form method="post" action="/stock/update">
             {{ csrf_field() }}
 

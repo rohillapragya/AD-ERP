@@ -29,7 +29,9 @@ class Dispatch extends Controller
 
     public function serviceIndex()
     {
-        $output = $this->dispatch->getDispatchServiceList();
+        $location_id = Session::get('location_id');
+
+        $output = $this->dispatch->getDispatchServiceList($location_id);
         //dd($output);
         return view('dispatch.service',compact('output'));
     }
@@ -42,6 +44,8 @@ class Dispatch extends Controller
     public function saveService(Request $request)
     {
         $user_id = Session::get('UID');
+
+        $location_id = Session::get('location_id');
 
         $request->validate([
                 'dispatch_full_name' => 'required',
@@ -65,7 +69,7 @@ class Dispatch extends Controller
 
         $dispatch_email = request('dispatch_email');
 
-        $output = $this->dispatch->saveService($dispatch_full_name,$dispatch_mobile,$dispatch_email,$user_id);
+        $output = $this->dispatch->saveService($dispatch_full_name,$dispatch_mobile,$dispatch_email,$user_id,$location_id);
 
         $data['message'] ='Dispatch Service Added Successfully. Go to  Dashboard using button';
         $data['text'] = '';
@@ -88,6 +92,10 @@ class Dispatch extends Controller
 
     public function editService(Request $request)
     {
+        $user_id = Session::get('UID');
+
+        $location_id = Session::get('location_id');
+
         $dispatch_full_name = request('dispatch_full_name');
 
         $dispatch_mobile = request('dispatch_mobile');
@@ -96,7 +104,7 @@ class Dispatch extends Controller
 
         $dispatchId = request('dispatchId');
 
-        $output = $this->dispatch->editService($dispatch_full_name,$dispatch_mobile,$dispatch_email,$dispatchId);
+        $output = $this->dispatch->editService($dispatch_full_name,$dispatch_mobile,$dispatch_email,$dispatchId,$user_id,$location_id);
 
         $data['message'] ='Dispatch Service updated Successfully. Go to  Dashboard using button';
         $data['text'] = '';
@@ -107,14 +115,18 @@ class Dispatch extends Controller
 
     public function dispatchInfoIndex()
     {
-        $output = $this->dispatch->getDispatchPendingList();
+        $location_id = Session::get('location_id');
+
+        $output = $this->dispatch->getDispatchPendingList($location_id);
         
         return view('dispatch.dispatch_pending_list',compact('output'));
     }
 
     public function getdispatchCount()
     {
-        return $this->dispatch->getdispatchCount();
+        $location_id = Session::get('location_id');
+
+        return $this->dispatch->getdispatchCount($location_id);
     }
 
     public function saveDispatchInfo(Request $request)
@@ -126,7 +138,9 @@ class Dispatch extends Controller
         if($para_len > 10)  { $object_type ='INQUIRY'; }
         else { $object_type ='SAMPLE'; }
 
-        $dispatch_service_list = $this->dispatch->getDispatchServiceList();
+        $location_id = Session::get('location_id');
+
+        $dispatch_service_list = $this->dispatch->getDispatchServiceList($location_id);
 
         if($object_type =='SAMPLE')
         {
@@ -150,6 +164,8 @@ class Dispatch extends Controller
     {
         $sampleId = request('sampleId');
 
+        $location_id = Session::get('location_id');
+
        // dd($sampleId);
 
         $para_len = strlen($sampleId);
@@ -164,6 +180,10 @@ class Dispatch extends Controller
         // else{
         //      $object_type='INQUIRY';
         // }    
+        
+        $request->validate([
+                'dispatchService' => 'required',
+                ]);
 
         $user_id = Session::get('UID');
 
@@ -171,6 +191,7 @@ class Dispatch extends Controller
         {
             $request->validate([
                 'docx_receipt_attacment' => 'mimes:jpeg,png,jpg,pdf|max:2048',
+                'dispatchService' => 'required',
                 ]);
         }
 
@@ -188,6 +209,8 @@ class Dispatch extends Controller
         }
 
         $dispatchService = request('dispatchService');
+
+       // dd($dispatchService);
 
         $dispatch_amount = request('dispatch_amount');
 
@@ -216,14 +239,14 @@ class Dispatch extends Controller
         if($dispatchStatus=='DISPATCH')
         {
            // echo "DISPATCH";
-            $output = $this->dispatch->saveDispatchInfo($sampleId,$object_type,$user_id,$dispatchService,$dispatch_amount,$dispatchdateDay,$dispatchDateMonth,$dispatchDateyear,$deliverydateDay,$deliveryDateMonth,$deliveryDateyear,$dispatch_docx_number,$dispatchStatus,$imageName,$document_name);
+            $output = $this->dispatch->saveDispatchInfo($sampleId,$object_type,$user_id,$dispatchService,$dispatch_amount,$dispatchdateDay,$dispatchDateMonth,$dispatchDateyear,$deliverydateDay,$deliveryDateMonth,$deliveryDateyear,$dispatch_docx_number,$dispatchStatus,$imageName,$document_name,$location_id);
 
             $this->cron->save($user_id,'SAMPLE_INQUIRY_DISPATCH','PENDING',$sampleId);
         }
         else
         {
             //echo "DELIVERIED";
-             $output = $this->dispatch->editDispatchInfo($sampleId,$object_type,$user_id,$dispatchStatus);
+             $output = $this->dispatch->editDispatchInfo($sampleId,$object_type,$user_id,$dispatchStatus,$location_id);
              $this->cron->save($user_id,'SAMPLE_INQUIRY_DELIVERED','PENDING',$sampleId);
         }
        // dd($dispatchStatus);

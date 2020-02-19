@@ -25,7 +25,9 @@ class BOM extends Controller
 
     public function index()
     {
-        $output = $this->BOM->showBOMList();
+        $location_id = Session::get('location_id');
+
+        $output = $this->BOM->showBOMList($location_id);
 
         //dd($output);
 
@@ -35,7 +37,9 @@ class BOM extends Controller
 
     public function getBOMCount()
     {
-        return $this->BOM->getBOMCount();
+        $location_id = Session::get('location_id');
+
+        return $this->BOM->getBOMCount($location_id);
     }
 
 
@@ -47,6 +51,8 @@ class BOM extends Controller
     public function save(Request $request)
     {
         $user_id = Session::get('UID');
+
+        $location_id = Session::get('location_id');
 
         $bom_key_person = request('bom_key_person');
 
@@ -62,7 +68,7 @@ class BOM extends Controller
 
         $sample_table_product_uom = request('product_uom');
 
-        $out = $this->BOM->save($user_id,$bom_key_person,$bom_remark,$bom_name,$sample_table_product_code,$sample_table_product_method,$sample_table_product_qty,$sample_table_product_uom);
+        $out = $this->BOM->save($user_id,$bom_key_person,$bom_remark,$bom_name,$sample_table_product_code,$sample_table_product_method,$sample_table_product_qty,$sample_table_product_uom,$location_id);
 
         $data['message'] ='Bill Of material Saved. Go to  Dashboard using button';
         $data['text'] = '';
@@ -87,8 +93,9 @@ class BOM extends Controller
 
     function update(Request $request)
     {
-
         $user_id = Session::get('UID');
+
+        $location_id = Session::get('location_id');
 
         $bomId = request('bomId');
 
@@ -106,7 +113,7 @@ class BOM extends Controller
 
         $sample_table_product_uom = request('product_uom');
 
-        $out = $this->BOM->edit($user_id,$bomId,$bom_key_person,$bom_remark,$bom_name,$sample_table_product_code,$sample_table_product_method,$sample_table_product_qty,$sample_table_product_uom);
+        $out = $this->BOM->edit($user_id,$bomId,$bom_key_person,$bom_remark,$bom_name,$sample_table_product_code,$sample_table_product_method,$sample_table_product_qty,$sample_table_product_uom,$location_id);
 
         $data['message'] ='Bill Of material Saved. Go to  Dashboard using button';
         $data['text'] = '';

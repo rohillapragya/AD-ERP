@@ -10,16 +10,20 @@ function populateTable()
 	for(i=0;i<tbody_count;i++)
 	{
 		var	tr = tbody.children[i];
-		var edit_text = tr.children[5].innerText
+
+		var edit_text = tr.children[4].innerText
+        //console.log(tr.children[4]);
 
 		if(edit_text=='Y')
 		{
-			//console.log("Y-"+i);
-			tr.children[5].innerText = "Active";
+			//console.log("edit_text-"+edit_text);
+            //console.log("Y-"+i);
+			tr.children[4].innerText = "Active";
 		}
 		else
 		{
-			tr.children[5].innerText = "Inactive";
+          //  console.log("edit_text-"+edit_text);
+			tr.children[4].innerText = "Inactive";
 			//console.log("N-"+i);
 			tr.style.backgroundColor="rgb(255, 141, 0)";
 		}

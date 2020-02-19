@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/dispatch/dashboard.css') }}">
@@ -12,7 +17,8 @@
 <!-- <div>session div role_name - {{ Session::get('role_id')}}</div> -->
 
 @php
-$user_role_id = Session::get('role_id');
+    $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
 	<nav aria-label="breadcrumb">
@@ -23,7 +29,8 @@ $user_role_id = Session::get('role_id');
 	</nav>
 
 	 <div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7' || $user_role_id=='12')
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dispatch/saveService')=='YES')
+
         <form method="post" action="/dispatch/saveService">
             {{ csrf_field() }}
             <div class="form-group row">

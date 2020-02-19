@@ -26,7 +26,9 @@ class Wish_Master extends Controller
 
         $user_id = Session::get('UID');
 
-        $output = $this->wish->showWishList($role_id,$user_id);
+        $location_id = Session::get('location_id');
+
+        $output = $this->wish->showWishList($role_id,$user_id,$location_id);
 
         return view('wish_master.index',compact('output'));
     }
@@ -37,7 +39,9 @@ class Wish_Master extends Controller
 
         $user_id = Session::get('UID');
 
-        return $this->wish->getWishCount($role_id,$user_id);
+        $location_id = Session::get('location_id');
+
+        return $this->wish->getWishCount($role_id,$user_id,$location_id);
     }
 
     public function add()
@@ -52,6 +56,8 @@ class Wish_Master extends Controller
     public function save(Request $request)
     {
         $user_id = Session::get('UID');
+        $location_id = Session::get('location_id');
+
         $wish_image = request('wish_image');
         $request->validate([
                     'wish_name' => 'required',
@@ -81,7 +87,7 @@ class Wish_Master extends Controller
         $wish_qty = request('wish_qty');
         $wish_other_info = request('wish_other_info');
         
-        $out = $this->wish->addWish($user_id,$imageName,$wish_name,$wish_description,$wish_method,$wish_application,$wish_qty,$wish_other_info);
+        $out = $this->wish->addWish($user_id,$imageName,$wish_name,$wish_description,$wish_method,$wish_application,$wish_qty,$wish_other_info,$location_id);
 
         $data['message'] ='Wish Added. Go to  Dashboard using button';
 
@@ -128,6 +134,9 @@ class Wish_Master extends Controller
     public function edit(Request $request)
     {
         $user_id = Session::get('UID');
+        $location_id = Session::get('location_id');
+
+
         $wish_image = request('wish_image');
         $request->validate([
                     'wish_name' => 'required',
@@ -158,7 +167,7 @@ class Wish_Master extends Controller
         $wish_qty = request('wish_qty');
         $wish_other_info = request('wish_other_info');
         
-        $out = $this->wish->editWish($user_id,$wishId,$imageName,$wish_name,$wish_description,$wish_method,$wish_application,$wish_qty,$wish_other_info);
+        $out = $this->wish->editWish($user_id,$wishId,$imageName,$wish_name,$wish_description,$wish_method,$wish_application,$wish_qty,$wish_other_info,$location_id);
 
         $data['message'] ='Wish edit. Go to  Dashboard using button';
 

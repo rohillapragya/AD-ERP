@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/Sample/dashboard.css') }}">
@@ -14,7 +19,7 @@
 
 @php
 $user_role_id = Session::get('role_id');
-
+$is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <nav aria-label="breadcrumb">
@@ -26,14 +31,17 @@ $user_role_id = Session::get('role_id');
 
     
     <div class="container box-shadow">
-       @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='10' || $user_role_id=='14')
+       @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/qcDetails/qcStockInfoSave')=='YES')
         <form method="post" action="/qcDetails/qcStockInfoSave">
             {{ csrf_field() }}
+
+            @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/customerSample')=='YES')
             <div class="form-group row">
                 <div class="col-sm-12">
                     <a href="/dashboard/addNewSample" style="float: right" class="btn btn-default">Add New Sample Request</a>
                 </div>
             </div>
+            @endif
 
             <div class="form-group row">
                 <div class="card card-class">

@@ -33,7 +33,9 @@ class GRN extends Controller
 
     public function index()
     {
-        $output = $this->grn->showGRNList();
+        $location_id = Session::get('location_id');
+
+        $output = $this->grn->showGRNList($location_id);
 
         return view('grn.index',compact('output'));
     }
@@ -58,6 +60,8 @@ class GRN extends Controller
     public function save(Request $request)
     {
         $user_id = Session::get('UID');
+        $location_id = Session::get('location_id');
+
         $prn_no = request('prn_no');
         $grnRequestDay = request('grnRequestDay');
         $grnRequestMonth = request('grnRequestMonth');
@@ -77,7 +81,7 @@ class GRN extends Controller
         $product_price = request('product_price');
         $product_uom = request('product_uom');
 
-        $output = $this->grn->save($user_id,$prn_no,$grnRequestDay,$grnRequestMonth,$grnRequestYear,$grnDeliveredDay,$grnDeliveredMonth,$grnDeliveredYear,$supplier,$bill_no,$lr_no,$dispatch_service,$delivery_location,$total_amount,$product_name,$product_method,$product_qty,$product_price,$product_uom);
+        $output = $this->grn->save($user_id,$prn_no,$grnRequestDay,$grnRequestMonth,$grnRequestYear,$grnDeliveredDay,$grnDeliveredMonth,$grnDeliveredYear,$supplier,$bill_no,$lr_no,$dispatch_service,$delivery_location,$total_amount,$product_name,$product_method,$product_qty,$product_price,$product_uom,$location_id);
 
         $data['message'] ='Goods Rececipt Note (GRN) Added Successfully. Go to Dashboard using button';
         $data['text'] = '';
@@ -109,6 +113,8 @@ class GRN extends Controller
     public function update(Request $request)
     {
         $user_id = Session::get('UID');
+        $location_id = Session::get('location_id');
+
         $grn_number = request('grn_number');
         $prn_no = request('prn_no');
         $grnRequestDay = request('grnRequestDay');
@@ -129,7 +135,7 @@ class GRN extends Controller
         $product_price = request('product_price');
         $product_uom = request('product_uom');
 
-        $output = $this->grn->update($user_id,$grn_number,$prn_no,$grnRequestDay,$grnRequestMonth,$grnRequestYear,$grnDeliveredDay,$grnDeliveredMonth,$grnDeliveredYear,$supplier,$bill_no,$lr_no,$dispatch_service,$delivery_location,$total_amount,$product_name,$product_method,$product_qty,$product_price,$product_uom);
+        $output = $this->grn->update($user_id,$grn_number,$prn_no,$grnRequestDay,$grnRequestMonth,$grnRequestYear,$grnDeliveredDay,$grnDeliveredMonth,$grnDeliveredYear,$supplier,$bill_no,$lr_no,$dispatch_service,$delivery_location,$total_amount,$product_name,$product_method,$product_qty,$product_price,$product_uom,$location_id);
 
         $data['message'] ='Goods Rececipt Note (GRN) updated Successfully. Go to Dashboard using button';
         $data['text'] = '';

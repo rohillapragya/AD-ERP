@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/prn/init.css') }}">
@@ -11,6 +16,7 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <!-- <input type="hidden" id="roleId" name="roleId" value={{$user_role_id}}> -->
@@ -23,12 +29,15 @@
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='13')
-        <div class="form-group row">
-            <div class="col-sm-12">
-                <a href="/dashboard/addNewPRN" style="float: right" class="btn btn-default">Add New PRN</a>
-            </div>
-        </div>
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/prnInit')=='YES')
+
+            @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/addNewPRN')=='YES')
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <a href="/dashboard/addNewPRN" style="float: right" class="btn btn-default">Add New PRN</a>
+                    </div>
+                </div>
+            @endif    
 
         <div class="form-group row">
             <table class="table table-bordered" id="sampleItemsList">
@@ -36,6 +45,8 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Purchase Requization No</th>
+                        <th scope="col">Added By</th>
+                        <th scope="col">Remark</th>
                         <th scope="col">Required Date(YYYY-MM_DD)</th>
                         <th scope="col">Request Date(YYYY-MM_DD)</th>
                         <th scope="col">Edit</th>
@@ -47,6 +58,8 @@
                             <tr>
                                 <td>{{($i+1)}}</td>
                                 <td>{{$output[$i]['purchase_request_no']}}</td>
+                                <td>{{$output[$i]['first_name']}}  {{$output[$i]['last_name']}}</td>
+                                <td>{{$output[$i]['remarks']}}</td>
                                 <td>{{$output[$i]['required_date']}}</td>
                                 <td>{{$output[$i]['request_date']}}</td>
                                 <td><a href="/prn/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a></td> 

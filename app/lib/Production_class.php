@@ -23,21 +23,49 @@ class Production_class
         $this->created_at =  date("Y/m/d");
     }
 
-    function pendingBMRList()
+    function pendingBMRList($location_id)
     {
         //$out = DB::select("select * from sample_master a,sample_details b, sample_items_details c where a.id='$sampleId' and a.id =b.sample_id and a.id = c.sample_id");
 
-       $out = DB::select("select * from (select c.description as customer_status,a.id,a.sample_number,a.type,a.request_date,a.received_date,a.delivered_date,a.status,a.any_behalf_of,a.source_at_team,b.id as sample_details_id,b.ref_name,b.ref_address,b.ref_mobile,b.ref_email,b.city,b.sample_response,b.status as sample_details_status  from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.status=c.status) sample where sample.id not in (select object_id from sample_store_details where object_type='SAMPLE')");
-        
-        return json_decode(json_encode($out), true);
+        $str = ' and 1=1 ';
+
+        if($location_id)
+        {
+            if($location_id!='%')
+            {
+                $str.= " and a.location_id ='$location_id'";
+            }
+
+            $out = DB::select("select * from (select c.description as customer_status,a.id,a.sample_number,a.type,a.request_date,a.received_date,a.delivered_date,a.status,a.any_behalf_of,a.source_at_team,b.id as sample_details_id,b.ref_name,b.ref_address,b.ref_mobile,b.ref_email,b.city,b.sample_response,b.status as sample_details_status  from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.status=c.status $str) sample where sample.id not in (select object_id from sample_store_details where object_type='SAMPLE')");
+
+            return json_decode(json_encode($out), true);
+        }
+        else
+        {
+            return redirect()->route('login');
+        }
     }
 
 
-    function getBMRCount()
+    function getBMRCount($location_id)
     {
-        $out = DB::select("select count(*) as total from (select * from (select c.description as customer_status,a.id,a.sample_number,a.type,a.request_date,a.received_date,a.delivered_date,a.status,a.any_behalf_of,a.source_at_team,b.id as sample_details_id,b.ref_name,b.ref_address,b.ref_mobile,b.ref_email,b.city,b.sample_response,b.status as sample_details_status  from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.status=c.status) sample where sample.id not in (select object_id from sample_store_details where object_type='SAMPLE')) smp");
-        
-        return json_decode(json_encode($out), true);
+        $str = ' and 1=1 ';
+
+        if($location_id)
+        {
+            if($location_id!='%')
+            {
+                $str.= " and a.location_id ='$location_id'";
+            }
+
+            $out = DB::select("select count(*) as total from (select c.description as customer_status,a.id,a.sample_number,a.type,a.request_date,a.received_date,a.delivered_date,a.status,a.any_behalf_of,a.source_at_team,b.id as sample_details_id,b.ref_name,b.ref_address,b.ref_mobile,b.ref_email,b.city,b.sample_response,b.status as sample_details_status  from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.status=c.status $str) sample where sample.id not in (select object_id from sample_store_details where object_type='SAMPLE')");
+
+            return json_decode(json_encode($out), true);
+        }
+        else
+        {
+            return redirect()->route('login');
+        }
     }
 
     function getCustomerSampleInfoBySampleId($sampleId)
@@ -70,14 +98,14 @@ class Production_class
     }
 
 
-    function saveBMR($sampleId,$bmr_number,$store_remarks,$user_id)
+    function saveBMR($sampleId,$bmr_number,$store_remarks,$user_id,$location_id)
     {
         $id = $this->maxSampleStoreDetailsId();
         $sampleStoreRemarksDetails = $this->maxSampleStoreRemarksDetailsId();
 
         $this->created_by = $user_id;
 
-        $out = DB::insert("insert into sample_store_details (id,status,bmr,object_type,object_id,created_at,created_by) values('$id','CUSTOMER_SAMPLE_BMR_RECEIVED','$bmr_number','SAMPLE','$sampleId','$this->created_at','$this->created_by')");
+        $out = DB::insert("insert into sample_store_details (id,status,bmr,object_type,object_id,created_at,created_by,location_id) values('$id','CUSTOMER_SAMPLE_BMR_RECEIVED','$bmr_number','SAMPLE','$sampleId','$this->created_at','$this->created_by','$location_id')");
 
 
         $out_1 = DB::insert("insert into sample_store_remarks_details(id,sample_store_id,remarks,updated_by) values('$sampleStoreRemarksDetails','$id','$store_remarks','$this->created_by')");
@@ -91,13 +119,25 @@ class Production_class
         return json_decode(json_encode($out), true);
     }
 
-    function showProductionList()
+    function showProductionList($location_id)
     {
-       // $out = DB::select("select * from production_master order by id desc");
+        $str = ' and 1=1 ';
 
-        $out = DB::select("select a.*,b.name as source_warehouse,c.name as target_warehouse from production_master a,warehouse_master b,warehouse_master c where a.source_warehouse=b.id and a.target_warehouse=c.id order by id desc");
+        if($location_id)
+        {
+            if($location_id!='%')
+            {
+                $str.= " and a.location_id ='$location_id'";
+            }
 
-        return json_decode(json_encode($out), true);
+            $out = DB::select("select a.*,b.name as source_warehouse,c.name as target_warehouse from production_master a,warehouse_master b,warehouse_master c where a.source_warehouse=b.id and a.target_warehouse=c.id $str order by id desc");
+
+            return json_decode(json_encode($out), true);
+        }
+        else
+        {
+            return redirect()->route('login');
+        }  
     }
 
 
@@ -148,7 +188,7 @@ class Production_class
     }
 
 
-    function save($user_id,$productionStartDay,$productionStartMonth,$productionStartyear,$productionExpectedEndDay,$productionExpectedEndMonth,$productionExpectedEndyear,$sourceWarehouse,$destinationWarehouse,$bom_no,$item_to_manufacture ,$manugfacture_item_qty,$production_remark,$table_product_name,$table_product_source_warhouse,$table_product_method,$table_product_required_qty,$table_product_transfered_qty,$table_product_consumed_qty,$table_product_uom,$manufacture_uom)
+    function save($user_id,$productionStartDay,$productionStartMonth,$productionStartyear,$productionExpectedEndDay,$productionExpectedEndMonth,$productionExpectedEndyear,$sourceWarehouse,$destinationWarehouse,$bom_no,$item_to_manufacture ,$manugfacture_item_qty,$production_remark,$table_product_name,$table_product_source_warhouse,$table_product_method,$table_product_required_qty,$table_product_transfered_qty,$table_product_consumed_qty,$table_product_uom,$manufacture_uom,$location_id)
     {
         $production_start_date = $this->string_to_date($productionStartDay,$productionStartMonth,$productionStartyear);
 
@@ -160,7 +200,7 @@ class Production_class
 
         //dd($bom_no);
 
-        $out = DB::insert("insert into production_master (id,production_number,items_to_manufacturer,qty,BOM_no,source_warehouse,target_warehouse,production_start_date,expected_delivery_date,remarks,created_at,created_by,qty_uom) values('$maxProductionID','$productionNo','$item_to_manufacture','$manugfacture_item_qty','$bom_no','$sourceWarehouse','$destinationWarehouse','$production_start_date','$expected_delivery_date','$production_remark','$this->created_at','$user_id','$manufacture_uom')");
+        $out = DB::insert("insert into production_master (id,production_number,items_to_manufacturer,qty,BOM_no,source_warehouse,target_warehouse,production_start_date,expected_delivery_date,remarks,created_at,created_by,qty_uom,location_id) values('$maxProductionID','$productionNo','$item_to_manufacture','$manugfacture_item_qty','$bom_no','$sourceWarehouse','$destinationWarehouse','$production_start_date','$expected_delivery_date','$production_remark','$this->created_at','$user_id','$manufacture_uom','$location_id')");
 
         $countTable = count($table_product_name);
 
@@ -201,13 +241,13 @@ class Production_class
         }
     }
 
-    function update($productionId,$productionStartDay,$productionStartMonth,$productionStartyear,$productionExpectedEndDay,$productionExpectedEndMonth,$productionExpectedEndyear,$sourceWarehouse,$destinationWarehouse,$bom_no,$item_to_manufacture ,$manugfacture_item_qty,$production_remark,$table_product_name,$table_product_source_warhouse,$table_product_method,$table_product_required_qty,$table_product_transfered_qty,$table_product_consumed_qty,$table_product_uom,$manufacture_uom)
+    function update($productionId,$productionStartDay,$productionStartMonth,$productionStartyear,$productionExpectedEndDay,$productionExpectedEndMonth,$productionExpectedEndyear,$sourceWarehouse,$destinationWarehouse,$bom_no,$item_to_manufacture ,$manugfacture_item_qty,$production_remark,$table_product_name,$table_product_source_warhouse,$table_product_method,$table_product_required_qty,$table_product_transfered_qty,$table_product_consumed_qty,$table_product_uom,$manufacture_uom,$user_id,$location_id)
     {
         $production_start_date = $this->string_to_date($productionStartDay,$productionStartMonth,$productionStartyear);
 
         $expected_delivery_date = $this->string_to_date($productionExpectedEndDay,$productionExpectedEndMonth,$productionExpectedEndyear);
 
-        $out = DB::update("update production_master set items_to_manufacturer='$item_to_manufacture',qty='$manugfacture_item_qty',BOM_no='$bom_no',source_warehouse='$sourceWarehouse',target_warehouse='$destinationWarehouse',production_start_date='$production_start_date',expected_delivery_date='$expected_delivery_date',remarks='$production_remark' where id='$productionId'");
+        $out = DB::update("update production_master set items_to_manufacturer='$item_to_manufacture',qty='$manugfacture_item_qty',BOM_no='$bom_no',source_warehouse='$sourceWarehouse',target_warehouse='$destinationWarehouse',production_start_date='$production_start_date',expected_delivery_date='$expected_delivery_date',remarks='$production_remark',location_id='$location_id',updated_at='$this->created_at',updated_by='$user_id' where id='$productionId'");
 
         $out_1 = DB::delete("delete from production_details where production_id='$productionId'");
 

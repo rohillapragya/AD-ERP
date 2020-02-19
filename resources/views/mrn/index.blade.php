@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/mrn/mrn.css') }}">
@@ -11,6 +16,7 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <!-- <input type="hidden" id="roleId" name="roleId" value={{$user_role_id}}> -->
@@ -23,12 +29,15 @@
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7'|| $user_role_id=='11')
-        <div class="form-group row">
-            <div class="col-sm-12">
-                <a href="/dashboard/addNewMRN" style="float: right" class="btn btn-default">Add New MRN</a>
-            </div>
-        </div>
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/mrnInit')=='YES')
+
+            @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/addNewMRN')=='YES')
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <a href="/dashboard/addNewMRN" style="float: right" class="btn btn-default">Add New MRN</a>
+                    </div>
+                </div>
+            @endif    
 
         <div class="form-group row">
             <table class="table table-bordered" id="sampleItemsList">
@@ -55,9 +64,18 @@
                                 <td>{{$output[$i]['request_date']}}</td>
                                 <td>{{$output[$i]['object_type']}}</td>
                                 <td>{{$output[$i]['object_id']}}</td>
-                                <td><a href="/mrn/{{$output[$i]['id']}}/stockEntry" class="btn btn-default">Stock_Entry</a></td>
-                                <td><a href="/mrn/{{$output[$i]['id']}}/prnEntry" class="btn btn-default">Create_PRN</a></td>
-                                <!-- <td><a href="/mrn/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a></td>  -->
+
+                                @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/mrn/{mrnID}/stockEntry')=='YES')
+                                    <td><a href="/mrn/{{$output[$i]['id']}}/stockEntry" class="btn btn-default">Stock_Entry</a></td>
+                                @else
+                                     <td>--</td>
+                                @endif
+
+                                @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/mrn/{mrnID}/prnEntry')=='YES')
+                                    <td><a href="/mrn/{{$output[$i]['id']}}/prnEntry" class="btn btn-default">Create_PRN</a></td>
+                                @else
+                                    <td>--</td>
+                                @endif
                             </tr>
                         @endfor
                     @else  
@@ -76,7 +94,6 @@
 @stop
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
 <script src="{{ asset('js/mrn/mrn.js') }}"></script>
 
 

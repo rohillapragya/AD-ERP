@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/Home/dashboard.css') }}">
@@ -11,6 +16,8 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
+
     $request_date = $output[0]['request_date'];
     $req_date_arr = explode("-",$request_date);
     $req_year =  $req_date_arr[0];
@@ -49,7 +56,7 @@
     @endif
 
     <div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/editSampleRequest')=='YES')
         <form method="post" action="/dashboard/editSampleRequest" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <input type="hidden" value="{{$output[0]['sample_id']}}" name="sampleId">

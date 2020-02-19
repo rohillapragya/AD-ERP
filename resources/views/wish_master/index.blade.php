@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/bom/init.css') }}">
@@ -11,6 +16,7 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <!-- <input type="hidden" id="roleId" name="roleId" value={{$user_role_id}}> -->
@@ -23,12 +29,15 @@
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7' || $user_role_id=='11')
-        <div class="form-group row">
-            <div class="col-sm-12">
-                <a href="/wish/add" style="float: right" class="btn btn-default">Add New Wish List</a>
-            </div>
-        </div>
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/wish/index')=='YES')
+
+            @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/wish/add')=='YES')
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <a href="/wish/add" style="float: right" class="btn btn-default">Add New Wish List</a>
+                    </div>
+                </div>
+            @endif    
 
         <div class="form-group row">
             <table class="table table-bordered" id="productMethodTable">
@@ -42,9 +51,7 @@
                         <th scope="col" style="vertical-align: sub;">Application</th>
                         <th scope="col" style="vertical-align: sub;">Wish Date (YYYY-MM-DD)</th>
                         <th scope="col" style="vertical-align: sub;">Edit</th>
-                        @if($user_role_id=='3')
                         <th scope="col" style="vertical-align: sub;">Action</th>
-                        @endif
                     </tr>
                 </thead>
                 <tbody style="font-size: 14px;" >
@@ -58,11 +65,19 @@
                                 <td>{{$output[$i]['description']}}</td>
                                 <td>{{$output[$i]['application']}}</td>
                                 <td>{{$output[$i]['created_at']}}</td>
-                                <td>
-                                    <a href="/wish/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a>
-                                </td>
-                                @if($user_role_id=='3')
-                                <td scope="col"><a href="/wish/action/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></span></a></td>
+                                
+                                @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('wish/edit/{wishId}')=='YES')
+                                    <td>
+                                        <a href="/wish/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a>
+                                    </td>
+                                @else
+                                    <td>--</td>
+                                @endif
+
+                                @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/wish/action/{wishId}')=='YES')
+                                    <td scope="col"><a href="/wish/action/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></span></a></td>
+                                @else
+                                    <td>--</td>
                                 @endif
                             </tr>
                         @endfor

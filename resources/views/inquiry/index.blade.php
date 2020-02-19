@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/inquiry/init.css') }}">
@@ -13,6 +18,8 @@
     $user_role_id = Session::get('role_id');
 
     $cart_id = Session::get('cart_id');
+
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <input type="hidden" id="cartid" name="cartid" value={{$cart_id}}>
@@ -24,8 +31,8 @@
     </ol>
     </nav>
 
-    <div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
+    <div class="container box-shadow"> 
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/inquiry/init')=='YES')
         <!-- <div class="form-group row" style="box-shadow: 7px 4px 10px #f1f1f1;">
             <div class="col-sm-10">  <input type="input" class="form-control" id="product_name"  placeholder="product name"></div>
             

@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/bom/init.css') }}">
@@ -12,6 +17,7 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <!-- <input type="hidden" id="roleId" name="roleId" value={{$user_role_id}}> -->
@@ -19,12 +25,12 @@
     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <span class="glyphicon glyphicon-map-marker"></span>
-        <li class="breadcrumb-item active" aria-current="page"> <a href="/dashboard"> Dashboard </a> /   Bill of Material (BOM) /  Add </li>
+        <li class="breadcrumb-item active" aria-current="page"> <a href="/Index"> Dashboard </a> /   Bill of Material (BOM) /  Add </li>
     </ol>
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='8')
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/bom/save')=='YES')
         <form method="post" action="/bom/save"> 
             {{ csrf_field() }}
 

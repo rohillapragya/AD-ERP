@@ -21,14 +21,20 @@ class QC extends Controller
  
     public function pendingQCDetailList()
     {
-        $output = $this->qc->pendingQCDetailList();
+        $location_id = Session::get('location_id');
+
+        $output = $this->qc->pendingQCDetailList($location_id);
+
+        //dd($output);
 
        return view('qc.pending_qc_details',compact('output'));
     }
    
     public function getQCDetailsCount()
     {
-        return $this->qc->getQCDetailsCount();
+        $location_id = Session::get('location_id');
+
+        return $this->qc->getQCDetailsCount($location_id);
     }
 
     public function ReadyForQCDetails(Request $request)
@@ -57,6 +63,8 @@ class QC extends Controller
     {
         $user_id = Session::get('UID');
 
+        $location_id = Session::get('location_id');
+
         $sampleId = request('sampleId');
 
         $qcTestResult = request('qcTestResult');
@@ -67,7 +75,7 @@ class QC extends Controller
 
         $qc_table_document_number = request('document_number');
 
-        $output = $this->qc->saveQCDetails($sampleId,$qc_remarks,$qc_table_document_name,$qc_table_document_number,$user_id,$qcTestResult);
+        $output = $this->qc->saveQCDetails($sampleId,$qc_remarks,$qc_table_document_name,$qc_table_document_number,$user_id,$qcTestResult,$location_id);
 
         $data['message'] ='QC Details Added Successfully. Go to  Dashboard using button';
         $data['text'] = '';
@@ -78,6 +86,8 @@ class QC extends Controller
     public function qcStockInfoSave(Request $request)
     {
         $user_id = Session::get('UID');
+        $location_id = Session::get('location_id');
+
         $stock_entry_id = request('stock_entry_id');
         $qcTestResult = request('qcTestResult');
         $qc_remarks = request('qc_remarks');
@@ -86,7 +96,7 @@ class QC extends Controller
         $raw_material_betch_number = request('raw_material_betch_number');
         $r_d_betch_number = request('r_d_betch_number');
 
-        $output = $this->qc->qcStockInfoSave($user_id,$stock_entry_id,$qcTestResult,$qc_remarks,$vendor_code,$vendor_betch_number,$raw_material_betch_number,$r_d_betch_number);
+        $output = $this->qc->qcStockInfoSave($user_id,$stock_entry_id,$qcTestResult,$qc_remarks,$vendor_code,$vendor_betch_number,$raw_material_betch_number,$r_d_betch_number,$location_id);
 
         $data['message'] ='QC Details Added Successfully. Go to  Dashboard using button';
         $data['text'] = '';

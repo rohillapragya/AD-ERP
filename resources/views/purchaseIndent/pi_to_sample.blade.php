@@ -1,3 +1,9 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/Home/dashboard.css') }}">
@@ -37,7 +43,7 @@
     @endif
 
     <div class="container box-shadow">
-     @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7')
+    @if(Dashboard::isRouteExistForUser('/dashboard/pi_to_sample_save')=='YES')
         <form method="post" action="/dashboard/pi_to_sample_save" enctype="multipart/form-data">
             {{ csrf_field() }}
             <input type="hidden" value="{{$pID}}" name="pID">

@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/bom/init.css') }}">
@@ -11,24 +16,29 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <!-- <input type="hidden" id="roleId" name="roleId" value={{$user_role_id}}> -->
 
+    <!-- <div>User Role Id -  {{$user_role_id}}</div> -->
+
     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <span class="glyphicon glyphicon-map-marker"></span>
-        <li class="breadcrumb-item active" aria-current="page"> <a href="/dashboard"> Dashboard </a> /  Bill of Material (BOM) /  List</li>
+            <li class="breadcrumb-item active" aria-current="page"> <a href="/dashboard"> Dashboard </a> / Goods Rececipt Note (GRN) /  List</li>   
     </ol>
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='8')
+    @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/BOM')=='YES')
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/addBom')=='YES')
         <div class="form-group row">
             <div class="col-sm-12">
                 <a href="/dashboard/addBom" style="float: right" class="btn btn-default">Add New BOM</a>
             </div>
         </div>
+        @endif
 
         <div class="form-group row">
             <table class="table table-bordered" id="bomItemsList">
@@ -52,8 +62,17 @@
                                 <td>{{$output[$i]['BOM_key_person']}}</td>
                                 <td>{{$output[$i]['created_at']}}</td>
                                 <td>{{$output[$i]['remarks']}}</td>
-                                <td><a href="/bom/{{$output[$i]['id']}}/production" class="btn btn-default">Create Production</a></td>
-                                <td><a href="/bom/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a></td> 
+                                @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/bom/{bomId}/production')=='YES')
+                                    <td><a href="/bom/{{$output[$i]['id']}}/production" class="btn btn-default">Create Production</a></td>
+                                @else
+                                    <td>Create Production</td>
+                                @endif
+
+                                @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/bom/edit/{bomID}')=='YES')
+                                    <td><a href="/bom/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></span></a></td> 
+                                @else
+                                    <td><span class="glyphicon glyphicon-pencil"></span>/td> 
+                                @endif
                             </tr>
                         @endfor
                     @else  

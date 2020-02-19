@@ -1,3 +1,9 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css//mrn/init.css') }}">
@@ -12,6 +18,7 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 
     $valid_till = $output[0]['valid_till'];
     $valid_till_date_arr = explode("/",$valid_till);
@@ -44,7 +51,7 @@
 
 
     <div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='14')
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/product/editProduct')=='YES')
         <form method="post" action="/product/editProduct" enctype="multipart/form-data"> 
             {{ csrf_field() }}
 

@@ -33,8 +33,14 @@ class Stock extends Controller
 
     public function index()
     {
-    	// dd('Hello');
-       $output = $this->stock->showLatestStockEntry();
+    	$location_id = Session::get('location_id');
+       
+        $output = $this->stock->showLatestStockEntry($location_id);
+
+        if($output==null)
+        {
+            $output = array();
+        }
 
         return view('stock.index',compact('output'));
     }
@@ -42,7 +48,9 @@ class Stock extends Controller
 
     public function getStockEntryCount()
     {
-        return $this->stock->getStockEntryCount();
+        $location_id = Session::get('location_id');
+
+        return $this->stock->getStockEntryCount($location_id);
     }
 
 
@@ -75,6 +83,8 @@ class Stock extends Controller
     public function saveStock(Request $request)
     {
         $stockEntryMRNID = request('stockEntryMRNID');
+
+        $location_id = Session::get('location_id');
 
         if($stockEntryMRNID > 0)
         {
@@ -126,7 +136,7 @@ class Stock extends Controller
 
         $entryBehalfOfID = request('entryBehalfOfID');
 
-    	$output = $this->stock->addStock($user_id,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$table_product_is_sample_uom,$stockEntryWarehouseId,$stockEntryFor,$vendor_code,$stockEntryBehalfOf,$entryBehalfOfID);
+    	$output = $this->stock->addStock($user_id,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$table_product_is_sample_uom,$stockEntryWarehouseId,$stockEntryFor,$vendor_code,$stockEntryBehalfOf,$entryBehalfOfID,$location_id);
 
     	//dd("Save");
 
@@ -170,6 +180,8 @@ class Stock extends Controller
     {
     	$store_id = request('stock_entry_id');
 
+        $location_id = Session::get('location_id');
+
     	// dd($store_id);
 
     	$stockEntrydateDay = request('stockEntrydateDay');
@@ -210,7 +222,7 @@ class Stock extends Controller
 
         $entryBehalfOfID = request('entryBehalfOfID');
 
-    	$output = $this->stock->updateStock($user_id,$store_id,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$table_product_is_sample_uom,$stockEntryWarehouseId,$stockEntryFor,$vendor_code,$stockEntryBehalfOf,$entryBehalfOfID);
+    	$output = $this->stock->updateStock($user_id,$store_id,$stockEntrydateDay,$stockEntryDateMonth,$stockEntryDateyear,$stockEntryType,$stockEntryTypeDetails,$stock_entry_description,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$table_product_is_sample_uom,$stockEntryWarehouseId,$stockEntryFor,$vendor_code,$stockEntryBehalfOf,$entryBehalfOfID,$location_id);
 
     	$data['message'] ='Stock updated Successfully. Go to  Dashboard using button';
         $data['text'] = '';

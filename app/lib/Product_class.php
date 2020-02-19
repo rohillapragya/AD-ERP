@@ -33,6 +33,28 @@ class Product_class
         return json_decode(json_encode($out), true);
     }
 
+    function getActiveProductList()
+    {
+        $out = DB::select("select * from product_master where active ='Y' order by name,scrientific_name");
+
+        return json_decode(json_encode($out), true);
+    }
+
+    function getpriceRangeProductList()
+    {
+        $out = DB::select("select * from product_master where active ='Y' and (CURRENT_DATE + INTERVAL 15 DAY) > valid_till  or min_price=0 or max_price=0 order by name,scrientific_name");
+
+        return json_decode(json_encode($out), true);
+    }
+
+
+    function getpriceCountRangeProductList()
+    {
+        $out = DB::select("select count(*) as total from product_master where active ='Y' and (CURRENT_DATE + INTERVAL 15 DAY) > valid_till  or min_price=0 or max_price=0 order by name,scrientific_name");
+
+        return json_decode(json_encode($out), true);
+    }
+
     function getProuductList()
     {
         $out = DB::select("select code as id,concat(name,'( ',code ,' -  ',specification,')') as name from product_master where active='Y' order by name");
@@ -98,7 +120,7 @@ class Product_class
 
         $type='1'; // type 1 is product type, type 2 for wish product
 
-        $out = DB::insert("insert into product_master(id,code,name,scrientific_name,specification,application,category,ratio_based,method,min_price,max_price,valid_till,hsn_code,image,active,type,created_at,min_qty) values('$maxProductMasterId','$product_code','$product_name','$product_botanical_name','$product_specification','$product_application','$product_category','$product_ratio_based','$product_method','$product_min_price','$product_max_price','$valid_till','$hsn_code','$product_image','Y','$type','$this->created_at','$min_quantity')");
+        $out = DB::insert("insert into product_master(id,code,name,scrientific_name,specification,application,category,ratio_based,method,min_price,max_price,valid_till,hsn_code,image,active,type,created_at,min_qty,created_by) values('$maxProductMasterId','$product_code','$product_name','$product_botanical_name','$product_specification','$product_application','$product_category','$product_ratio_based','$product_method','$product_min_price','$product_max_price','$valid_till','$hsn_code','$product_image','Y','$type','$this->created_at','$min_quantity','$user_id')");
     }
 
     function addProductIDInWishMaster($wishID)
@@ -112,7 +134,7 @@ class Product_class
     {
         $valid_till = $this->string_to_date($priceValidDay,$priceValidMonth,$priceValidyear);
 
-        $out = DB::update("update product_master set name='$product_name',scrientific_name='$product_botanical_name',specification='$product_specification',application='$product_application',category='$product_category',ratio_based='$product_ratio_based',method='$product_method',min_price='$product_min_price',max_price='$product_max_price',valid_till='$valid_till',hsn_code='$hsn_code',image='$product_image',updated_at='$this->created_at',min_qty='$min_quantity' where id='$productID'");
+        $out = DB::update("update product_master set name='$product_name',scrientific_name='$product_botanical_name',specification='$product_specification',application='$product_application',category='$product_category',ratio_based='$product_ratio_based',method='$product_method',min_price='$product_min_price',max_price='$product_max_price',valid_till='$valid_till',hsn_code='$hsn_code',image='$product_image',updated_at='$this->created_at',min_qty='$min_quantity',update_by='$user_id' where id='$productID'");
     }
 
     function gettingProductDetailsByProductID($productID)
@@ -265,7 +287,7 @@ class Product_class
         return date("Y/m/d", strtotime($odate));
     }
 
-    function saveSampleRequestMaster($type,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$sampledeliveryDay,$sampledeliveryMonth,$sampledeliveryyear,$behalf_of,$user_id)
+    function saveSampleRequestMaster($type,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$sampledeliveryDay,$sampledeliveryMonth,$sampledeliveryyear,$behalf_of,$user_id,$location_id)
     {
         $this->sample_max_id = $this->maxSampleId();
         $this->created_by = $user_id;
@@ -274,7 +296,7 @@ class Product_class
         $request_date = $this->string_to_date($samplerequestDay,$samplerequestMonth,$samplerequestyear);
         $delivery_date = $this->string_to_date($sampledeliveryDay,$sampledeliveryMonth,$sampledeliveryyear);
     
-        $out = DB::insert("insert into sample_master (id,sample_number,type,request_date,delivered_date,status,any_behalf_of,created_at,created_by) values('$this->sample_max_id','$sample_number','$type','$request_date','$delivery_date','CUSTOMER_SAMPLE_REQUEST','$behalf_of','$this->created_at','$this->created_by')");
+        $out = DB::insert("insert into sample_master (id,sample_number,type,request_date,delivered_date,status,any_behalf_of,created_at,created_by,location_id) values('$this->sample_max_id','$sample_number','$type','$request_date','$delivery_date','CUSTOMER_SAMPLE_REQUEST','$behalf_of','$this->created_at','$this->created_by','$location_id')");
     }
 
     function saveSampleRequestDetails($full_name,$mobile,$email,$address,$imageName)
@@ -328,19 +350,51 @@ class Product_class
     }
 
 
-    function getCustomerSampleList($role_id,$user_id)
-    {
-        if($role_id)
-        {
-            if($role_id=='3' || $role_id=='7')
-            {
-                $out = DB::select("select c.description as customer_status,a.*,b.* from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.status=c.status order by a.sample_number,a.created_at desc");
+    // function getCustomerSampleList($role_id,$user_id)
+    // {
+    //     if($role_id)
+    //     {
+    //         if($role_id=='3' || $role_id=='7')
+    //         {
+    //             $out = DB::select("select c.description as customer_status,a.*,b.* from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.status=c.status order by a.sample_number,a.created_at desc");
     
-            }
-            else
+    //         }
+    //         else
+    //         {
+    //             $out = DB::select(" select c.description as customer_status,a.*,b.* from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.created_by='$user_id' and a.status=c.status order by a.sample_number,a.created_at desc");
+    //         }
+           
+    //         return json_decode(json_encode($out), true);
+    //     }
+    //     else
+    //     {
+    //         return redirect()->route('login');
+    //     }
+    // }
+
+
+
+    function getCustomerSampleList($role_id,$user_id,$location_id)
+    {
+        $str = 'and 1=1 ';
+
+        if($location_id)
+        {
+            if($location_id!='%')
             {
-                $out = DB::select(" select c.description as customer_status,a.*,b.* from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.created_by='$user_id' and a.status=c.status order by a.sample_number,a.created_at desc");
+                $str.= " and a.location_id ='$location_id'";
             }
+
+            $isAdministratorAccess = $this->isUserLocationHavingAdministratorAccess($user_id,$location_id);
+
+            $isOperationAdminAccess = $this->isUserLocationHavingOperationAdminAccess($user_id,$location_id);
+
+            if(($role_id!='1') && ($role_id!=2) && ($isAdministratorAccess=='N') && ($isOperationAdminAccess=='N'))
+            {
+                $str.= " and a.created_by='$user_id'";
+            }
+           
+            $out = DB::select("select c.description as customer_status,a.*,b.* from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.status=c.status $str order by a.sample_number,a.created_at desc");
            
             return json_decode(json_encode($out), true);
         }
@@ -350,20 +404,56 @@ class Product_class
         }
     }
 
-    function getCustomerCount($role_id,$user_id)
-    {
-        if($role_id)
-        {
-            if($role_id=='3' || $role_id=='7')
-            {
-                $out = DB::select("select count(*) as total from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.status=c.status");
+
+
+    // function getCustomerCount($role_id,$user_id)
+    // {
+    //     if($role_id)
+    //     {
+    //         if($role_id=='3' || $role_id=='7')
+    //         {
+    //             $out = DB::select("select count(*) as total from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.status=c.status");
     
-            }
-            else
+    //         }
+    //         else
+    //         {
+    //             $out = DB::select(" select count(*) as total from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.created_by='$user_id' and a.status=c.status");
+    //         }
+           
+    //         return json_decode(json_encode($out), true);
+    //     }
+    //     else
+    //     {
+    //         return redirect()->route('login');
+    //     }
+    // }
+
+
+    function getCustomerCount($role_id,$user_id,$location_id)
+    {
+        $str = 'and 1=1 ';
+
+        if($location_id)
+        {
+            if($location_id!='%')
             {
-                $out = DB::select(" select count(*) as total from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.created_by='$user_id' and a.status=c.status");
+                $str.= " and a.location_id ='$location_id'";
+            }
+
+            $isAdministratorAccess = $this->isUserLocationHavingAdministratorAccess($user_id,$location_id);
+
+            $isOperationAdminAccess = $this->isUserLocationHavingOperationAdminAccess($user_id,$location_id);
+
+            if(($role_id!='1') && ($role_id!=2) && ($isAdministratorAccess=='N') && ($isOperationAdminAccess=='N'))
+            {
+                $str.= " and a.created_by='$user_id'";
             }
            
+            $out = DB::select("select count(*) as total from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.status=c.status $str");
+           
+           //echo "select count(*) as total from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.status=c.status $str";
+
+           //dd("A");
             return json_decode(json_encode($out), true);
         }
         else
@@ -371,7 +461,6 @@ class Product_class
             return redirect()->route('login');
         }
     }
-
 
     function getCustomerSampleInfoBySampleId($sampleId)
     {
@@ -383,19 +472,19 @@ class Product_class
     }
 
 
-    function editSampleRequestMaster($sampleId,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$sampledeliveryDay,$sampledeliveryMonth,$sampledeliveryyear,$behalf_of,$user_id)
+    function editSampleRequestMaster($sampleId,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$sampledeliveryDay,$sampledeliveryMonth,$sampledeliveryyear,$behalf_of,$user_id,$location_id)
     {
         $this->created_by = $user_id;
         $request_date = $this->string_to_date($samplerequestDay,$samplerequestMonth,$samplerequestyear);
         $delivery_date = $this->string_to_date($sampledeliveryDay,$sampledeliveryMonth,$sampledeliveryyear);
 
-        $out = DB::insert("update sample_master set request_date='$request_date',delivered_date='$delivery_date',any_behalf_of='$behalf_of',created_at='$this->created_at',created_by='$this->created_by' where id='$sampleId'");
+        $out = DB::insert("update sample_master set request_date='$request_date',delivered_date='$delivery_date',any_behalf_of='$behalf_of',updated_at='$this->created_at',updated_by='$this->created_by',location_id='$location_id' where id='$sampleId'");
     }
 
 
     function editSampleRequestDetails($sampleId,$full_name,$mobile,$email,$address,$imageName)
     {
-        $out = DB::insert("update sample_details set ref_name='$full_name',ref_address='$address',ref_mobile='$mobile',ref_email='$email',attachment_1='$imageName',created_at='$this->created_at',created_by='$this->created_by' where sample_id='$sampleId'");
+        $out = DB::insert("update sample_details set ref_name='$full_name',ref_address='$address',ref_mobile='$mobile',ref_email='$email',attachment_1='$imageName',updated_at='$this->created_at',updated_by='$this->created_by' where sample_id='$sampleId'");
     }
 
 
@@ -446,22 +535,71 @@ class Product_class
         $out = DB::insert("update sample_master set status='$status',updated_by='$user_id',updated_at='$this->created_at' where id='$sampleId'");
     }
 
-    function getVendorSampleList()
+    // function getVendorSampleList()
+    // {
+    //     $out = DB::select("select c.description as customer_status,a.*,b.* from sample_master a, sample_details b,process_status c  where a.status='VENDOR_SAMPLE_RECEIVED' and a.id =b.sample_id and a.status=c.status");
+
+    //     return json_decode(json_encode($out), true);
+    // }
+
+
+    function getVendorSampleList($location_id)
     {
-        $out = DB::select("select c.description as customer_status,a.*,b.* from sample_master a, sample_details b,process_status c  where a.status='VENDOR_SAMPLE_RECEIVED' and a.id =b.sample_id and a.status=c.status");
+        $str = 'and 1=1 ';
+
+        if($location_id)
+        {
+            if($location_id!='%')
+            {
+                $str.= " and a.location_id ='$location_id'";
+            }
+
+            $out = DB::select("select c.description as customer_status,a.*,b.* from sample_master a, sample_details b,process_status c  where a.status='VENDOR_SAMPLE_RECEIVED' and a.id =b.sample_id and a.status=c.status $str order by a.sample_number,a.created_at desc");
+
+            return json_decode(json_encode($out), true);
+        }
+        else
+        {
+            return redirect()->route('login');
+        }        
 
         return json_decode(json_encode($out), true);
     }
 
-    function getVendorCount()
+
+    // function getVendorCount()
+    // {
+    //     $out = DB::select("select count(*) as total from sample_master a, sample_details b,process_status c  where a.status='VENDOR_SAMPLE_RECEIVED' and a.id =b.sample_id and a.status=c.status");
+
+    //     return json_decode(json_encode($out), true);
+    // }
+
+
+    function getVendorCount($location_id)
     {
-        $out = DB::select("select count(*) as total from sample_master a, sample_details b,process_status c  where a.status='VENDOR_SAMPLE_RECEIVED' and a.id =b.sample_id and a.status=c.status");
+        $str = 'and 1=1 ';
+
+        if($location_id)
+        {
+            if($location_id!='%')
+            {
+                $str.= " and a.location_id ='$location_id'";
+            }
+
+            $out = DB::select("select count(*) as total from sample_master a, sample_details b,process_status c  where a.status='VENDOR_SAMPLE_RECEIVED' and a.id =b.sample_id and a.status=c.status $str");
+
+            return json_decode(json_encode($out), true);
+        }
+        else
+        {
+            return redirect()->route('login');
+        }        
 
         return json_decode(json_encode($out), true);
     }
 
 
-    function saveVendorSampleRequestMaster($type,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$samplereceivedDay,$samplereceivedMonth,$samplereceivedyear,$behalf_of,$user_id)
+    function saveVendorSampleRequestMaster($type,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$samplereceivedDay,$samplereceivedMonth,$samplereceivedyear,$behalf_of,$user_id,$location_id)
     {
         $this->sample_max_id = $this->maxSampleId();
         $this->created_by = $user_id;
@@ -471,7 +609,7 @@ class Product_class
         $delivery_date = $this->string_to_date($samplereceivedDay,$samplereceivedMonth,$samplereceivedyear);
     
         //dd($request_date);
-        $out = DB::insert("insert into sample_master (id,sample_number,type,request_date,received_date,status,any_behalf_of,created_at,created_by) values('$this->sample_max_id','$sample_number','$type','$request_date','$delivery_date','VENDOR_SAMPLE_RECEIVED','$behalf_of','$this->created_at','$this->created_by')");
+        $out = DB::insert("insert into sample_master (id,sample_number,type,request_date,received_date,status,any_behalf_of,created_at,created_by,location_id) values('$this->sample_max_id','$sample_number','$type','$request_date','$delivery_date','VENDOR_SAMPLE_RECEIVED','$behalf_of','$this->created_at','$this->created_by','$location_id')");
     }
 
     function saveVendorSampleRequestDetails($full_name,$mobile,$email,$address,$imageName)
@@ -534,13 +672,13 @@ class Product_class
     }
 
 
-    function editVendorSampleRequestMaster($sampleId,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$samplereceivedDay,$samplereceivedMonth,$samplereceivedyear,$behalf_of,$user_id)
+    function editVendorSampleRequestMaster($sampleId,$samplerequestDay,$samplerequestMonth,$samplerequestyear,$samplereceivedDay,$samplereceivedMonth,$samplereceivedyear,$behalf_of,$user_id,$location_id)
     {
         $this->created_by = $user_id;
         $request_date = $this->string_to_date($samplerequestDay,$samplerequestMonth,$samplerequestyear);
         $delivery_date = $this->string_to_date($samplereceivedDay,$samplereceivedMonth,$samplereceivedyear);
 
-        $out = DB::insert("update sample_master set request_date='$request_date',received_date='$delivery_date',any_behalf_of='$behalf_of',created_at='$this->created_at',created_by='$this->created_by' where id='$sampleId'");
+        $out = DB::insert("update sample_master set request_date='$request_date',received_date='$delivery_date',any_behalf_of='$behalf_of',updated_at='$this->created_at',updated_by='$this->created_by',location_id='$location_id' where id='$sampleId'");
     }
 
 
@@ -606,7 +744,80 @@ class Product_class
         return json_decode(json_encode($out), true);
     }
 
+    // function pendingCustomerSample($user_id,$location_id,$role_id)
+    // {
+    //     $str = 'and 1=1 ';
+
+    //     if($location_id)
+    //     {
+        
+    //         if($location_id!='%')
+    //         {
+    //             $str.= " and a.location_id ='$location_id'";
+    //         }
+
+    //         $isAdministratorAccess = $this->isUserLocationHavingAdministratorAccess($user_id,$location_id);
+
+    //         $isOperationAdminAccess = $this->isUserLocationHavingOperationAdminAccess($user_id,$location_id);
+
+    //         if(($role_id!='1') && ($role_id!=2) && ($isAdministratorAccess=='N') && ($isOperationAdminAccess=='N'))
+    //         {
+    //             $str.= " and a.created_by='$user_id'";
+    //         }
+           
+    //         $out = DB::select("select c.description as customer_status,a.*,b.* from sample_master a, sample_details b,process_status c  where a.status='CUSTOMER_SAMPLE_REQUEST' and a.id =b.sample_id and a.status=c.status $str order by a.sample_number,a.created_at desc");
+           
+    //         return json_decode(json_encode($out), true);
+    //     }
+    //     else
+    //     {
+    //         return redirect()->route('login');
+    //     }
+    // }
+
+
+    function isUserLocationHavingAdministratorAccess($user_id,$locationId)
+    {
+        /* Role id 3 for Adminsitrator role. Using this will able to check  whether user role along with location having  Administrator access or not*/
+
+        $out = DB::select("select count(*) as total from app_user_menu_access_map where user_id='$user_id' and location_id='$locationId' and role_id ='3'");
+
+        $result = json_decode(json_encode($out), true);
+        foreach ($result as $key => $value) 
+        {
+            $count = $value['total'];
+
+            if($count=='1'){ $isUserLocationHavingAdministratorRole = 'Y';}
+            else { $isUserLocationHavingAdministratorRole = 'N';}
+        }
+
+        return $isUserLocationHavingAdministratorRole;
+    }
+
+
+    function isUserLocationHavingOperationAdminAccess($user_id,$locationId)
+    {
+        /* Role id 3 for Adminsitrator role. Using this will able to check  whether user role along with location having  Administrator access or not*/
+
+        $out = DB::select("select count(*) as total from app_user_menu_access_map where user_id='$user_id' and location_id='$locationId' and role_id ='7'");
+
+        $result = json_decode(json_encode($out), true);
+        foreach ($result as $key => $value) 
+        {
+            $count = $value['total'];
+
+            if($count=='1'){ $isUserLocationHavingOperationAdminRole = 'Y';}
+            else { $isUserLocationHavingOperationAdminRole = 'N';}
+        }
+
+        return $isUserLocationHavingOperationAdminRole;
+    }
+
+    function updatePrice_valid($updated_by,$productId,$product_min_price,$product_max_price,$priceValidDay,$priceValidMonth,$priceValidyear)
+    {
+        $valid_till = $this->string_to_date($priceValidDay,$priceValidMonth,$priceValidyear);
+
+        $out = DB::update("update product_master set min_price='$product_min_price',max_price='$product_max_price',valid_till='$valid_till',updated_at='$this->created_at',update_by='$updated_by' where id='$productId'");
+    }
+
 }
-
-
-

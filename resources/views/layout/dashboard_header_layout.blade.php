@@ -13,14 +13,10 @@
         <link rel="stylesheet" href="{{ asset('css/Home/dashboard.css') }}">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!-- <link rel="stylesheet" href="{{ asset('css/online/icon.css')}}"> -->
-
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/sweetalert2/5.3.5/sweetalert2.min.css">
         
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <!-- <script src="{{ asset('js/online/jquery.min.js') }}"></script> -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <!-- <script src="{{ asset('js/online/popper.min.js') }}"></script> -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <script src="{{ asset('js/Home/dashboard.js')}}"></script>
+        
+
         <style>
         .footer {
         position: fixed;
@@ -47,8 +43,8 @@
 
                 <div class="header-right"> 
                     <span style="display: grid;margin-right: 15px;">
-                        <span class="font-bold">{{ Session::get('full_name')}}</span>
-                        <span class="font-bold">{{ Session::get('role_name')}} </span>
+                        <span class="font-bold" style="text-transform: capitalize;">{{ Session::get('full_name')}}</span>
+                        <span class="font-bold" id="session_location_id" style="color: white">{{ Session::get('location_id')}} </span>
                     </span>
                     <span class="glyphicon glyphicon-user font-30" style="margin-right: 50px;"></span>
                     <!-- <span class="glyphicon glyphicon-bell font-30" style="margin-right: 50px;"></span> -->
@@ -62,18 +58,35 @@
                     <a href="/signoff" style="padding: 0px;"> <span class="glyphicon glyphicon-log-out font-30"></span></a>
                    
                 </div>
-                <!-- <div>session div UID - {{ Session::get('UID')}}</div>
-                <div>session div EMAIL - {{ Session::get('EMAIL')}}</div>
-                <div>session div full_name - {{ Session::get('full_name')}}</div>
-                <div>session div role_name - {{ Session::get('role_name')}}</div> -->
-                
-                
-
+               
                 <div class="border"></div>
 
                 <div style="float: right;margin-top: -2%;">
                     <img src="{{ asset('logo/leaf.png')}}">
                 </div>
+
+
+                <div class="container">
+                    <div class="row" style="padding: 2%">
+                        <div class="col-md-4" style="font-size: 18px;font-weight: 600;word-spacing: 1;">Select Current Working Location :- </div>
+                        <div class="col-md-8">
+                            <select class="form-control" id="userLocationMaster" name="userLocationMaster" style="width: 50%;" onchange="onChangeUserLocation()">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                </div> 
+
+                <!-- <div id="sachdgwqind"></div> -->
+
+
+                 <div class="container">
+                    <div class="row" style="padding: 2%">
+                        <div class="col-md-12" style="font-size: 18px;font-weight: 600;word-spacing: 1;">
+                            <div id="userLocationErrorMessage" style="display: none;color: red;font-weight: 600;"></div>
+                        </div>
+                    </div>
+                </div> 
                    
             </div>
         @show
@@ -82,6 +95,15 @@
             @yield('content')
         </div>
 
-       
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <!-- <script src="{{ asset('js/online/jquery.min.js') }}"></script> -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <!-- <script src="{{ asset('js/online/popper.min.js') }}"></script> -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="{{ asset('js/Home/dashboard.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('js/Home/userLocation.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/Home/userLocationURL.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/sweetalert2/5.3.5/sweetalert2.min.js"></script>
+        
     </body>
 </html>

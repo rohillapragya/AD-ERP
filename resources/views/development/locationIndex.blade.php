@@ -16,6 +16,8 @@
     $user_id = Session::get('UID');
 
     $route = Request::path();
+
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
 
@@ -27,7 +29,7 @@
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id=='1')
+         @if($user_role_id=='1' || $user_role_id=='2' || $isUserLocationHavingAdministratorAccess=='Y' ||  Dashboard::isRouteExistForUser('/development/location')=='YES')
             <div class="form-group row">
                 <div class="col-sm-12">
                     <!-- <a href="/development/addNewURL" style="float: right" class="btn btn-default">Add New Location</a> -->
@@ -39,9 +41,10 @@
                 <table class="table table-bordered">
                     <thead style="background-color: #eef1ed;font-size: 14px;">
                         <tr>
-                            <th scope="col">#</th>
+                            <th scope="col" style="width: 70px;">#</th>
                             <th scope="col">Location</th>
-                            <th scope="col">Edit</th>
+                            <th scope="col" style="width: 70px;">Edit</th>
+                            <th scope="col" style="width: 70px;">Delete</th>
                         </tr>
                     </thead>
                     <tbody style="font-size: 14px;" id="locationList">
@@ -51,12 +54,14 @@
                                     <td>{{($i+1)}}</td>
                                     <td>{{$output[$i]['location']}}</td>
                                     <td><span class="glyphicon glyphicon-pencil" style="color: #2f8dc9;cursor: pointer;" onclick="onClickLocationEdit({{$output[$i]['id']}})"></span></td> 
-                                    <!-- <td><a href="/development/url/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a></td> --> 
+                                    <td>
+                                        <span class="glyphicon glyphicon-remove" style="color: #2f8dc9;cursor: pointer;" onclick="onClickLocationDelete({{$output[$i]['id']}})"></span>
+                                   </td>
                                 </tr>
                             @endfor
                         @else  
                             <tr>
-                                <td colspan="3" class="no-data-found">No Location found</td>
+                                <td colspan="4" class="no-data-found">No Location found</td>
                             </tr>
                         @endif    
                     </tbody>

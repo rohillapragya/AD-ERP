@@ -88,6 +88,15 @@ class Development extends Controller
             return $output;
         }
 
+        public function deleteMenu(Request $request)
+        {
+            $id = $request->input('id');
+
+            $output = $this->development->deleteMenu($id);
+
+            return $output;
+        }
+
     // section for adding menu  end here
 
 
@@ -164,6 +173,107 @@ class Development extends Controller
             return $output;
         }
 
+        public function deleteLocation(Request $request)
+        {
+            $id = $request->input('id');
+
+            $output = $this->development->deleteLocation($id);
+
+            return $output;
+        }
     // section for handling location section end here    
 
+
+    // section for handling region section start here
+        public function regionIndex()
+        {
+            $output = $this->development->getRegion();
+
+            return view ('development.regionIndex',compact('output'));
+        }
+
+        public function addNewRegion(Request $request)
+        {
+            $region = $request->input('region');
+
+            $output = $this->development->addNewRegion($region);
+
+            return $output;
+        }
+
+        public function getRegion()
+        {
+            $output = $this->development->getRegion();
+
+            return $output;
+        }
+
+        public function editRegion(Request $request)
+        {
+            $id = $request->input('id');
+
+            $region = $request->input('region');
+
+            $output = $this->development->editRegion($id,$region);
+
+            return $output;
+        }
+
+        public function changeRegionStatus(Request $request)
+        {
+            $id = $request->input('id');
+
+            $status = $request->input('status');
+
+            $output = $this->development->changeRegionStatus($id,$status);
+
+            return $output;
+        }
+    // section for handling region section end here
+
+
+    // section for region_location_map start here
+        public function region_location_map()
+        {
+            $getRegion = $this->development->getRegion();
+
+            $getLocation = $this->development->getLocation();
+
+            $regionLocationMapList = $this->development->regionLocationMapList();
+            
+            return view ('development.region_location_map',compact('getRegion','getLocation','regionLocationMapList'));
+        }
+
+        public function addRegionLocationMap(Request $request)
+        {
+            $region_id = $request->input('region_id');
+
+            $location_id = $request->input('location_id');
+
+            $output = $this->development->addRegionLocationMap($region_id,$location_id);
+
+            return $output;
+        }
+
+        public function removeRegionLocationMap(Request $request)
+        {
+            $region_id = $request->input('region_id');
+
+            $location_id = $request->input('location_id');
+
+            $output = $this->development->removeRegionLocationMap($region_id,$location_id);
+
+            return $output;
+        }
+
+        public function deleteRegion(Request $request)
+        {
+            $id = $request->input('id');
+
+            $output = $this->development->deleteRegion($id);
+
+            return $output;
+        }
+
+    // section for region_location_map start here        
 }

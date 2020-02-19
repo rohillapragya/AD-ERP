@@ -25,14 +25,18 @@ class Production extends Controller
  
     public function pendingBMRList()
     {
-        $output = $this->production->pendingBMRList();
+        $location_id = Session::get('location_id');
+
+        $output = $this->production->pendingBMRList($location_id);
 
        return view('production.pending_BMR_List',compact('output'));
     }
 
     public function getBMRCount()
     {
-        return $this->production->getBMRCount();
+        $location_id = Session::get('location_id');
+
+        return $this->production->getBMRCount($location_id);
     }
 
    
@@ -49,12 +53,14 @@ class Production extends Controller
 
     public function saveBMR(Request $request)
     {
+        $location_id = Session::get('location_id');
+
         $sampleId = request('sampleId');
         $bmr_number = request('bmr_number');
         $store_remarks = request('store_remarks');
         $user_id = Session::get('UID');
 
-        $output = $this->production->saveBMR($sampleId,$bmr_number,$store_remarks,$user_id);
+        $output = $this->production->saveBMR($sampleId,$bmr_number,$store_remarks,$user_id,$location_id);
 
         $data['message'] ='BMR Added Successfully. Go to  Dashboard using button';
         $data['text'] = '';
@@ -64,7 +70,9 @@ class Production extends Controller
 
     public function index()
     {
-        $output = $this->production->showProductionList();
+        $location_id = Session::get('location_id');
+
+        $output = $this->production->showProductionList($location_id);
 
         return view('production.index',compact('output'));
     }
@@ -82,6 +90,7 @@ class Production extends Controller
     public function save(Request $request)
     {
         $user_id = Session::get('UID');
+        $location_id = Session::get('location_id');
 
         $productionStartDay = request('productionStartDay');
         $productionStartMonth = request('productionStartMonth');
@@ -104,7 +113,7 @@ class Production extends Controller
         $product_uom = request('product_uom');
         $manufacture_uom = request('manufacture_uom');
 
-        $output = $this->production->save($user_id,$productionStartDay,$productionStartMonth,$productionStartyear,$productionExpectedEndDay,$productionExpectedEndMonth,$productionExpectedEndyear,$sourceWarehouse,$destinationWarehouse,$bom_no,$item_to_manufacture ,$manugfacture_item_qty,$production_remark,$product_name,$product_source_warhouse,$product_method,$product_required_qty,$product_transfered_qty,$product_consumed_qty,$product_uom,$manufacture_uom);
+        $output = $this->production->save($user_id,$productionStartDay,$productionStartMonth,$productionStartyear,$productionExpectedEndDay,$productionExpectedEndMonth,$productionExpectedEndyear,$sourceWarehouse,$destinationWarehouse,$bom_no,$item_to_manufacture ,$manugfacture_item_qty,$production_remark,$product_name,$product_source_warhouse,$product_method,$product_required_qty,$product_transfered_qty,$product_consumed_qty,$product_uom,$manufacture_uom,$location_id);
 
         $data['message'] ='Production Added Successfully. Go to  Dashboard using button';
         $data['text'] = '';
@@ -135,6 +144,9 @@ class Production extends Controller
 
     public function update(Request $request)
     {
+        $user_id = Session::get('UID');
+        $location_id = Session::get('location_id');
+
         $productionId = request('productionId');
         $productionStartDay = request('productionStartDay');
         $productionStartMonth = request('productionStartMonth');
@@ -157,7 +169,7 @@ class Production extends Controller
         $product_uom = request('product_uom');
         $manufacture_uom = request('manufacture_uom');
 
-        $output = $this->production->update($productionId,$productionStartDay,$productionStartMonth,$productionStartyear,$productionExpectedEndDay,$productionExpectedEndMonth,$productionExpectedEndyear,$sourceWarehouse,$destinationWarehouse,$bom_no,$item_to_manufacture ,$manugfacture_item_qty,$production_remark,$product_name,$product_source_warhouse,$product_method,$product_required_qty,$product_transfered_qty,$product_consumed_qty,$product_uom,$manufacture_uom);
+        $output = $this->production->update($productionId,$productionStartDay,$productionStartMonth,$productionStartyear,$productionExpectedEndDay,$productionExpectedEndMonth,$productionExpectedEndyear,$sourceWarehouse,$destinationWarehouse,$bom_no,$item_to_manufacture ,$manugfacture_item_qty,$production_remark,$product_name,$product_source_warhouse,$product_method,$product_required_qty,$product_transfered_qty,$product_consumed_qty,$product_uom,$manufacture_uom,$user_id,$location_id);
 
         $data['message'] ='Production Information Edit Successfully. Go to  Dashboard using button';
         $data['text'] = '';

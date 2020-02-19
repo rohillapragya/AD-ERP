@@ -57,7 +57,7 @@ function updateMenu()
             $("#developmentMenuList").empty();
             for(var i=0;i<length;i++)
             {
-           		$('#developmentMenuList').append("<tr><td>"+(i+1)+"</td> <td>"+resp[i].name+"</td> <td><span class='glyphicon glyphicon-pencil' style='color: #2f8dc9;cursor: pointer' onclick='onClickMenuEdit("+resp[i].id+")'></td> </tr>");
+           		$('#developmentMenuList').append("<tr><td>"+(i+1)+"</td> <td>"+resp[i].name+"</td> <td><span class='glyphicon glyphicon-pencil' style='color: #2f8dc9;cursor: pointer' onclick='onClickMenuEdit("+resp[i].id+")'></td> <td><span class='glyphicon glyphicon-remove' style='color: #2f8dc9;cursor: pointer' onclick='onClickMenuDelete("+resp[i].id+")'></td></tr>");
 
             }
         },
@@ -114,4 +114,26 @@ function onClickMenuEdit(id)
 		    })
 	});
 
+}
+
+
+
+function onClickMenuDelete(id)
+{
+   // console.log("ID-"+id);
+
+   $.ajax({
+        type: 'POST',
+        url: '/development/deleteMenu',
+        dataType: 'json',
+        data : ({id:id}),
+        beforeSend: function (request) {
+            return request.setRequestHeader('X-CSRF-Token', $("meta[name='csrf-token']").attr('content'));
+        },
+        success: function (resp) 
+        {
+            location.reload(true/false);
+        }
+         
+    });
 }

@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/dispatch/dashboard.css') }}">
@@ -14,17 +19,19 @@
 @php
 $user_role_id = Session::get('role_id');
 $is_active = $output[0]['is_active'];
+ $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
 			<span class="glyphicon glyphicon-map-marker"></span>
-			<li class="breadcrumb-item active" aria-current="page"> <a href="/dashboard"> Dashboard </a> /  EditDispatch Service</li>
+			<li class="breadcrumb-item active" aria-current="page"> <a href="/dashboard"> Dashboard </a> /  Edit / Dispatch Service</li>
 		</ol>
 	</nav>
 
 	 <div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7' || $user_role_id=='12')
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dispatch/updateService')=='YES')
+
         <form method="post" action="/dispatch/updateService">
             {{ csrf_field() }}
             <input type="hidden" value="{{$output[0]['id']}}" name="dispatchId">

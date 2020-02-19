@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/bom/init.css') }}">
@@ -11,6 +16,7 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <!-- <input type="hidden" id="roleId" name="roleId" value={{$user_role_id}}> -->
@@ -38,9 +44,9 @@
     @endif
 
     <div class="container box-shadow">
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/product/editMethod')=='YES')
         <form method="post" action="/product/editMethod">
             {{ csrf_field() }}
-         @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='14')
             <input type="hidden" name="methodId" value="{{ $output[0]['id'] }}">
          
             <div class="form-group row">
@@ -54,14 +60,12 @@
                 <div class="col-sm-4"></div>
                 <div class="col-sm-8">
                     <button type="submit" class="btn btn-success btn-lg" style="width: 40%;margin-right: 10%;">Update</button>
-                 
                 <div>
             </div>
-
-         @else
+        </form>
+        @else
             <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
         @endif
-        </form>
     </div>
 
 @stop

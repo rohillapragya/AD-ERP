@@ -14,6 +14,7 @@ use App\lib\Users;
 
 use App\lib\user_registration;
 
+
 class Inquiry extends Controller
 {
 
@@ -30,6 +31,10 @@ class Inquiry extends Controller
    
    	public function index()
    	{
+      $user_id = Session::get('UID');
+
+      $this->user->createCart($user_id);
+
    		$getCategoryList = $this->product->activeCategoryList();
 
    		return view('inquiry.index',compact('getCategoryList'));
@@ -105,6 +110,8 @@ class Inquiry extends Controller
 
     public function save(Request $request)
     {
+        $location_id = Session::get('location_id');
+
         $request->validate([
                     'customerName' => 'required',
                 ]
@@ -128,7 +135,7 @@ class Inquiry extends Controller
         $shipping_pin = request('shipping_pin');
         $shipping_address = request('shipping_address');
 
-        $output = $this->inquiry->saveInquiry($cart_id,$user_id,$table_inquiry_product_id,$table_inquiry_qty,$table_inquiry_uom,$customerName,$billing_address_city_name,$billing_pin,$billing_address,$shipping_address_city_name,$shipping_pin,$shipping_address);
+        $output = $this->inquiry->saveInquiry($cart_id,$user_id,$table_inquiry_product_id,$table_inquiry_qty,$table_inquiry_uom,$customerName,$billing_address_city_name,$billing_pin,$billing_address,$shipping_address_city_name,$shipping_pin,$shipping_address,$location_id);
 
         $data['message'] ='Inquiry Added. Go to  Dashboard using button';
         $data['text'] = '';

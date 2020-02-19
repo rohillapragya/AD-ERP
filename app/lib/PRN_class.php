@@ -17,28 +17,80 @@ class PRN_class
         $this->created_at =  date("Y/m/d");
     }  
 
-    function showPRNList()
-    {
-        $out = DB::select("select id,purchase_request_no,required_date,created_at as request_date from purchase_request_note where is_verifed_from_purchase_dept is null");
+    // function showPRNList()
+    // {
+    //     $out = DB::select("select id,purchase_request_no,required_date,created_at as request_date from purchase_request_note where is_verifed_from_purchase_dept is null");
 
-        return json_decode(json_encode($out), true);
+    //     return json_decode(json_encode($out), true);
+    // }
+
+
+    function showPRNList($location_id)
+    {
+        $str = 'and 1=1 ';
+
+        if($location_id)
+        {
+            if($location_id!='%')
+            {
+                $str.= " and a.location_id ='$location_id'";
+            }
+
+          //  $out = DB::select("select id,purchase_request_no,required_date,created_at as request_date from purchase_request_note a where is_verifed_from_purchase_dept is null $str");
+
+            $out = DB::select("select a.id,a.purchase_request_no,a.required_date,a.created_at as request_date,b.first_name,b.last_name,a.remarks from purchase_request_note a,user_master b where a.is_verifed_from_purchase_dept is null and a.created_by=b.id $str");
+
+            return json_decode(json_encode($out), true);
+        }
+        else
+        {
+            return redirect()->route('login');
+        } 
     }
 
 
-    function verifyPRNCount()
+    function verifyPRNCount($location_id)
     {
-        $out = DB::select("select count(*) as total from purchase_request_note where is_verifed_from_purchase_dept is null");
+         $str = 'and 1=1 ';
 
-        return json_decode(json_encode($out), true);
+        if($location_id)
+        {
+            if($location_id!='%')
+            {
+                $str.= " and a.location_id ='$location_id'";
+            }
+
+            $out = DB::select("select count(*) as total from purchase_request_note a where is_verifed_from_purchase_dept is null $str");
+
+            return json_decode(json_encode($out), true);
+        }
+        else
+        {
+            return redirect()->route('login');
+        } 
     }
 
 
 
-    function getPRNCount()
+    function getPRNCount($location_id)
     {
-        $out = DB::select("select count(*) as total from purchase_request_note where is_verifed_from_purchase_dept is null");
+        $str = 'and 1=1 ';
 
-        return json_decode(json_encode($out), true);
+        if($location_id)
+        {
+            if($location_id!='%')
+            {
+                $str.= " and a.location_id ='$location_id'";
+            }
+
+            $out = DB::select("select count(*) as total from purchase_request_note a where is_verifed_from_purchase_dept is null $str");
+
+            return json_decode(json_encode($out), true);
+        }
+        else
+        {
+            return redirect()->route('login');
+        } 
     }
 
 
@@ -96,7 +148,7 @@ class PRN_class
     }
 
 
-    function saveprn($prnrequiredDay,$prnrequiredMonth,$prnrequiredyear,$prn_remark,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$user_id)
+    function saveprn($prnrequiredDay,$prnrequiredMonth,$prnrequiredyear,$prn_remark,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$user_id,$location_id)
     {
         $maxPurchaseRequestNoteID = $this->maxPurchaseRequestNoteID();
 
@@ -106,7 +158,7 @@ class PRN_class
 
         $status = 'PURCHASE_REQUIZATION_NOTE_CREATED';
 
-        $out = DB::insert("insert into purchase_request_note (id,purchase_request_no,required_date,status,remarks,created_at,created_by) values('$maxPurchaseRequestNoteID','$purchaseRequestNo','$requiredDate','$status','$prn_remark','$this->created_at','$user_id')");
+        $out = DB::insert("insert into purchase_request_note (id,purchase_request_no,required_date,status,remarks,created_at,created_by,location_id) values('$maxPurchaseRequestNoteID','$purchaseRequestNo','$requiredDate','$status','$prn_remark','$this->created_at','$user_id','$location_id')");
 
         $countTable = count($table_product_name);
 
@@ -134,13 +186,13 @@ class PRN_class
         }
     }
 
-    function updateprn($prnid,$prnrequiredDay,$prnrequiredMonth,$prnrequiredyear,$prn_remark,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$user_id)
+    function updateprn($prnid,$prnrequiredDay,$prnrequiredMonth,$prnrequiredyear,$prn_remark,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$user_id,$location_id)
     {
         $requiredDate =  $this->string_to_date($prnrequiredDay,$prnrequiredMonth,$prnrequiredyear);
 
       //  dd($prnid);
 
-        $out = DB::update("update purchase_request_note set required_date='$requiredDate',remarks='$prn_remark' where id='$prnid'");
+        $out = DB::update("update purchase_request_note set required_date='$requiredDate',remarks='$prn_remark',location_id='$location_id',update_date='$this->created_at',update_by='$user_id' where id='$prnid'");
 
         $out_1 = DB::delete("delete from purchase_request_note_details where purchase_entry_id='$prnid' ");
 
@@ -172,7 +224,9 @@ class PRN_class
 
     function showPRNDeatils($prnID)
     {
-        $out = DB::select("select a.*,b.*,c.name as product_name,c.scrientific_name as product_scrientific_name,d.name as method_name,e.name as item_uom from purchase_request_note a,purchase_request_note_details b,product_master c,product_method_master d,UOM_master e where a.id='$prnID' and a.id=b.purchase_entry_id and a.is_verifed_from_purchase_dept is null and b.item_code=c.code and b.method=d.id and b.item_uom = e.id");
+       // $out = DB::select("select a.*,b.*,c.name as product_name,c.scrientific_name as product_scrientific_name,d.name as method_name,e.name as item_uom from purchase_request_note a,purchase_request_note_details b,product_master c,product_method_master d,UOM_master e where a.id='$prnID' and a.id=b.purchase_entry_id and a.is_verifed_from_purchase_dept is null and b.item_code=c.code and b.method=d.id and b.item_uom = e.id");
+
+        $out = DB::select("select a.*,b.*,c.name as product_name,c.scrientific_name as product_scrientific_name,d.name as method_name,e.name as item_uom,f.first_name,f.last_name from purchase_request_note a,purchase_request_note_details b,product_master c,product_method_master d,UOM_master e,user_master f where a.id='$prnID' and a.id=b.purchase_entry_id and a.is_verifed_from_purchase_dept is null and b.item_code=c.code and b.method=d.id and b.item_uom = e.id and a.created_by=f.id");
 
         return json_decode(json_encode($out), true);
     }

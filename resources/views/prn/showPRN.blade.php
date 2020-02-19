@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/Sample/dashboard.css') }}">
@@ -11,6 +16,7 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <!-- <input type="hidden" id="roleId" name="roleId" value={{$user_role_id}}> -->
@@ -37,14 +43,17 @@
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='13')
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/prn/verifyPRN')=='YES')
         <form method="post" action="/prn/verifyPRN">
             {{ csrf_field() }}
+
+            @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/addNewPRN')=='YES')
             <div class="form-group row">
                 <div class="col-sm-12">
                     <a href="/dashboard/addNewPRN" style="float: right" class="btn btn-default">Add New PRN</a>
                 </div>
             </div>
+            @endif
 
             <div class="form-group row">
                <div class="card card-class">
@@ -64,6 +73,16 @@
                         <div class="row">
                             <div class="col-md-4 card-block-header">Remarks</div>
                             <div class="col-md-8 card-block-detail">{{$output[0]["remarks"]}}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 card-block-header">Added By</div>
+                            <div class="col-md-8 card-block-detail">{{$output[0]["first_name"]}}  {{$output[0]["last_name"]}}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 card-block-header">On Boarding Date (YYYY-MM-DD)</div>
+                            <div class="col-md-8 card-block-detail">{{$output[0]["created_at"]}}</div>
                         </div>
 
                         <div class="row">

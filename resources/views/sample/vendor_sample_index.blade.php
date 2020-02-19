@@ -1,3 +1,7 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/Home/dashboard.css') }}">
@@ -12,7 +16,9 @@
 <!-- <div>session div role_name - {{ Session::get('role_id')}}</div> -->
 
 @php
-$user_role_id = Session::get('role_id');
+    $user_role_id = Session::get('role_id');
+    
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <nav aria-label="breadcrumb">
@@ -23,12 +29,17 @@ $user_role_id = Session::get('role_id');
     </nav>
 
      <div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
-        <div class="form-group row">
-            <div class="col-sm-12">
-                <a href="/dashboard/addNewVendorSample" style="float: right" class="btn btn-default">Add New Vendor Sample</a>
-            </div>
-        </div>
+       @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/vendorSample')=='YES')
+
+            @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/addNewVendorSample')=='YES')
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <a href="/dashboard/addNewVendorSample" style="float: right" class="btn btn-default">Add New Vendor Sample</a>
+                    </div>
+                </div>
+            @endif    
+
+
         <div class="form-group row">
             <table class="table table-bordered" id="sampleItemsList">
                 <thead style="background-color: #eef1ed;font-size: 14px;">
@@ -53,13 +64,17 @@ $user_role_id = Session::get('role_id');
                                 <td>{{$output[$i]['received_date']}}</td>
                                 <td>{{$output[$i]['ref_name']}}</td>
                                 <td>{{$output[$i]['customer_status']}}</td>
-                                <td><a href="/sample/vendor/show/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
 
-                             @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
-                                <td><a href="/sample/vendor/saveVendorSample/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a></td>
-                            @else
-                                <td><span class="glyphicon glyphicon-tag"></td>
-                            @endif
+                                @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/sample/vendor/show/{sampleId}')=='YES')
+                                    <td><a href="/sample/vendor/show/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                                @endif 
+
+
+                                @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/sample/vendor/saveVendorSample/{sampleId}')=='YES')
+                                    <td><a href="/sample/vendor/saveVendorSample/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a></td>
+                                @else
+                                    <td><span class="glyphicon glyphicon-tag"></td>
+                                @endif
 
                                
                             </tr>

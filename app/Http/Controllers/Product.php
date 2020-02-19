@@ -388,4 +388,59 @@ class Product extends Controller
             
             return view('product.list',compact('getCategoryList'));
         }
+
+        public function priceRangeIndex()
+        {
+            $output = $this->product->getpriceRangeProductList();
+
+            return view('product.priceRange',compact('output'));
+        }
+
+        // public function getProductDetails(Request $request)
+        // {
+        //     $productId = $request->input('productId');
+
+        //     $output = $this->product->gettingProductDetailsByProductID($productId);
+            
+        //     return $output;
+        // }
+
+        public function updatePrice(Request $request)
+        {
+            $productID = $request->segment(2);
+
+            $output = $this->product->gettingProductDetailsByProductID($productID);
+
+            //dd($output);
+
+            return view('product.updatePrice',compact('output'));
+        }
+
+        public function updatePrice_valid(Request $request)
+        {
+            $updated_by = Session::get('UID');
+
+            $productId = request('productId');
+            $product_min_price = request('product_min_price');
+            $product_max_price = request('product_max_price');
+            $priceValidDay = request('priceValidDay');
+            $priceValidMonth = request('priceValidMonth');
+            $priceValidyear = request('priceValidyear');
+
+            $output = $this->product->updatePrice_valid($updated_by,$productId,$product_min_price,$product_max_price,$priceValidDay,$priceValidMonth,$priceValidyear);
+
+            $data['message'] ='Product Price Range updated. Go to  Dashboard using button';
+
+            $data['text'] = '';
+
+            return view('dashboard_return.success',$data);
+        }
+
+        public function getpriceRangeCount()
+        {
+            $output = $this->product->getpriceCountRangeProductList();
+
+            return $output;
+        }
+
 }

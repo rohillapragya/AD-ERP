@@ -26,7 +26,9 @@ class PurchaseIndent extends Controller
     
     public function index()
     {
-        $output = $this->purchase_indent->showPendingInquiryList();
+        $location_id = Session::get('location_id');
+
+        $output = $this->purchase_indent->showPendingInquiryList($location_id);
 
         return view('purchaseIndent.show_pending_inquiry',compact('output'));
     }
@@ -34,7 +36,9 @@ class PurchaseIndent extends Controller
 
     public function getPICount()
     {
-        return $this->purchase_indent->getPICount();
+        $location_id = Session::get('location_id');
+
+        return $this->purchase_indent->getPICount($location_id);
     }
 
 
@@ -57,6 +61,8 @@ class PurchaseIndent extends Controller
 
     public function save(Request $request)
     {
+        $location_id = Session::get('location_id');
+
         $inquiryNo = request('inquiryNo');
 
         $user_id = Session::get('UID');
@@ -69,7 +75,7 @@ class PurchaseIndent extends Controller
 
         $product_uom = request('product_uom');
 
-        $output = $this->purchase_indent->savePI($inquiryNo,$user_id,$product_name,$product_method,$product_qty,$product_uom);
+        $output = $this->purchase_indent->savePI($inquiryNo,$user_id,$product_name,$product_method,$product_qty,$product_uom,$location_id);
 
         $data['message'] ='Purchase Indent Added Successfully. Go to  Dashboard -> Purchase Indent for further Steps';
         $data['text'] = '';
@@ -91,6 +97,8 @@ class PurchaseIndent extends Controller
     public function action_save(Request $request)
     {
         $user_id = Session::get('UID');
+
+        $location_id = Session::get('location_id');
 
         $purchase_indent_id = request('purchase_indent_id');
 
@@ -116,7 +124,7 @@ class PurchaseIndent extends Controller
         // print_r($remark);
         // print_r($proceedforDispatch);
 
-        $output = $this->purchase_indent->action_save($user_id,$purchase_indent_id,$piArranagemnetPossible,$CustomerRequestForSample,$pi_remark,$proceedforDispatch,$inquiry_number);
+        $output = $this->purchase_indent->action_save($user_id,$purchase_indent_id,$piArranagemnetPossible,$CustomerRequestForSample,$pi_remark,$proceedforDispatch,$inquiry_number,$location_id);
 
         $data['message'] ='Purchase Indent Added Successfully. Go to  Dashboard -> Purchase Indent for further Steps';
         $data['text'] = '';

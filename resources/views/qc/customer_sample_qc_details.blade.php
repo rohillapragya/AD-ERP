@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/Sample/dashboard.css') }}">
@@ -15,6 +20,7 @@
 @php
 $user_role_id = Session::get('role_id');
 $behalf_of = $output[0]["any_behalf_of"];
+$is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <nav aria-label="breadcrumb">
@@ -26,7 +32,7 @@ $behalf_of = $output[0]["any_behalf_of"];
 
     
     <div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='10' || $user_role_id=='14')
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/qcDetails/qcSave')=='YES')
         <form method="post" action="/qcDetails/qcSave">
             {{ csrf_field() }}
             <div class="form-group row">
@@ -93,31 +99,7 @@ $behalf_of = $output[0]["any_behalf_of"];
                                     @endfor    
                                 </tbody>
                             </table>
-                        </div>                    
-
-                       <!--  <div class="row">
-                            <div class="col-md-12 card-block-full">Customer Details</div>
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-4 card-block-header">Full Name</div>
-                            <div class="col-md-8 card-block-detail">{{$output[0]["ref_name"]}}</div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4 card-block-header">Address</div>
-                            <div class="col-md-8 card-block-detail">{{$output[0]["ref_address"]}}</div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4 card-block-header">Email</div>
-                            <div class="col-md-8 card-block-detail">{{$output[0]["ref_email"]}}</div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4 card-block-header">Mobile</div>
-                            <div class="col-md-8 card-block-detail">{{$output[0]["ref_mobile"]}}</div>
-                        </div> -->
 
                     </div>
                 </div>
@@ -197,8 +179,3 @@ $behalf_of = $output[0]["any_behalf_of"];
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="{{ asset('js/custom/qc.js') }}"></script>
-
-<!-- @extends('layout.dashboard_footer_layout')
-@section('footer')
-    @parent
-@stop -->

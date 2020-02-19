@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/warehouse/warehouse.css') }}">
@@ -11,6 +16,7 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <!-- <input type="hidden" id="roleId" name="roleId" value={{$user_role_id}}> -->
@@ -23,12 +29,15 @@
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='11' || $user_role_id=='7')
-        <div class="form-group row">
-            <div class="col-sm-12">
-                <a href="/dashboard/addNewStockEntry" style="float: right" class="btn btn-default">Add New Stock Entry</a>
-            </div>
-        </div>
+       @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/stockEntryInit')=='YES')
+
+            @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/addNewStockEntry')=='YES')
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <a href="/dashboard/addNewStockEntry" style="float: right" class="btn btn-default">Add New Stock Entry</a>
+                    </div>
+                </div>
+            @endif    
 
         <div class="form-group row">
             <table class="table table-bordered" id="sampleItemsList">
@@ -61,12 +70,16 @@
                                 <td>{{$output[$i]['entry_description']}}</td>
                                 <td>{{$output[$i]['warehouse_name']}}</td>
                                 <td>{{$output[$i]['created_at']}}</td>
-                                <td><a href="/store/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a></td> 
+                                @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/store/edit/{storeId}')=='YES')
+                                    <td><a href="/store/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a></td> 
+                                @else
+                                    <td>--</td> 
+                                @endif        
                             </tr>
                         @endfor
                     @else  
                         <tr>
-                            <td colspan="6" class="no-data-found">No Stock Entry found</td>
+                            <td colspan="11" class="no-data-found">No Stock Entry found</td>
                         </tr>
                     @endif    
                 </tbody>

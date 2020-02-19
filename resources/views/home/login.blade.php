@@ -13,22 +13,23 @@
             {{ csrf_field() }}
             <div class="form-group">
                 <label>Email address</label>
-                <input type="email" class="form-control" id="authKey" name="authKey" placeholder="Enter email" required="required" onblur="checkDiffrentRole()">
+               <!--  <input type="email" class="form-control" id="authKey" name="authKey" placeholder="Enter email" required="required" onblur="checkDiffrentRole()"> -->
+                <input type="email" class="form-control" id="authKey" name="authKey" placeholder="Enter email" required="required">
             </div>
             <div class="form-group">
                 <label>Password</label>
                 <input type="password" class="form-control" id="authValue" name="authValue" placeholder="Password" required="required">
             </div>
 
-            <div class="form-group role_div" style="display: none">
+            <!-- <div class="form-group role_div" style="display: none">
                 <label>You are Login As</label>
                 <select class="form-control" id="role_id" name="role_id">
                     <option value='0'>NA</option>
                 </select>
-            </div>
+            </div> -->
 
 
-            <button type="submit" class="btn btn-success btn-lg">Submit</button>
+            <button type="submit" class="btn btn-success btn-lg">Login</button>
             
             <div class="forgotPass"><a href="/forgotPassword">Forgot Password ?</a></div>
         </form>

@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/bom/init.css') }}">
@@ -11,6 +16,7 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <!-- <input type="hidden" id="roleId" name="roleId" value={{$user_role_id}}> -->
@@ -23,12 +29,15 @@
     </nav>
 
     <div class="container box-shadow">
-         @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='14')
-        <div class="form-group row">
-            <div class="col-sm-12">
-                <a href="/product/addCategory" style="float: right" class="btn btn-default">Add New Product Category</a>
-            </div>
-        </div>
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/product/categoryIndex')=='YES')
+
+            @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/product/addCategory')=='YES')
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <a href="/product/addCategory" style="float: right" class="btn btn-default">Add New Product Category</a>
+                    </div>
+                </div>
+            @endif    
 
         <div class="form-group row">
             <table class="table table-bordered" id="productCategoryTable">
@@ -49,9 +58,11 @@
                                 <td style="text-transform: uppercase;">{{$output[$i]['name']}}</td>
                                 <td>{{$output[$i]['is_active']}}</td>
                                 <td>
-                                    @if($output[$i]['is_active']=='Y')
-                                       <a href="/product/category/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a></td> 
-                                    @endif 
+                                    @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/product/category/edit/{categoryId}')=='YES')
+                                        @if($output[$i]['is_active']=='Y')
+                                           <a href="/product/category/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a></td> 
+                                        @endif
+                                    @endif     
                                 <td>
                                     @if($output[$i]['is_active']=='Y')
                                       <button type="button" onclick="onClickChangeStatus({{$output[$i]['id']}},'N')" class="btn btn-primary btn-sm">Inactive</button>

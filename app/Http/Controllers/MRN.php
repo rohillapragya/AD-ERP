@@ -29,14 +29,18 @@ class MRN extends Controller
 
     public function index()
     {
-        $output = $this->mrn->showMRNList();
+        $location_id = Session::get('location_id');
+
+        $output = $this->mrn->showMRNList($location_id);
 
         return view('mrn.index',compact('output'));
     }
 
     public function mrnCount()
     {
-        return $this->mrn->mrnCount();
+        $location_id = Session::get('location_id');
+
+        return $this->mrn->mrnCount($location_id);
     }
 
 
@@ -57,6 +61,8 @@ class MRN extends Controller
     public  function saveMRN(Request $request)
     {
         $user_id = Session::get('UID');
+
+        $location_id = Session::get('location_id');
 
         $mrn_request_type = request('mrn_request_type');
 
@@ -84,7 +90,7 @@ class MRN extends Controller
 
         $product_sample_uom = request('product_sample_uom');
 
-        $output = $this->mrn->saveMRN($mrn_request_type,$mrn_object_request_id,$mrnrequiredDay,$mrnrequiredMonth,$mrnrequiredyear,$mrn_purpose_type,$mrn_remark,$product_name,$product_method,$product_qty,$product_uom,$product_sample_qty,$product_sample_uom,$user_id);
+        $output = $this->mrn->saveMRN($mrn_request_type,$mrn_object_request_id,$mrnrequiredDay,$mrnrequiredMonth,$mrnrequiredyear,$mrn_purpose_type,$mrn_remark,$product_name,$product_method,$product_qty,$product_uom,$product_sample_qty,$product_sample_uom,$user_id,$location_id);
 
         $data['message'] ='Material Requaztion Note Added Successfully. Go to  Dashboard using button';
         $data['text'] = '';

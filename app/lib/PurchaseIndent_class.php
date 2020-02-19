@@ -19,25 +19,62 @@ class PurchaseIndent_class
         $this->created_at =  date("Y/m/d");
     }
 
-    function showPendingInquiryList()
-    {
-        //$out = DB::select("select a.*,b.first_name,b.last_name from inquiry_master a left join user_master b on a.sales_executive_id =b.id and a.status='PENDING'");
+    // function showPendingInquiryList()
+    // {
+    //     //$out = DB::select("select a.*,b.first_name,b.last_name from inquiry_master a left join user_master b on a.sales_executive_id =b.id and a.status='PENDING'");
         
-       // $out = DB::select("select pi.inquiry_no,pi.date,pi.status,pi.purchase_indent_number,pi.first_name,pi.last_name from(select a.id as inquiry_no,date,status,purchase_indent_number,b.first_name,b.last_name from(select id,date,status,type,sales_executive_id,'' as purchase_indent_number from inquiry_master  where status='PENDING') a left join user_master b on a.sales_executive_id=b.id union select inquiry_no,created_at as date,status,purchase_indent_id as purchase_indent_number ,'' as first_name,'' as last_name from purchase_indent) pi");
+    //    // $out = DB::select("select pi.inquiry_no,pi.date,pi.status,pi.purchase_indent_number,pi.first_name,pi.last_name from(select a.id as inquiry_no,date,status,purchase_indent_number,b.first_name,b.last_name from(select id,date,status,type,sales_executive_id,'' as purchase_indent_number from inquiry_master  where status='PENDING') a left join user_master b on a.sales_executive_id=b.id union select inquiry_no,created_at as date,status,purchase_indent_id as purchase_indent_number ,'' as first_name,'' as last_name from purchase_indent) pi");
 
-       // $out = DB::select("select pi.purchase_indent_id,pi.inquiry_no,pi.date,pi.status,pi.purchase_indent_number,pi.first_name,pi.last_name from ( select purchase_indent_id,a.id as inquiry_no,date,status,purchase_indent_number,b.first_name,b.last_name from (select '0' as purchase_indent_id,id,date,status,type,sales_executive_id,'' as purchase_indent_number from inquiry_master  where status='PENDING') a left join user_master b on a.sales_executive_id=b.id union select id as purchase_indent_id,inquiry_no,created_at as date,status,purchase_indent_id as purchase_indent_number ,'' as first_name,'' as last_name from purchase_indent) pi");
+    //    // $out = DB::select("select pi.purchase_indent_id,pi.inquiry_no,pi.date,pi.status,pi.purchase_indent_number,pi.first_name,pi.last_name from ( select purchase_indent_id,a.id as inquiry_no,date,status,purchase_indent_number,b.first_name,b.last_name from (select '0' as purchase_indent_id,id,date,status,type,sales_executive_id,'' as purchase_indent_number from inquiry_master  where status='PENDING') a left join user_master b on a.sales_executive_id=b.id union select id as purchase_indent_id,inquiry_no,created_at as date,status,purchase_indent_id as purchase_indent_number ,'' as first_name,'' as last_name from purchase_indent) pi");
 
-        $out = DB::select("select pi.purchase_indent_id,pi.inquiry_no,pi.date,pi.status,pi.purchase_indent_number,pi.first_name,pi.last_name,is_sample_request from ( select purchase_indent_id,a.id as inquiry_no,date,status,purchase_indent_number,b.first_name,b.last_name,is_sample_request from ( select '0' as purchase_indent_id,id,date,status,type,sales_executive_id,'' as purchase_indent_number,'N' as is_sample_request from inquiry_master where status='PENDING') a left join user_master b on a.sales_executive_id=b.id union select id as purchase_indent_id,inquiry_no,created_at as date,status,purchase_indent_id as purchase_indent_number ,'' as first_name,'' as last_name,IFNULL(is_sample_request,'NA') as is_sample_request from purchase_indent where status in ('PURCAHSE_INDENT_CREADTED','INQUIRY_DISCARD_DUE_STOCK_NOT_AVAILABLE','INQUIRY_REQUEST_FOR_SAMPLE','INQUIRY_STOCK_IS_READY_FOR_DISPATCH','INQUIRY_STOCK_IS_NOT_READY_FOR_DISPATCH')) pi");
+    //     $out = DB::select("select pi.purchase_indent_id,pi.inquiry_no,pi.date,pi.status,pi.purchase_indent_number,pi.first_name,pi.last_name,is_sample_request from ( select purchase_indent_id,a.id as inquiry_no,date,status,purchase_indent_number,b.first_name,b.last_name,is_sample_request from ( select '0' as purchase_indent_id,id,date,status,type,sales_executive_id,'' as purchase_indent_number,'N' as is_sample_request from inquiry_master where status='PENDING') a left join user_master b on a.sales_executive_id=b.id union select id as purchase_indent_id,inquiry_no,created_at as date,status,purchase_indent_id as purchase_indent_number ,'' as first_name,'' as last_name,IFNULL(is_sample_request,'NA') as is_sample_request from purchase_indent where status in ('PURCAHSE_INDENT_CREADTED','INQUIRY_DISCARD_DUE_STOCK_NOT_AVAILABLE','INQUIRY_REQUEST_FOR_SAMPLE','INQUIRY_STOCK_IS_READY_FOR_DISPATCH','INQUIRY_STOCK_IS_NOT_READY_FOR_DISPATCH')) pi");
 
-        return json_decode(json_encode($out), true);
+    //     return json_decode(json_encode($out), true);
+    // }
+
+
+    function showPendingInquiryList($location_id)
+    {
+        $str = 'and 1=1 ';
+
+        if($location_id)
+        {
+            if($location_id!='%')
+            {
+                $str.= " and p.location_id ='$location_id'";
+            }
+
+            $out = DB::select("select pi.purchase_indent_id,pi.inquiry_no,pi.date,pi.status,pi.purchase_indent_number,pi.first_name,pi.last_name,is_sample_request from ( select purchase_indent_id,a.id as inquiry_no,date,status,purchase_indent_number,b.first_name,b.last_name,is_sample_request from ( select '0' as purchase_indent_id,id,date,status,type,sales_executive_id,'' as purchase_indent_number,'N' as is_sample_request from inquiry_master p where status='PENDING' $str) a left join user_master b on a.sales_executive_id=b.id union select p.id as purchase_indent_id,p.inquiry_no,p.created_at as date,p.status,p.purchase_indent_id as purchase_indent_number ,'' as first_name,'' as last_name,IFNULL(is_sample_request,'NA') as is_sample_request from purchase_indent p where p.status in ('PURCAHSE_INDENT_CREADTED','INQUIRY_DISCARD_DUE_STOCK_NOT_AVAILABLE','INQUIRY_REQUEST_FOR_SAMPLE','INQUIRY_STOCK_IS_READY_FOR_DISPATCH','INQUIRY_STOCK_IS_NOT_READY_FOR_DISPATCH') $str) pi");
+          
+            return json_decode(json_encode($out), true);
+        }
+        else
+        {
+            return redirect()->route('login');
+        } 
     }
 
 
-    function getPICount()
+    function getPICount($location_id)
     {
-         $out = DB::select("select count(*) as total from (select pi.purchase_indent_id,pi.inquiry_no,pi.date,pi.status,pi.purchase_indent_number,pi.first_name,pi.last_name,is_sample_request from ( select purchase_indent_id,a.id as inquiry_no,date,status,purchase_indent_number,b.first_name,b.last_name,is_sample_request from ( select '0' as purchase_indent_id,id,date,status,type,sales_executive_id,'' as purchase_indent_number,'N' as is_sample_request from inquiry_master where status='PENDING') a left join user_master b on a.sales_executive_id=b.id union select id as purchase_indent_id,inquiry_no,created_at as date,status,purchase_indent_id as purchase_indent_number ,'' as first_name,'' as last_name,IFNULL(is_sample_request,'NA') as is_sample_request from purchase_indent where status in ('PURCAHSE_INDENT_CREADTED','INQUIRY_DISCARD_DUE_STOCK_NOT_AVAILABLE','INQUIRY_REQUEST_FOR_SAMPLE','INQUIRY_STOCK_IS_READY_FOR_DISPATCH','INQUIRY_STOCK_IS_NOT_READY_FOR_DISPATCH')) pi) purchase_indent");
+        $str = 'and 1=1 ';
 
-        return json_decode(json_encode($out), true);
+        if($location_id)
+        {
+            if($location_id!='%')
+            {
+                $str.= " and p.location_id ='$location_id'";
+            }
+
+            $out = DB::select("select count(*) as total from ( select purchase_indent_id,a.id as inquiry_no,date,status,purchase_indent_number,b.first_name,b.last_name,is_sample_request from ( select '0' as purchase_indent_id,id,date,status,type,sales_executive_id,'' as purchase_indent_number,'N' as is_sample_request from inquiry_master p where status='PENDING' $str) a left join user_master b on a.sales_executive_id=b.id union select p.id as purchase_indent_id,p.inquiry_no,p.created_at as date,p.status,p.purchase_indent_id as purchase_indent_number ,'' as first_name,'' as last_name,IFNULL(is_sample_request,'NA') as is_sample_request from purchase_indent p where p.status in ('PURCAHSE_INDENT_CREADTED','INQUIRY_DISCARD_DUE_STOCK_NOT_AVAILABLE','INQUIRY_REQUEST_FOR_SAMPLE','INQUIRY_STOCK_IS_READY_FOR_DISPATCH','INQUIRY_STOCK_IS_NOT_READY_FOR_DISPATCH') $str) pi");
+
+          
+            return json_decode(json_encode($out), true);
+        }
+        else
+        {
+            return redirect()->route('login');
+        } 
     }
 
 
@@ -70,7 +107,7 @@ class PurchaseIndent_class
         return 'NBT-PURCHASE-INDENT-'.$date_1.$maxSampleNum;
     }
 
-    function savePI($inquiryNo,$user_id,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom)
+    function savePI($inquiryNo,$user_id,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$location_id)
     {
        $maxPurchaseIndentID = $this->maxPurchaseIndentID();
 
@@ -78,7 +115,7 @@ class PurchaseIndent_class
 
        $status = 'PURCAHSE_INDENT_CREADTED';
 
-       $out = DB::insert("insert into purchase_indent (id,purchase_indent_id,inquiry_no,status,created_at,created_by) values('$maxPurchaseIndentID','$purchaseIndentNo','$inquiryNo','$status','$this->created_at','$user_id')");
+       $out = DB::insert("insert into purchase_indent (id,purchase_indent_id,inquiry_no,status,created_at,created_by,location_id) values('$maxPurchaseIndentID','$purchaseIndentNo','$inquiryNo','$status','$this->created_at','$user_id','$location_id')");
 
        $countTable = count($table_product_name);
 
@@ -139,7 +176,7 @@ class PurchaseIndent_class
     }
 
 
-    function action_save($user_id,$purchase_indent_id,$piArranagemnetPossible,$CustomerRequestForSample,$pi_remark,$proceedforDispatch,$inquiry_number)
+    function action_save($user_id,$purchase_indent_id,$piArranagemnetPossible,$CustomerRequestForSample,$pi_remark,$proceedforDispatch,$inquiry_number,$location_id)
     {
         if($piArranagemnetPossible=='N') {  $status='INQUIRY_DISCARD_DUE_STOCK_NOT_AVAILABLE';  }
 
@@ -149,7 +186,7 @@ class PurchaseIndent_class
             else { $status='INQUIRY_PROCEED_WITHOUT_SAMPLE';}
         }
 
-        $out = DB::update("update purchase_indent set remarks='$pi_remark',status='$status',is_ready_for_pre_dispatch_docx_list='$proceedforDispatch',is_arrangement_possible='$piArranagemnetPossible',is_sample_request='$CustomerRequestForSample',updated_by='$user_id',updated_at='$this->created_at' where id='$purchase_indent_id'");
+        $out = DB::update("update purchase_indent set remarks='$pi_remark',status='$status',is_ready_for_pre_dispatch_docx_list='$proceedforDispatch',is_arrangement_possible='$piArranagemnetPossible',is_sample_request='$CustomerRequestForSample',updated_by='$user_id',updated_at='$this->created_at',location_id='$location_id' where id='$purchase_indent_id'");
 
 
         $out = DB::update("update inquiry_master set status='$status',modified_at='$this->created_at' where id='$inquiry_number'");

@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/quotation/init.css') }}">
@@ -11,6 +16,7 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
 
@@ -37,7 +43,7 @@
     @endif
 
     <div class="container box-shadow">
-     @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='13')
+     @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/quotation/save')=='YES')
         <form method="post" action="/quotation/save" enctype="multipart/form-data">
             {{ csrf_field() }}
             <div class="form-group row">
@@ -207,9 +213,3 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="{{ asset('js/quotation/init.js') }}"></script>
-
-
-<!-- @extends('layout.dashboard_footer_layout')
-@section('footer')
-    @parent
-@stop -->

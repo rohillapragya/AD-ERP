@@ -1,3 +1,7 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css//production/init.css') }}">
@@ -13,6 +17,7 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 
     $production_start_date = $output[0]['production_start_date'];
     $production_start_date_arr = explode("-",$production_start_date);
@@ -38,7 +43,7 @@
     </nav>
 
     <div class="container box-shadow">
-         @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='8')
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/production/update')=='YES')
         <form method="post" action="/production/update">
             {{ csrf_field() }}
                 <input type="hidden" value="{{$output[0]['production_id']}}" name="productionId">

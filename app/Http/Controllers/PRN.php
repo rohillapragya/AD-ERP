@@ -33,14 +33,18 @@ class PRN extends Controller
 
     public function index()
     {
-        $output = $this->prn->showPRNList();
+        $location_id = Session::get('location_id');
+           
+        $output = $this->prn->showPRNList($location_id);
 
         return view('prn.index',compact('output'));
     }
 
     public function getPRNCount()
     {
-        return $this->prn->getPRNCount();
+        $location_id = Session::get('location_id');
+
+        return $this->prn->getPRNCount($location_id);
     }
 
     public function addNew()
@@ -54,6 +58,9 @@ class PRN extends Controller
     public function saveprn(Request $request)
     {
         $user_id = Session::get('UID');
+
+        $location_id = Session::get('location_id');
+
 
         $prnrequiredDay = request('prnrequiredDay');
 
@@ -71,7 +78,7 @@ class PRN extends Controller
 
         $product_uom = request('product_uom');
 
-        $output = $this->prn->saveprn($prnrequiredDay,$prnrequiredMonth,$prnrequiredyear,$prn_remark,$product_name,$product_method,$product_qty,$product_uom,$user_id);
+        $output = $this->prn->saveprn($prnrequiredDay,$prnrequiredMonth,$prnrequiredyear,$prn_remark,$product_name,$product_method,$product_qty,$product_uom,$user_id,$location_id);
 
         $data['message'] ='Purchase Requaztion Note Added Successfully. Go to  Dashboard using button';
         $data['text'] = '';
@@ -102,6 +109,8 @@ class PRN extends Controller
 
         $user_id = Session::get('UID');
 
+        $location_id = Session::get('location_id');
+
         $prnrequiredDay = request('prnrequiredDay');
 
         $prnrequiredMonth = request('prnrequiredMonth');
@@ -118,7 +127,7 @@ class PRN extends Controller
 
         $product_uom = request('product_uom');
 
-        $output = $this->prn->updateprn($prnid,$prnrequiredDay,$prnrequiredMonth,$prnrequiredyear,$prn_remark,$product_name,$product_method,$product_qty,$product_uom,$user_id);
+        $output = $this->prn->updateprn($prnid,$prnrequiredDay,$prnrequiredMonth,$prnrequiredyear,$prn_remark,$product_name,$product_method,$product_qty,$product_uom,$user_id,$location_id);
 
         $data['message'] ='Purchase Requaztion Note updated Successfully. Go to  Dashboard using button';
         $data['text'] = '';
@@ -128,14 +137,20 @@ class PRN extends Controller
 
     public function showVerifyPRN(Request $request)
     {
-        $output = $this->prn->showPRNList();
+        $location_id = Session::get('location_id');
+
+        $output = $this->prn->showPRNList($location_id);
+
+       // dd($output);
 
         return view('prn.showVerifyPRN',compact('output'));
     }
 
     public function verifyPRNCount(Request $request)
     {
-        return $this->prn->verifyPRNCount();
+        $location_id = Session::get('location_id');
+
+        return $this->prn->verifyPRNCount($location_id);
     }
 
     public function showPRN(Request $request)
@@ -144,7 +159,7 @@ class PRN extends Controller
 
         $output = $this->prn->showPRNDeatils($prnID);
 
-        //dd($output);
+       // dd($output);
 
         return view('prn.showPRN',compact('output'));
     }

@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/bom/init.css') }}">
@@ -11,6 +16,7 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <!-- <input type="hidden" id="roleId" name="roleId" value={{$user_role_id}}> -->
@@ -23,12 +29,16 @@
     </nav>
 
     <div class="container box-shadow">
-         @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='8')
-        <div class="form-group row">
-            <div class="col-sm-12">
-                <a href="/dashboard/addProduction" style="float: right" class="btn btn-default">Add New Production</a>
-            </div>
-        </div>
+
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/production')=='YES')
+
+            @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/addProduction')=='YES')
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <a href="/dashboard/addProduction" style="float: right" class="btn btn-default">Add New Production</a>
+                    </div>
+                </div>
+            @endif    
 
         <div class="form-group row">
             <table class="table table-bordered" id="bomItemsList">
@@ -57,7 +67,11 @@
                                 <td>{{$output[$i]['source_warehouse']}}</td>
                                 <td>{{$output[$i]['target_warehouse']}}</td>
                                 <td>{{$output[$i]['production_start_date']}}</td>
-                                <td><a href="/production/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a></td> 
+                                @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/production/edit/{productionId}')=='YES')
+                                    <td><a href="/production/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a></td> 
+                                @else
+                                    <td>--</td> 
+                                @endif    
                             </tr>
                         @endfor
                     @else  

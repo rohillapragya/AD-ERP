@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/inquiry/init.css') }}">
@@ -13,6 +18,8 @@
     $user_role_id = Session::get('role_id');
 
     $cart_id = Session::get('cart_id');
+    
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <!-- <input type="hidden" id="cartid" name="cartid" value={{$cart_id}}> -->
@@ -39,7 +46,7 @@
     
 
     <div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/inquiry/save')=='YES')
         <form method="post" action="/inquiry/save">
             {{ csrf_field() }}
         
@@ -82,8 +89,12 @@
                                             @endif
                                         @endfor
                                     </select>
-                                </td> 
+                                </td>
+                                @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/inquiry/{productId}/inactiveProductInCart')=='YES') 
                                 <td><a href="/inquiry/{{$output[$i]['product_id']}}/inactiveProductInCart"><span class="glyphicon glyphicon-remove"></span></a></td>
+                                @else
+                                <td>--</td>
+                                @endif
                             </tr>
                         @endfor
                     @else  
@@ -207,12 +218,12 @@
         </div>
 
         @if(count($output) > 0)
-        <div class="form-group row" style="margin-top: 5%"> 
+            <div class="form-group row" style="margin-top: 5%"> 
                 <div class="col-sm-4"></div>
                 <div class="col-sm-8">
                     <button type="submit" class="btn btn-success btn-lg" style="width: 40%;margin-right: 10%;">Add AS Inquiry</button>
                 </div>
-        </div> 
+            </div> 
         @endif
 
         </form>

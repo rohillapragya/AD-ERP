@@ -17,11 +17,27 @@ class GRN_class
         $this->created_at =  date("Y/m/d");
     }  
 
-    function showGRNList()
+    function showGRNList($location_id)
     {
-        $out = DB::select("select * from goods_receipt_note;");
+       // $out = DB::select("select * from goods_receipt_note;");
 
-        return json_decode(json_encode($out), true);
+        $str = ' 1=1 ';
+
+        if($location_id)
+        {
+            if($location_id!='%')
+            {
+                $str.= " and a.location_id ='$location_id'";
+            }
+
+            $out = DB::select("select * from goods_receipt_note a where $str");
+
+            return json_decode(json_encode($out), true);
+        }
+        else
+        {
+            return redirect()->route('login');
+        }  
     }
 
     function string_to_date($day,$month,$year)
@@ -59,7 +75,7 @@ class GRN_class
         return 'NBT-GRN-'.$date_1.$maxSampleNum;
     }
 
-    function save($user_id,$prn_no,$grnRequestDay,$grnRequestMonth,$grnRequestYear,$grnDeliveredDay,$grnDeliveredMonth,$grnDeliveredYear,$supplier,$bill_no,$lr_no,$dispatch_service,$delivery_location,$total_amount,$table_product_name,$table_product_method,$table_product_qty,$table_product_price,$table_product_uom)
+    function save($user_id,$prn_no,$grnRequestDay,$grnRequestMonth,$grnRequestYear,$grnDeliveredDay,$grnDeliveredMonth,$grnDeliveredYear,$supplier,$bill_no,$lr_no,$dispatch_service,$delivery_location,$total_amount,$table_product_name,$table_product_method,$table_product_qty,$table_product_price,$table_product_uom,$location_id)
     {
         $maxGoodsReceiptNoteID = $this->maxGoodsReceiptNoteID();
         $goodsReceiptNoteNo = $this->goods_receipt_note_no();
@@ -68,7 +84,7 @@ class GRN_class
         $status = ''; 
         $total_amount = 0;
 
-        $out = DB::insert("insert into goods_receipt_note (id,grn_no,PRN_no,request_date,delivery_date,status,supplier,bill_no,transporter,LR_no,delivery_warehouse,created_at,created_by) values('$maxGoodsReceiptNoteID','$goodsReceiptNoteNo','$prn_no','$requestDate','$deliveredDate','$status','$supplier','$bill_no','$dispatch_service','$lr_no','$delivery_location','$this->created_at','$user_id')");
+        $out = DB::insert("insert into goods_receipt_note (id,grn_no,PRN_no,request_date,delivery_date,status,supplier,bill_no,transporter,LR_no,delivery_warehouse,created_at,created_by,location_id) values('$maxGoodsReceiptNoteID','$goodsReceiptNoteNo','$prn_no','$requestDate','$deliveredDate','$status','$supplier','$bill_no','$dispatch_service','$lr_no','$delivery_location','$this->created_at','$user_id','$location_id')");
 
         $countTable = count($table_product_name);
 
@@ -115,13 +131,13 @@ class GRN_class
     }
 
 
-    function update($user_id,$grn_number,$prn_no,$grnRequestDay,$grnRequestMonth,$grnRequestYear,$grnDeliveredDay,$grnDeliveredMonth,$grnDeliveredYear,$supplier,$bill_no,$lr_no,$dispatch_service,$delivery_location,$total_amount,$table_product_name,$table_product_method,$table_product_qty,$table_product_price,$table_product_uom)
+    function update($user_id,$grn_number,$prn_no,$grnRequestDay,$grnRequestMonth,$grnRequestYear,$grnDeliveredDay,$grnDeliveredMonth,$grnDeliveredYear,$supplier,$bill_no,$lr_no,$dispatch_service,$delivery_location,$total_amount,$table_product_name,$table_product_method,$table_product_qty,$table_product_price,$table_product_uom,$location_id)
     {
         $requestDate =  $this->string_to_date($grnRequestDay,$grnRequestMonth,$grnRequestYear);
         $deliveredDate =  $this->string_to_date($grnDeliveredDay,$grnDeliveredMonth,$grnDeliveredYear);
         $total_amount = 0;
 
-        $out = DB::update("update goods_receipt_note set PRN_no='$prn_no',request_date='$requestDate',delivery_date='$deliveredDate',supplier='$supplier',bill_no='$bill_no',transporter='$dispatch_service',LR_no='$lr_no',delivery_warehouse='$delivery_location',updated_at='$this->created_at',updated_by='$user_id' where id='$grn_number'");
+        $out = DB::update("update goods_receipt_note set PRN_no='$prn_no',request_date='$requestDate',delivery_date='$deliveredDate',supplier='$supplier',bill_no='$bill_no',transporter='$dispatch_service',LR_no='$lr_no',delivery_warehouse='$delivery_location',updated_at='$this->created_at',updated_by='$user_id',location_id='$location_id' where id='$grn_number'");
 
         DB::delete("delete from goods_receipt_note_details where grn_no='$grn_number'");
 

@@ -41,7 +41,7 @@ function onClickCategory(id)
 	        					"<div class='card-header card_header'> "+resp[i].name+" </div>"+
 	        					"<div class='card-body'>"+
 	        						"<div class='row'>"+ 
-	        							"<div class='col-md-4' style='font-size: 15px;font-weight: 600;margin-top: 1%;text-transform: uppercase;'>Biological Name </div>"+
+	        							"<div class='col-md-4' style='font-size: 15px;font-weight: 600;margin-top: 1%;text-transform: uppercase;'>botanical Name </div>"+
 	        							"<div class='col-md-8' style='font-size: 15px;margin-top: 1%;text-transform: capitalize;'>"+resp[i].scrientific_name+"</div>"+ 
 	        						"</div>"+
 

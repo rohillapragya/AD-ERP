@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/Home/dashboard.css') }}">
@@ -11,6 +16,7 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <!-- <input type="hidden" id="roleId" name="roleId" value={{$user_role_id}}> -->
@@ -23,7 +29,7 @@
     </nav>
 
     <div class="container box-shadow">
-       @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='10' || $user_role_id=='14')
+       @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/customerSampleQC')=='YES')
         <div class="form-group row">
             <table class="table table-bordered" id="sampleItemsList">
                 <thead style="background-color: #eef1ed;font-size: 14px;">
@@ -47,17 +53,19 @@
                                 <td>{{$output[$i]['request_date']}}</td>
                                 <td>{{$output[$i]['delivered_date']}}</td>
                                 <td>{{$output[$i]['customer_status']}}</td>
-
-                                @if($user_role_id=='3' || $user_role_id=='10' || $user_role_id=='14')
+                                <td>
                                     @if($output[$i]['req_type']=='SAMPLE')
-                                        <td><a href="/sample/qc/QCDetails/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a></td>
+                                        <a href="/sample/qc/QCDetails/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a>
                                     @else
-                                        <td><a href="/stock/qc/QCDetails/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a></td>        
-                                    @endif  
+                                        <a href="/stock/qc/QCDetails/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a>
+                                    @endif 
+                                </td>
+                                <!-- @if($user_role_id=='3' || $user_role_id=='10' || $user_role_id=='14') -->
+                                
                                     
-                                @else
+                               <!--  @else
                                     <td><span class="glyphicon glyphicon-tag"></td>
-                                @endif
+                                @endif -->
                             </tr>
                         @endfor
                         <!-- @php

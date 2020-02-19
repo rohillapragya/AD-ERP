@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/bom/init.css') }}">
@@ -11,6 +16,7 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <!-- <input type="hidden" id="roleId" name="roleId" value={{$user_role_id}}> -->
@@ -38,29 +44,27 @@
     @endif
 
     <div class="container box-shadow">
-        <form method="post" action="/product/saveCategory">
-                {{ csrf_field() }}
-         @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='14')
-         
-            <div class="form-group row">
-                <label class="col-sm-4 col-form-label">Category Name</label>
-                <div class="col-sm-8">
-                    <input type="input" class="form-control" id="category_name" name="category_name" placeholder="category name" required="required"  value="{{ old('category_name') }}">
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/product/saveCategory')=='YES')
+            <form method="post" action="/product/saveCategory">
+                    {{ csrf_field() }}
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Category Name</label>
+                    <div class="col-sm-8">
+                        <input type="input" class="form-control" id="category_name" name="category_name" placeholder="category name" required="required"  value="{{ old('category_name') }}">
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group row" style="margin-top: 5%"> 
-                <div class="col-sm-4"></div>
-                <div class="col-sm-8">
-                    <button type="submit" class="btn btn-success btn-lg" style="width: 40%;margin-right: 10%;">Submit</button>
-                 
-                <div>
-            </div>
-
-         @else
+                <div class="form-group row" style="margin-top: 5%"> 
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-8">
+                        <button type="submit" class="btn btn-success btn-lg" style="width: 40%;margin-right: 10%;">Submit</button>
+                     
+                    <div>
+                </div>
+            </form>
+        @else
             <div class="form-group row" style="font-size: 20px;color: #ff2a03;font-weight: 600;">Ooopss !!! .. You have no access for page </div>
         @endif
-        </form>
     </div>
 
 @stop

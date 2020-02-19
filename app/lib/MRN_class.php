@@ -17,18 +17,54 @@ class MRN_class
         $this->created_at =  date("Y/m/d");
     }  
 
-    function showMRNList()
-    {
-        $out = DB::select("select id,material_request_no,required_date,created_at as request_date,object_type,object_id from material_request_note");
+    // function showMRNList()
+    // {
+    //     $out = DB::select("select id,material_request_no,required_date,created_at as request_date,object_type,object_id from material_request_note");
 
-        return json_decode(json_encode($out), true);
+    //     return json_decode(json_encode($out), true);
+    // }
+
+    function showMRNList($location_id)
+    {
+        $str = '1=1 ';
+
+        if($location_id)
+        {
+            if($location_id!='%')
+            {
+                $str.= " and a.location_id ='$location_id'";
+            }
+
+            $out = DB::select("select id,material_request_no,required_date,created_at as request_date,object_type,object_id from material_request_note a where $str");
+
+            return json_decode(json_encode($out), true);
+        }
+        else
+        {
+            return redirect()->route('login');
+        }
     }
 
-    function mrnCount()
-    {
-        $out = DB::select("select count(*) as total from material_request_note");
 
-        return json_decode(json_encode($out), true);
+    function mrnCount($location_id)
+    {
+        $str = '1=1 ';
+
+        if($location_id)
+        {
+            if($location_id!='%')
+            {
+                $str.= " and a.location_id ='$location_id'";
+            }
+
+            $out = DB::select("select count(*) as total from material_request_note a where $str");
+
+            return json_decode(json_encode($out), true);
+        }
+        else
+        {
+            return redirect()->route('login');
+        }
     }
 
 
@@ -86,7 +122,7 @@ class MRN_class
     }
 
 
-    function saveMRN($mrn_request_type,$mrn_object_request_id,$mrnrequiredDay,$mrnrequiredMonth,$mrnrequiredyear,$mrn_purpose_type,$mrn_remark,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$user_id)
+    function saveMRN($mrn_request_type,$mrn_object_request_id,$mrnrequiredDay,$mrnrequiredMonth,$mrnrequiredyear,$mrn_purpose_type,$mrn_remark,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$table_product_sample_qty,$table_product_sample_uom,$user_id,$location_id)
     {
         $maxMaterialRequestNoteID = $this->maxMaterialRequestNoteID();
 
@@ -96,7 +132,7 @@ class MRN_class
 
         $status = 'Material-Requization-Note-CREATED';
 
-        $out = DB::insert("insert into material_request_note (id,material_request_no,required_date,object_type,object_id,status,purpose_id,remarks,created_at,created_by) values('$maxMaterialRequestNoteID','$materialRequestNo','$requiredDate','$mrn_request_type','$mrn_object_request_id','$status','$mrn_purpose_type','$mrn_remark','$this->created_at','$user_id')");
+        $out = DB::insert("insert into material_request_note (id,material_request_no,required_date,object_type,object_id,status,purpose_id,remarks,created_at,created_by,location_id) values('$maxMaterialRequestNoteID','$materialRequestNo','$requiredDate','$mrn_request_type','$mrn_object_request_id','$status','$mrn_purpose_type','$mrn_remark','$this->created_at','$user_id','$location_id')");
 
         $countTable = count($table_product_name);
 

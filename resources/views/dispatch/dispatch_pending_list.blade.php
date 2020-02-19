@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/Home/dashboard.css') }}">
@@ -13,6 +18,7 @@
 
 @php
 $user_role_id = Session::get('role_id');
+$is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
    	<nav aria-label="breadcrumb">
@@ -23,7 +29,7 @@ $user_role_id = Session::get('role_id');
 	</nav>
 
 	<div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7' || $user_role_id=='12')
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/dispatchInfo')=='YES')
 	 	<table class="table table-bordered">
             <thead style="background-color: #eef1ed;font-size: 14px;">
                 <tr>
@@ -48,12 +54,17 @@ $user_role_id = Session::get('role_id');
                             <td>{{$output[$i]['sample_number']}}</td>
                             <td>{{$output[$i]['request_date']}}</td>
                             <td>{{$output[$i]['status']}}</td>
-                            <td><a href="/dispatch/save/{{$output[$i]['sample_id']}}"><span class="glyphicon glyphicon-triangle-right"></span></a></td>
+                            @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dispatch/save/{sampleId}')=='YES')
+                                <td><a href="/dispatch/save/{{$output[$i]['sample_id']}}"><span class="glyphicon glyphicon-triangle-right"></span></a></td>
+                            @else
+                                <td>--</td>
+                            @endif
+                            
                         </tr>
                     @endfor
                 @else  
                     <tr>
-                        <td colspan="7" class="no-data-found">No Dispatch Service found found</td>
+                        <td colspan="7" class="no-data-found">No Dispatch Information found</td>
                     </tr>
                 @endif    
             </tbody>

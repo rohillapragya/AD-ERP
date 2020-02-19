@@ -79,13 +79,13 @@ class Inquiry_class
         }
     }
 
-    function saveInquiry($cart_id,$user_id,$table_inquiry_product_id,$table_inquiry_qty,$table_inquiry_uom,$customerName,$billing_address_city_name,$billing_pin,$billing_address,$shipping_address_city_name,$shipping_pin,$shipping_address)
+    function saveInquiry($cart_id,$user_id,$table_inquiry_product_id,$table_inquiry_qty,$table_inquiry_uom,$customerName,$billing_address_city_name,$billing_pin,$billing_address,$shipping_address_city_name,$shipping_pin,$shipping_address,$location_id)
     {
         $inquiry_number = $this->inquiry_number();
 
         $seq_id = $this->maxInquiryNumberSeq();
 
-        $out = DB::select("insert into inquiry_master(id,date,status,type,customer_id,created_at,seq_id,sales_executive_id) values('$inquiry_number','$this->created_at','PENDING','1','$customerName','$this->created_at','$seq_id','$user_id')");
+        $out = DB::select("insert into inquiry_master(id,date,status,type,customer_id,created_at,seq_id,sales_executive_id,location_id) values('$inquiry_number','$this->created_at','PENDING','1','$customerName','$this->created_at','$seq_id','$user_id','$location_id')");
 
         $out = DB::update("update user_cart set inquiry_number='$inquiry_number',status='INQUIRY-RECEIVED',updated_at='$this->created_at' where id='$cart_id'");
 

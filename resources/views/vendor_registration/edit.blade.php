@@ -1,3 +1,7 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/userRegistration/vendor.css') }}">
@@ -11,6 +15,7 @@
 <!-- <div>session div role_name - {{ Session::get('role_id')}}</div> -->
 @php
 $user_role_id = Session::get('role_id');
+$is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
  	<nav aria-label="breadcrumb">
@@ -37,7 +42,7 @@ $user_role_id = Session::get('role_id');
     @endif
 	
     <div class="container box-shadow">
-    	@if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
+    	@if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/editVendor')=='YES')
     	<form method="post" action="/dashboard/editVendor">
            	{{ csrf_field() }}
 

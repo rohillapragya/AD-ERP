@@ -4,21 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-
-//use DB;
-
 use App\lib\user_registration;
 use App\lib\Product_class;
+use App\lib\Development_class;
 
 class UserRegistration extends Controller
 {
     var $uid;
 
-    public function __construct(User_Registration $user_registration,Product_class $product) 
+    public function __construct(User_Registration $user_registration,Product_class $product,Development_class $development) 
     {
         $this->user_registration = $user_registration;
 
         $this->product = $product;
+
+        $this->development = $development;
     }
 
     public function IsCompanyExits(Request $request)
@@ -243,6 +243,12 @@ class UserRegistration extends Controller
 
 
     // Vendor registration function blocks
+
+        public function getVendorList()
+        {
+            return $this->user_registration->getVendorList();
+        }
+
         public function vendor_index()
         {
             $output = $this->user_registration->getVendorList();
@@ -440,6 +446,11 @@ class UserRegistration extends Controller
 
             return view('dashboard_return.success',$data);
         }
+
+        public function getSupplierList()
+        {
+            return $this->user_registration->getSupplierList();
+        }
     // Vendor registration function blocks
 
 
@@ -454,6 +465,8 @@ class UserRegistration extends Controller
     public function addNewERPUser()
     {
         $output = $this->user_registration->getRole();
+
+        // $menuList = $this->development->getActiveMenuList();
         
         return view('erp_user_registration.new',compact('output'));
     }
@@ -479,10 +492,17 @@ class UserRegistration extends Controller
         $offical_mobile = request('offical_mobile');
         $personal_email = request('personal_email');
         $personal_mobile = request('personal_mobile');
-        $erpuser_role = request('erpuser_role');
+        // $erpuser_role = request('erpuser_role');
         $password_erp_user = request('password_erp_user');
 
-        $output = $this->user_registration->saveERPUser($first_name,$last_name,$offical_email,$offical_mobile,$personal_email,$personal_mobile,$erpuser_role,$password_erp_user,$user_id);
+        $user_dept = request('user_dept');
+        $user_location = request('user_location');
+        $user_menu = request('user_menu');
+        $user_access = request('user_access');
+
+        // $output = $this->user_registration->saveERPUser($first_name,$last_name,$offical_email,$offical_mobile,$personal_email,$personal_mobile,$erpuser_role,$password_erp_user,$user_id);
+
+        $output = $this->user_registration->saveERPUser($first_name,$last_name,$offical_email,$offical_mobile,$personal_email,$personal_mobile,$password_erp_user,$user_dept,$user_location,$user_menu,$user_access,$user_id);
 
        // dd($output);
 
@@ -508,14 +528,25 @@ class UserRegistration extends Controller
 
         $erpUserInfo = $this->user_registration->getERPUserInformation($erpUserId);
 
+        $userMenuAccessMap = $this->user_registration->getERPUserMenuAccessMap($erpUserId);
+
+        $getLocation = $this->development->getLocation();
+
+        $getFullMenuList = $this->development->getFullMenuList();
+
+        $getFullAccessList = $this->development->getFullAccessList();
+
         //dd($erpUserInfo);
 
-        return view('erp_user_registration.edit',compact('erpUserInfo','role'));
+        return view('erp_user_registration.edit',compact('erpUserInfo','role','userMenuAccessMap','getLocation','getFullMenuList','getFullAccessList'));
     }
 
     public function update(Request $request)
     {
         $user_id = Session::get('UID');
+
+       /* $user_menu = request('user_menu');
+        dd($user_menu);*/
 
         $request->validate([
                 'first_name' => 'required',
@@ -533,11 +564,19 @@ class UserRegistration extends Controller
         $offical_mobile = request('offical_mobile');
         $personal_email = request('personal_email');
         $personal_mobile = request('personal_mobile');
-        $erpuser_role = request('erpuser_role');
+        // $erpuser_role = request('erpuser_role');
         $password_erp_user = request('password_erp_user');
 
+
+        $user_dept = request('user_dept');
+        $user_location = request('user_location');
+        $user_menu = request('user_menu');
+        $user_access = request('user_access');
+
         //dd(Session::get('UID'));
-        $output = $this->user_registration->updateERPUser($erpuserid,$first_name,$last_name,$offical_mobile,$personal_email,$personal_mobile,$erpuser_role,$password_erp_user,$user_id);
+        // $output = $this->user_registration->updateERPUser($erpuserid,$first_name,$last_name,$offical_mobile,$personal_email,$personal_mobile,$erpuser_role,$password_erp_user,$user_id);
+
+        $output = $this->user_registration->updateERPUser($erpuserid,$first_name,$last_name,$offical_mobile,$personal_email,$personal_mobile,$password_erp_user,$user_dept,$user_location,$user_menu,$user_access,$user_id);
 
         $data['message'] ='User Information Updated';
         $data['text'] = '';
@@ -556,6 +595,43 @@ class UserRegistration extends Controller
         $out = $this->user_registration->changeERPUserStatus($updated_by,$id,$status);
 
         $output = $this->user_registration->getERPUserList();
+
+        return $output;
+    }
+
+    public function getRole()
+    {
+        $role = $this->user_registration->getRole();
+
+        return $role; 
+    }
+
+    public function getLocation()
+    {
+        $location = $this->development->getLocation();
+
+        return $location;
+    }
+
+    public function getAccess()
+    {
+        $access = $this->development->getAccess();
+
+        return $access;
+    }
+
+    public function getRoleExceptAdmin()
+    {
+        return $this->user_registration->getRoleExceptAdmin();
+    }
+
+    public function inactiveERPUserStatus(Request $request)
+    {
+        $updated_by = Session::get('UID');
+
+        $erpUserMenuAccessMapID = $request->input('id');
+
+        $output = $this->user_registration->inactiveERPUserStatus($erpUserMenuAccessMapID,$updated_by);
 
         return $output;
     }

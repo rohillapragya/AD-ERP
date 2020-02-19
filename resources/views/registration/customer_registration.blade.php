@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/Home/dashboard.css') }}">
@@ -13,6 +18,7 @@
 
 @php
 $user_role_id = Session::get('role_id');
+$is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <nav aria-label="breadcrumb">
@@ -24,12 +30,15 @@ $user_role_id = Session::get('role_id');
     
 
     <div class="container box-shadow">
-    	 @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='5')
-	        <div class="form-group row">
-	            <div class="col-sm-12">
-	                <a href="/dashboard/addCustomer" style="float: right" class="btn btn-default">Add Customer</a>
-	            </div>
-	        </div>    
+    	@if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashbaord/customerRegistration')=='YES')
+
+    		@if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/addCustomer')=='YES')
+		        <div class="form-group row">
+		            <div class="col-sm-12">
+		                <a href="/dashboard/addCustomer" style="float: right" class="btn btn-default">Add Customer</a>
+		            </div>
+		        </div>
+		    @endif        
 
             <div class="form-group row">
 	            <table class="table table-bordered" id="sampleItemsList">
@@ -54,7 +63,11 @@ $user_role_id = Session::get('role_id');
 	                                <td>{{$output[$i]['email']}}</td>
 	                                <td>{{$output[$i]['city_name']}}</td>
 	                                <td>{{$output[$i]['address']}}</td>
-	                                <td><a href="/customer/edit/{{$output[$i]['Id']}}"><span class="glyphicon glyphicon-pencil"></a></td>
+	                                @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/customer/edit/{customerId}')=='YES')
+	                                	<td><a href="/customer/edit/{{$output[$i]['Id']}}"><span class="glyphicon glyphicon-pencil"></a></td>
+	                                @else
+	                                	<td>--</td>
+	                                @endif		
 	                              
 	                               	<!-- @if($user_role_id=='3' || $user_role_id=='7') -->
 		                            

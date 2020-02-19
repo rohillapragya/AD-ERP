@@ -1,3 +1,7 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/Home/dashboard.css') }}">
@@ -11,7 +15,24 @@
 
 @php
     $user_role_id = Session::get('role_id');
+
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
+
 @endphp
+
+@if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/sample/customer/show/{sampleId}')=='YES')
+    <div style="display: none" id="sampleEdit">Y</div>
+@else
+    <div style="display: none" id="sampleEdit">N</div>
+@endif
+
+ @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/sample/customer/readyForDispatch/{sampleId}')=='YES')
+    <div style="display: none" id="sampleReadyForDispatch">Y</div>
+@else
+    <div style="display: none" id="sampleReadyForDispatch">N</div>
+@endif
+
+
 
     <!-- <input type="hidden" id="roleId" name="roleId" value={{$user_role_id}}> -->
 
@@ -23,12 +44,18 @@
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
-        <div class="form-group row">
-            <div class="col-sm-12">
-                <a href="/dashboard/addNewSample" style="float: right" class="btn btn-default">Add New Sample Request</a>
-            </div>
-        </div>
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/customerSample')=='YES')
+
+            @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/addNewSample')=='YES')
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <a href="/dashboard/addNewSample" style="float: right" class="btn btn-default">Add New Sample Request</a>
+                    </div>
+                </div>
+            @endif
+
+        <br>
+
         <div class="form-group row">
             <table class="table table-bordered" id="sampleItemsList">
                 <thead style="background-color: #eef1ed;font-size: 14px;">
@@ -43,35 +70,35 @@
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
-                <tbody style="font-size: 14px;" >
+                <tbody style="font-size: 14px;" id="customerSampleBody">
                     @if(count($output) > 0)
                         @for ($i = 0; $i < count($output); $i++)
                             <tr>
-                                <td>{{($i+1)}}</td>
+                                <td>{{$i+1}}</td>
                                 <td>{{$output[$i]['sample_number']}}</td>
                                 <td>{{$output[$i]['request_date']}}</td>
                                 <td>{{$output[$i]['delivered_date']}}</td>
                                 <td>{{$output[$i]['ref_name']}}</td>
                                 <td>{{$output[$i]['customer_status']}}</td>
-                                <td><a href="/sample/customer/show/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
-
-                                @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7')
-                                    <td><a href="/sample/customer/readyForDispatch/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></a></td>
+                                @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/customerSample')=='YES')
+                                    <td><a href="/sample/customer/show/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
                                 @else
-                                    <td><span class="glyphicon glyphicon-tag"></td>
+                                    <td><span class="glyphicon glyphicon-pencil"></span></td>
                                 @endif
 
-                               
+                                @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/sample/customer/readyForDispatch/{sampleId}')=='YES')
+                                    <td><a href="/sample/customer/readyForDispatch/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-tag"></span></a></td>
+                                @else
+                                    <td><span class="glyphicon glyphicon-tag"></span><</td>
+                                @endif
                             </tr>
                         @endfor
-                        <!-- @php
-                            print_r($output[0]['customer_status']);
-                        @endphp -->
                     @else  
                         <tr>
-                            <td colspan="10" class="no-data-found">No Customer Sample request found</td>
+                            <td colspan="8" class="no-data-found">No Sample found</td>
                         </tr>
-                    @endif    
+                    @endif  
+                      
                 </tbody>
             </table>
         </div>
@@ -85,10 +112,4 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <!-- <script src="{{ asset('js/online/jquery-1.7.1.min.js') }}"></script>
 <script src="{{ asset('js/online/jquery.min.js') }}"></script> -->
-<script src="{{ asset('js/custom/customer_sample_list.js') }}"></script>
-
-
-<!-- @extends('layout.dashboard_footer_layout')
-@section('footer')
-    @parent
-@stop -->
+<script src="{{ asset('js/sample/location.js') }}"></script>

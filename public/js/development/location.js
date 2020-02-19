@@ -54,7 +54,7 @@ function updateLocation()
             $("#locationList").empty();
             for(var i=0;i<length;i++)
             {
-           		$('#locationList').append("<tr><td>"+(i+1)+"</td> <td>"+resp[i].location+"</td> <td><span class='glyphicon glyphicon-pencil' style='color: #2f8dc9;cursor: pointer' onclick='onClickLocationEdit("+resp[i].id+")'></td> </tr>");
+           		$('#locationList').append("<tr><td>"+(i+1)+"</td> <td>"+resp[i].location+"</td> <td><span class='glyphicon glyphicon-pencil' style='color: #2f8dc9;cursor: pointer' onclick='onClickLocationEdit("+resp[i].id+")'></td> <td><span class='glyphicon glyphicon-remove' style='color: #2f8dc9;cursor: pointer;' onclick='onClickLocationDelete("+resp[i].id+")'></span></td></tr>");
 
             }
         },
@@ -111,4 +111,23 @@ function onClickLocationEdit(id)
 		    })
 	});
 
+}
+
+
+function onClickLocationDelete(id)
+{
+	$.ajax({
+        type: 'POST',
+        url: '/development/deleteLocation',
+        dataType: 'json',
+        data : ({id:id}),
+        beforeSend: function (request) {
+            return request.setRequestHeader('X-CSRF-Token', $("meta[name='csrf-token']").attr('content'));
+        },
+        success: function (resp) 
+        {
+            location.reload(true/false);
+        }
+         
+    });
 }

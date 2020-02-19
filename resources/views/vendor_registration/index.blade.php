@@ -1,3 +1,7 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/mrn/mrn.css') }}">
@@ -12,6 +16,7 @@
 <!-- <div>session div role_name - {{ Session::get('role_id')}}</div> -->
 @php
 $user_role_id = Session::get('role_id');
+$is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
  	<nav aria-label="breadcrumb">
@@ -23,12 +28,15 @@ $user_role_id = Session::get('role_id');
 
 	
     <div class="container box-shadow">
-    	@if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
-	        <div class="form-group row">
-	            <div class="col-sm-12">
-	                <a href="/dashboard/addVendor" style="float: right" class="btn btn-default">Add Vendor</a>
-	            </div>
-	        </div>    
+    	@if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashbaord/vendorRegistration')=='YES')
+    	
+    		@if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/addVendor')=='YES')
+		        <div class="form-group row">
+		            <div class="col-sm-12">
+		                <a href="/dashboard/addVendor" style="float: right" class="btn btn-default">Add Vendor</a>
+		            </div>
+		        </div>    
+		    @endif    
 
             <div class="form-group row">
 	            <table class="table table-bordered" id="sampleItemsList">
@@ -54,7 +62,7 @@ $user_role_id = Session::get('role_id');
 	                                <td>{{$output[$i]['city_name']}}</td>
 	                                <td>{{$output[$i]['address']}}</td>
 	                              
-	                               	@if($user_role_id=='3' || $user_role_id=='7')
+	                               	@if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/vendor/edit/{vendorId}')=='YES')
 		                                <td><a href="/vendor/edit/{{$output[$i]['Id']}}"><span class="glyphicon glyphicon-pencil"></a></td> 
 		                            @else
 		                                <td><span class="glyphicon glyphicon-pencil"></td>

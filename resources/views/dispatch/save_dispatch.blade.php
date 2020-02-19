@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/Sample/dashboard.css') }}">
@@ -70,7 +75,8 @@
     @endif
 
 	<div class="container box-shadow">
-	 	@if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7' || $user_role_id=='12')
+	 	@if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dispatch/add')=='YES')
+
          <form method="post" action="/dispatch/add" enctype="multipart/form-data">
             {{ csrf_field() }}
             

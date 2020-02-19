@@ -1,3 +1,9 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/warehouse/warehouse.css') }}">
@@ -11,6 +17,7 @@
 
 @php
     $user_role_id = Session::get('role_id');
+    $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <!-- <input type="hidden" id="roleId" name="roleId" value={{$user_role_id}}> -->
@@ -23,12 +30,14 @@
     </nav>
 
     <div class="container box-shadow">
-         @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='11')
-        <div class="form-group row">
-            <div class="col-sm-12">
-                <a href="/dashboard/addNewWarehouse" style="float: right" class="btn btn-default">Add New Warehouse</a>
-            </div>
-        </div>
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/warehouseInit')=='YES')
+            @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/dashboard/addNewWarehouse')=='YES')
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <a href="/dashboard/addNewWarehouse" style="float: right" class="btn btn-default">Add New Warehouse</a>
+                    </div>
+                </div>
+            @endif    
 
         <div class="form-group row">
             <table class="table table-bordered" id="sampleItemsList">
@@ -51,7 +60,11 @@
                                 <td>{{$output[$i]['address']}}</td>
                                 <td>{{$output[$i]['city']}}</td>
                                 <td>{{$output[$i]['is_active']}}</td>
-                                <td><a href="/warehouse/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a></td> 
+                                @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/warehouse/edit/{warehouseId}')=='YES')
+                                    <td><a href="/warehouse/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></a></td> 
+                                @else
+                                    <td>--</td>
+                                @endif        
                             </tr>
                         @endfor
                     @else  

@@ -19,20 +19,47 @@ class BOM_class
         $this->created_at =  date("Y/m/d");
     }
 
-    function showBOMList()
+    function showBOMList($location_id)
     {
+        $str = 'and 1=1 ';
 
-        $out = DB::select("select id,BOM_no,qty,BOM_key_person,remarks,created_at,status from BOM where status='BOM_CREATED' order by id desc");
+        if($location_id)
+        {
+            if($location_id!='%')
+            {
+                $str.= " and a.location_id ='$location_id'";
+            }
 
-        return json_decode(json_encode($out), true);
+            $out = DB::select("select id,BOM_no,qty,BOM_key_person,remarks,created_at,status from BOM a where a.status='BOM_CREATED' $str order by id desc");
+
+            return json_decode(json_encode($out), true);
+        }
+        else
+        {
+            return redirect()->route('login');
+        } 
     }
 
-    function getBOMCount()
+    function getBOMCount($location_id)
     {
 
-        $out = DB::select("select count(*) as total from BOM where status='BOM_CREATED' order by id desc");
+       $str = 'and 1=1 ';
 
-        return json_decode(json_encode($out), true);
+        if($location_id)
+        {
+            if($location_id!='%')
+            {
+                $str.= " and a.location_id ='$location_id'";
+            }
+
+            $out = DB::select("select count(*) as total from BOM a where a.status='BOM_CREATED' $str order by id desc");
+
+            return json_decode(json_encode($out), true);
+        }
+        else
+        {
+            return redirect()->route('login');
+        } 
     }
 
     function maxBomID()
@@ -74,7 +101,7 @@ class BOM_class
         }
     }
 
-    function save($user_id,$bom_key_person,$bom_remark,$bom_name,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom)
+    function save($user_id,$bom_key_person,$bom_remark,$bom_name,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$location_id)
     {
         $maxBomID = $this->maxBomID();
 
@@ -84,7 +111,7 @@ class BOM_class
 
         $qty = 0;
 
-        $out = DB::insert("insert into BOM (id,BOM_no,bom_name,qty,BOM_key_person,remarks,status,created_at,created_by) values('$maxBomID','$bill_of_material_no','$bom_name','$qty','$bom_key_person','$bom_remark','$status','$this->created_at','$user_id')");
+        $out = DB::insert("insert into BOM (id,BOM_no,bom_name,qty,BOM_key_person,remarks,status,created_at,created_by,location_id) values('$maxBomID','$bill_of_material_no','$bom_name','$qty','$bom_key_person','$bom_remark','$status','$this->created_at','$user_id','$location_id')");
 
         $countTable = count($table_product_name);
 
@@ -124,9 +151,9 @@ class BOM_class
         return json_decode(json_encode($out), true);
     }
 
-    function edit($user_id,$bomId,$bom_key_person,$bom_remark,$bom_name,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom)
+    function edit($user_id,$bomId,$bom_key_person,$bom_remark,$bom_name,$table_product_name,$table_product_method,$table_product_qty,$table_product_uom,$location_id)
     {
-        $out = DB::update("update BOM set bom_name='$bom_name',BOM_key_person='$bom_key_person',remarks='$bom_remark' where id='$bomId'");
+        $out = DB::update("update BOM set bom_name='$bom_name',BOM_key_person='$bom_key_person',remarks='$bom_remark',location_id='$location_id',updated_at='$this->created_at',updated_by='$user_id' where id='$bomId'");
 
         $Out = DB::delete("delete from BOM_items_details where BOM_id='$bomId'");
 

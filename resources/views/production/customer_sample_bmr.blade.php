@@ -1,3 +1,8 @@
+@php
+    use \App\Http\Controllers\Dashboard;
+@endphp
+
+
 @extends('layout.dashboard_header_layout')
 
 <link rel="stylesheet" href="{{ asset('css/Sample/dashboard.css') }}">
@@ -15,6 +20,7 @@
 @php
 $user_role_id = Session::get('role_id');
 $behalf_of = $output[0]["any_behalf_of"];
+$is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
     <nav aria-label="breadcrumb">
@@ -26,14 +32,18 @@ $behalf_of = $output[0]["any_behalf_of"];
 
 
     <div class="container box-shadow">
-         @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='8')
+        @if($user_role_id=='1' || $user_role_id=='2' || $is_admin_access_for_active_location=='Y' || Dashboard::isRouteExistForUser('/production/bmr')=='YES')
+        
         <form method="post" action="/production/bmr">
             {{ csrf_field() }}
-            <div class="form-group row">
-                <div class="col-sm-12">
-                    <a href="/dashboard/addNewSample" style="float: right" class="btn btn-default">Add New Inquiry</a>
+
+           <!--  @if(Dashboard::isRouteExistForUser('/inquiry/init')=='YES')
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <a href="/dashboard/addNewSample" style="float: right" class="btn btn-default">Add New Inquiry</a>
+                    </div>
                 </div>
-            </div>
+            @endif   -->  
 
             <div class="form-group row">
                 <div class="card card-class">
