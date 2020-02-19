@@ -43,7 +43,7 @@
     <div class="col-lg-4 col-sm-4"> 
         <div class="panel panel-default boxShadow">
             <div class="panel-heading panel-heading-class">Sample</div>
-            <div class="panel-body panel-class">
+            <div class="panel-body panel-class" style="margin-bottom: 81px;">
 
             <!-- customer sample start -->
 
@@ -140,7 +140,7 @@
     <div class="col-lg-4 col-sm-4">
         <div class="panel panel-default boxShadow">
             <div class="panel-heading panel-heading-class">Dispatch</div>
-            <div class="panel-body panel-class">
+            <div class="panel-body panel-class" style="margin-bottom: 81px;">
              
             <!-- dispatch service info section start -->
 

@@ -48,7 +48,7 @@
     <div class="col-lg-4 col-sm-4"> 
         <div class="panel panel-default boxShadow">
             <div class="panel-heading panel-heading-class">Sample</div>
-            <div class="panel-body panel-class">
+            <div class="panel-body panel-class" style="margin-bottom: 81px;">
 
             <!-- customer sample start -->
 
@@ -125,9 +125,12 @@
             <!-- vendor registration end -->
 
             <!-- user registration start -->
-                @if($user_role_id=='1')
+                @if($user_role_id=='1' || $user_role_id=='2' || $isUserLocationHavingAdministratorAccess=='Y' ||  Dashboard::isRouteExistForUser('/dashbaord/erpUserRegistration')=='YES')
                     <a href="/dashbaord/erpUserRegistration"  class="panel-content"><span >User</span></a>
-                @endif
+                @else
+                    <span class="panel-content">User</span>
+                @endif  
+               
 
                 @if($user_role_id=='1' || $user_role_id=='2' || $isUserLocationHavingAdministratorAccess=='Y' ||  Dashboard::isRouteExistForUser('/development/location')=='YES')
                     <a href="/development/location" class="panel-content"><span>Add Location</span></a>
@@ -143,7 +146,7 @@
     <div class="col-lg-4 col-sm-4">
         <div class="panel panel-default boxShadow">
             <div class="panel-heading panel-heading-class">Dispatch</div>
-            <div class="panel-body panel-class">
+            <div class="panel-body panel-class" style="margin-bottom: 81px;">
              
             <!-- dispatch service info section start -->
 
