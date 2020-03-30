@@ -88,26 +88,4 @@ function onClickStockByWarehouseId()
              console.log('error');
         }
     });
-
-
-    // $.ajax({
-    //     type: 'GET', //THIS NEEDS TO BE GET
-    //     url: '/stock/getStockByWarehouseId',
-    //     dataType: 'json',
-    //     data : ({warehouseID:warehouseValue}),
-    //     success: function (resp) 
-    //     {
-    //         var length = resp.length;
-    //         $("#stockListTbody").empty();
-    //         for(var i=0;i<length;i++)
-    //         {
-    //           $('#stockListTbody').append("<tr><td>"+(i+1)+"</td><td>"+resp[i].item_code+"</td><td>"+resp[i].product_name+"</td><td>"+resp[i].botanical_name+"</td><td>"+resp[i].warehouse_name+"</td><td style='text-align: right'><span class='item_qty_inward_class'>"+resp[i].Inward_item_qty+"<span></td> <td style='text-align: right'><span class='item_qty_outward_class'>"+resp[i].Inward_control_qty+"</span></td> <td style='text-align: right'><span class='item_qty_inward_control_class'>"+resp[i].Outward_item_qty+"</span></td> <td style='text-align: right'><span class='item_qty_outward_control_class'>"+resp[i].Outward_control_qty+"</span></td> <td style='text-align: right'><span class='item_qty_inward_class_diff'></span></td> <td style='text-align: right'>"+resp[i].item_uom+"</td></tr>");
-    //         }
-    //         populate();
-    //     },
-    //     error:function()
-    //     { 
-    //          console.log('error');
-    //     }
-    // });
 }

@@ -84,7 +84,7 @@
             </div>
 
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label">personal Mobile</label>
+                <label class="col-sm-4 col-form-label">Personal Mobile</label>
                 <div class="col-sm-8">
                     <input type="number" class="form-control" id="personal_mobile" name="personal_mobile" placeholder="personal mobile" value={{$erpUserInfo[0]['mobile']}}>
                 </div>
@@ -115,6 +115,16 @@
                     <input type="password" class="form-control" id="password_erp_user" name="password_erp_user" placeholder="password (first time login for user. Later it will be update by user)" required="required">
                 </div>
             </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Monthly Target</label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" id="monthly_target" name="monthly_target" placeholder="monthly target" value={{$erpUserInfo[0]['monthly_target']}}>
+                </div>
+            </div>
+
+
 
             <div class="form-group row" style="margin-top: 4%"> 
                 <div class="col-sm-12 col-form-label">

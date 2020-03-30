@@ -319,22 +319,3 @@ function ondeleteContactInformationFromTable(el)
     var table_tr_count = table.children[1].children.length;
     row_delete = table.deleteRow(id);
 }
-
-// function onClickChangeStatus(id,status)
-// {
-// 	console.log("ID is-"+id+"-status-"+status);
-
-// 	 $.ajax({
-//         type: 'POST', //THIS NEEDS TO BE GET
-//         url: '/erpUser/changeStatus',
-//         dataType: 'json',
-//         data : ({id:id,status:status}),
-//         beforeSend: function (request) {
-//             return request.setRequestHeader('X-CSRF-Token', $("meta[name='csrf-token']").attr('content'));
-//         },
-//         success: function (resp) 
-//         {
-//             location.reload(true/false);
-//         }
-//     });
-// }

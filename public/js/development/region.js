@@ -146,35 +146,6 @@ function onClickChangeStatus(id,status)
 
 
 
-// function populateTable()
-// {
-//     var table = document.getElementById('regionTable');
-//     if(table)
-//     {
-//         var tbody = table.children[1];
-//         var tbody_count = tbody.childElementCount;
-//         for(i=0;i<tbody_count;i++)
-//         {
-//             var tr = tbody.children[i];
-//             var edit_text = tr.children[3].innerText
-
-//             if(edit_text=='Inactive')
-//             {
-//                 //console.log("Y-"+i);
-//                 tr.children[3].innerText = "Active";
-//             }
-//             else
-//             {
-//                 tr.children[3].innerText = "Inactive";
-//                 //console.log("N-"+i);
-//                 tr.style.backgroundColor="rgb(255, 141, 0)";
-//             }
-//         }
-//     }
-   
-// }
-
-
 function onClickRegionDelete(id)
 {
    // console.log("ID-"+id);

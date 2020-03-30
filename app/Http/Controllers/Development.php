@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 
 use App\lib\Development_class;
 
+use App\lib\Users;
 
 class Development extends Controller
 {
@@ -143,7 +144,15 @@ class Development extends Controller
         {
             $output = $this->development->getLocation();
 
-            return view ('development.locationIndex',compact('output'));
+            $t_this = new Users;
+
+            $user_id = Session::get('UID');
+
+            $location_id = Session::get('location_id');
+
+            $isUserLocationHavingAdministratorAccess = $t_this->isUserLocationHavingAdministratorAccess($user_id,$location_id);
+
+            return view ('development.locationIndex',compact('output','isUserLocationHavingAdministratorAccess'));
         }
 
         public function addNewLocation(Request $request)

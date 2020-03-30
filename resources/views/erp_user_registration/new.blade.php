@@ -114,6 +114,14 @@
             </div>
 
 
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Monthly Target</label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" id="monthly_target" name="monthly_target" placeholder="monthly target">
+                </div>
+            </div>
+
+
             <div class="form-group row" style="margin-top: 4%"> 
                 <div class="col-sm-12 col-form-label">
 

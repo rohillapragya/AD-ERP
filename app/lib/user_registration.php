@@ -120,7 +120,7 @@ class User_Registration
         }
     }
 
-    function saveERPUser($first_name,$last_name,$offical_email,$offical_mobile,$personal_email,$personal_mobile,$password_erp_user,$table_user_dept,$table_user_location,$table_user_menu,$table_user_access,$user_id)
+    function saveERPUser($first_name,$last_name,$offical_email,$offical_mobile,$personal_email,$personal_mobile,$monthly_target,$password_erp_user,$table_user_dept,$table_user_location,$table_user_menu,$table_user_access,$user_id)
     {
         $user_master_type = '2'; // 2 user_master_type is 2 only. 1 - Customer, 3 vendor
 
@@ -138,7 +138,7 @@ class User_Registration
 
         if($totalAuthEmailCount==0)
         {
-            $out = DB::insert("insert into user_master(Id,first_name,last_name,email,mobile,joined_by,user_master_type,offical_email,offical_mobile,is_active,created_at) values('$maxUserMasterId','$first_name','$last_name','$personal_email','$personal_mobile','$user_id','$user_master_type','$offical_email','$offical_mobile','Y','$this->created_at')");
+            $out = DB::insert("insert into user_master(Id,first_name,last_name,email,mobile,joined_by,user_master_type,offical_email,offical_mobile,is_active,created_at,monthly_target) values('$maxUserMasterId','$first_name','$last_name','$personal_email','$personal_mobile','$user_id','$user_master_type','$offical_email','$offical_mobile','Y','$this->created_at','$monthly_target')");
 
             $out_1 = DB::insert("insert into user_auth(id,user_id,auth_type,auth_key,auth_value) values('$maxUserAuthId','$maxUserMasterId',1,'$offical_email','$password_erp_user')");
 
@@ -198,9 +198,9 @@ class User_Registration
     // }
 
 
-    function updateERPUser($erpuserid,$first_name,$last_name,$offical_mobile,$personal_email,$personal_mobile,$password_erp_user,$table_user_dept,$table_user_location,$table_user_menu,$table_user_access,$updated_by)
+    function updateERPUser($erpuserid,$first_name,$last_name,$offical_mobile,$personal_email,$personal_mobile,$monthly_target,$password_erp_user,$table_user_dept,$table_user_location,$table_user_menu,$table_user_access,$updated_by)
     {
-        $out = DB::update("update user_master set first_name='$first_name',last_name='$last_name',email='$personal_email',mobile='$personal_mobile',offical_mobile='$offical_mobile',updated_at='$this->created_at',updated_by='$updated_by' where id='$erpuserid'");
+        $out = DB::update("update user_master set first_name='$first_name',last_name='$last_name',email='$personal_email',mobile='$personal_mobile',offical_mobile='$offical_mobile',updated_at='$this->created_at',updated_by='$updated_by',monthly_target='$monthly_target' where id='$erpuserid'");
 
         $out_1 = DB::update("update user_auth set updated_at='$this->created_at',auth_value='$password_erp_user' where user_id='$erpuserid'");
 
@@ -900,6 +900,16 @@ class User_Registration
     function getSupplierList()
     {
         $out = DB::select("select id,concat(first_name,' ',last_name) as name from Supplier_Master order by first_name,last_name");
+
+        return json_decode(json_encode($out), true);  
+    }
+
+
+    function getActiveSalesExecutiveList()
+    {
+        // Added by Pragya dated on 27 March 2020,,, a.ID =1 is developer user... not need to polpulate developer user Information..
+         
+        $out = DB::select("select distinct a.first_name,a.last_name,a.Id from user_master a,app_user_role_map b where a.Id = b.user_id and b.role_id='5' and a.is_active='Y' and a.Id not in ('1') order by first_name");
 
         return json_decode(json_encode($out), true);  
     }

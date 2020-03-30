@@ -192,23 +192,3 @@ function checkGSTN(el)
         });
     }
 }
-
-
-// function onClickChangeStatus(id,status)
-// {
-// 	console.log("ID is-"+id+"-status-"+status);
-
-// 	 $.ajax({
-//         type: 'POST', //THIS NEEDS TO BE GET
-//         url: '/erpUser/changeStatus',
-//         dataType: 'json',
-//         data : ({id:id,status:status}),
-//         beforeSend: function (request) {
-//             return request.setRequestHeader('X-CSRF-Token', $("meta[name='csrf-token']").attr('content'));
-//         },
-//         success: function (resp) 
-//         {
-//             location.reload(true/false);
-//         }
-//     });
-// }

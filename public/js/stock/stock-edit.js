@@ -35,47 +35,6 @@ $(document).ready(function(){
              console.log('error');
         }
     });
-
-    // $.ajax({
-    //     type: 'GET', //THIS NEEDS TO BE GET
-    //     url: '/product/getMethodList',
-    //     dataType: 'json',
-    //     success: function (resp) {
-    //         var length = resp.length;
-    //         $("#method").empty();
-    //         for(var i=0;i<length;i++) { $('#method').append("<option value="+resp[i].id+">"+resp[i].name+"</option>");}
-    //     },
-    //     error:function() {  console.log('error');}
-    // });
-
-    // $.ajax({
-    //     type: 'GET', //THIS NEEDS TO BE GET
-    //     url: '/product/uom',
-    //     dataType: 'json',
-    //     success: function (resp) {
-    //         var length = resp.length;
-    //         $("#uom").empty();
-    //         $("#product_sample_uom").empty();
-
-    //         for(var i=0;i<length;i++) {
-    //             $('#uom').append("<option value="+resp[i].id+">"+resp[i].name+"</option>");
-    //             $('#product_sample_uom').append("<option value="+resp[i].id+">"+resp[i].name+"</option>");
-    //         }
-    //     },
-    //     error:function() {   console.log('error');}
-    // });
-
-    // $.ajax({
-    //     type: 'GET', //THIS NEEDS TO BE GET
-    //     url: '/product/getProductList',
-    //     dataType: 'json',
-    //     success: function (resp) {
-    //         var length = resp.length;
-    //         $("#product_name").empty();
-    //         for(var i=0;i<length;i++) { $('#product_name').append("<option value="+resp[i].id+">"+resp[i].name+"</option>"); }      
-    //     },
-    //     error:function()   { console.log('error');  }
-    // });  
 });
 
 function addSampleNewRow()

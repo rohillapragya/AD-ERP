@@ -298,6 +298,25 @@ class Users
     }
 
 
+    function isUserHavingSalesExecutive($user_id)
+    {
+        /*Role Id 5 for Sales Executive*/
+
+        $out = DB::select("select count(*) as total from app_user_role_map where user_id='$user_id' and role_id='5'");
+        $result = json_decode(json_encode($out), true);
+        foreach ($result as $key => $value) 
+        {
+            $count = $value['total'];
+
+            if($count > 0){ $isUserHavingSalesExecutiveRole = 'Y';}
+            else { $isUserHavingSalesExecutiveRole = 'N';}
+        }
+
+        return $isUserHavingSalesExecutiveRole;
+    }
+
+
+
     function isUserLocationHavingOperationAdminAccess($user_id,$locationId)
     {
         /* Role id 3 for Adminsitrator role. Using this will able to check  whether user role along with location having  Administrator access or not*/

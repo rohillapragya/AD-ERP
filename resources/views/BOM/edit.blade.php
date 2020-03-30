@@ -160,8 +160,3 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="{{ asset('js/bom/init-edit.js') }}"></script>
-
-<!-- @extends('layout.dashboard_footer_layout')
-@section('footer')
-    @parent
-@stop -->

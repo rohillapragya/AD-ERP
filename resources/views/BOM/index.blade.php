@@ -19,10 +19,6 @@
     $is_admin_access_for_active_location = Session::get('is_admin_access_for_active_location');
 @endphp
 
-    <!-- <input type="hidden" id="roleId" name="roleId" value={{$user_role_id}}> -->
-
-    <!-- <div>User Role Id -  {{$user_role_id}}</div> -->
-
     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <span class="glyphicon glyphicon-map-marker"></span>
@@ -93,9 +89,3 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <script src="{{ asset('js/bom/init.js') }}"></script>
-
-
-<!-- @extends('layout.dashboard_footer_layout')
-@section('footer')
-    @parent
-@stop -->

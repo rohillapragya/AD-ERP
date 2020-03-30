@@ -28,7 +28,7 @@ $user_id = Session::get('UID');
     </nav>
 
     <div class="container box-shadow">
-        @if($user_role_id =='1' ||  Dashboard::isRouteExistForUser('/dashboard/addNewERPUser')=='YES')
+        @if($user_role_id =='1' || $user_role_id =='2' ||  Dashboard::isRouteExistForUser('/dashboard/addNewERPUser')=='YES')
             <div class="form-group row">
                 <div class="col-sm-12">
                     <a href="/dashboard/addNewERPUser" style="float: right" class="btn btn-default">Add New ERP User</a>
@@ -36,7 +36,7 @@ $user_id = Session::get('UID');
             </div>
         @endif
 
-        @if($user_role_id=='1' || Dashboard::isRouteExistForUser('/dashbaord/erpUserRegistration')=='YES')
+        @if($user_role_id=='1' || $user_role_id =='2' || Dashboard::isRouteExistForUser('/dashbaord/erpUserRegistration')=='YES')
 
             <div class="form-group row">
                 <table class="table table-bordered" id="erpUserTableList">
@@ -65,7 +65,7 @@ $user_id = Session::get('UID');
                                 </td>
                                 <td>{{$output[$i]['is_active']}}</td>
                                 <td>
-                                    @if($user_role_id =='1' || Dashboard::isRouteExistForUser('/erpuser/edit/{erpUserID}')=='YES')
+                                    @if($user_role_id =='1' || $user_role_id =='2' ||  Dashboard::isRouteExistForUser('/erpuser/edit/{erpUserID}')=='YES')
 
                                         @if($output[$i]['is_active']=='Y')
                                             <a href="/erpuser/edit/{{$output[$i]['id']}}"><span class="glyphicon glyphicon-pencil"></span></a>
@@ -100,8 +100,3 @@ $user_id = Session::get('UID');
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="{{ asset('js/userRegistration/erpUser.js') }}"></script>
-
-<!-- @extends('layout.dashboard_footer_layout')
-@section('footer')
-    @parent
-@stop -->

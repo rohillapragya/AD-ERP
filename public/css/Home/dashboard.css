@@ -158,3 +158,22 @@
     border-radius: 10px;
     padding: 2%;
 }
+
+
+.monthly_target_div{
+    border: 1px solid #DDD;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 1%;
+    background: -webkit-linear-gradient(45deg, #f26635 0%,#e55b2b 22%,#d66528 72%,#f07146 100%);
+}
+
+.monthly_target_a{
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+a:focus, a:hover {
+    /*color: #b2f4ec;*/
+}

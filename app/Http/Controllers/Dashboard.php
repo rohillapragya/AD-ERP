@@ -14,7 +14,6 @@ use App\Http\Controllers\Config;
 
 class Dashboard extends Controller
 {
-    // public $url;
 
     public function __construct(Users $user) 
     {
@@ -51,12 +50,15 @@ class Dashboard extends Controller
 
         $isUserLocationHavingAdministratorAccess = $t_this->isUserLocationHavingAdministratorAccess($user_id,$locationId);
 
+        $isUserHavingSalesExecutive = $t_this->isUserHavingSalesExecutive($user_id);
+
         Session::put('URL',$gettingUserAllocatedRouteByLocationId);
         Session::put('location_id',$locationId);
         Session::put('location_name',$location_name);
         Session::put('is_admin_access_for_active_location',$isUserLocationHavingAdministratorAccess);
+        Session::put('is_sales_executive_access_for_active_location',$isUserHavingSalesExecutive);
 
-       	return view ('dashboard.index',compact('isUserLocationHavingAdministratorAccess'));
+       	return view ('dashboard.index',compact('isUserLocationHavingAdministratorAccess','isUserHavingSalesExecutive'));
     }
 
     public static function isRouteExistForUser($route)
@@ -99,7 +101,11 @@ class Dashboard extends Controller
 
         $isUserLocationHavingAdministratorAccess = $t_this->isUserLocationHavingAdministratorAccess($user_id,$locationId);
 
+        $isUserHavingSalesExecutive = $t_this->isUserHavingSalesExecutive($user_id);
+
         Session::put('is_admin_access_for_active_location',$isUserLocationHavingAdministratorAccess);
+
+        Session::put('is_sales_executive_access_for_active_location',$isUserHavingSalesExecutive);
 
         return redirect()->route('index');
     }
@@ -120,10 +126,15 @@ class Dashboard extends Controller
 
         $isUserLocationHavingAdministratorAccess = $t_this->isUserLocationHavingAdministratorAccess($user_id,$locationId);
 
+        $isUserHavingSalesExecutive = $t_this->isUserHavingSalesExecutive($user_id);
+
         Session::put('URL',$gettingUserAllocatedRouteByLocationId);
 
         Session::put('location_id',$locationId);
+        
+        Session::put('is_sales_executive_access_for_active_location',$isUserHavingSalesExecutive);
 
-        return view ('dashboard.Index',compact('isUserLocationHavingAdministratorAccess'));
+        return view ('dashboard.Index',compact('isUserLocationHavingAdministratorAccess','isUserHavingSalesExecutive'));
+
     }
 }

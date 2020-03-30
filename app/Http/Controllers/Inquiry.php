@@ -121,10 +121,7 @@ class Inquiry extends Controller
         $user_id = Session::get('UID');
         $table_inquiry_code = request('inquiry_code');
         $table_inquiry_product_id = request('inquiry_product_id');
-        //dd($table_inquiry_product_id);
-        // $table_inquiry_name = request('inquiry_name');
-        // $table_inquiry_sci_name = request('inquiry_sci_name');
-        // $table_inquiry_specification = request('inquiry_specification');
+       
         $table_inquiry_qty = request('inquiry_qty');
         $table_inquiry_uom = request('inquiry_uom');
         $customerName = request('customerName');

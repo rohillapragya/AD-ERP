@@ -29,11 +29,17 @@
 
 <div class="container">    
 
-    <!-- <div> User Role ID {{ $user_role_id }}</div> -->  <!-- if user having developer role all option will be enable  -->
+    @if($user_role_id=='1' || $user_role_id=='2' || $isUserLocationHavingAdministratorAccess=='Y' || Dashboard::isRouteExistForUser('/monthly_target')=='YES' || $isUserHavingSalesExecutive=='Y')
+       <div class="row">
+            <div class="col-lg-12 col-sm-12 monthly_target_div"> 
+                <a href="/monthly_target"  class="monthly_target_a">
+                    <marquee behavior="alternate" direction="right">Update your Monthly Target</marquee>
+                </a>
+            </div>
+        </div>
+    @endif
+    
 
-    <!-- {{ $is_admin_access_for_active_location }} -->
-
-    <!--  Route is {{ Dashboard::isRouteExistForUser('/wish/action/{wishId}') }} -->
 
     @if($user_role_id=='1' || $user_role_id=='2' || $isUserLocationHavingAdministratorAccess=='Y' || Dashboard::isRouteExistForUser('/charts')=='YES')
         <div class="row">
@@ -43,7 +49,10 @@
         </div>
     @endif
 
-  <div class="row">
+
+   
+
+    <div class="row">
 
     <div class="col-lg-4 col-sm-4"> 
         <div class="panel panel-default boxShadow">
@@ -59,12 +68,6 @@
                     <span class="panel-content">Customer</span>
                 @endif
 
-                <!-- @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='5' || $user_role_id=='7')
-                    <a href="/dashboard/customerSample" class="panel-content"> <span>Customer</span></a>
-                    <div id="customerSampleCount" class="countDivClass" style="background-color: #f2f2f2;">0</div>
-                @else
-                    <span class="panel-content">Customer</span>
-                @endif  -->   
             <!-- customer sample end -->
 
             <!-- vendor sample start -->
@@ -75,14 +78,6 @@
                 @else
                     <span class="panel-content">Vendor</span>
                 @endif
-
-
-                <!-- @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
-                    <a href="/dashboard/vendorSample" class="panel-content"><span >Vendor</span></a>
-                    <div id="vendorSampleCount"  class="countDivClass" style="background-color: #f2f2f2;">0</div>
-                @else
-                    <span class="panel-content">Vendor</span>
-                @endif -->
             <!-- vendor sample end     -->
             </div>
         </div>
@@ -102,11 +97,6 @@
                     <span class="panel-content">Customer</span>
                 @endif
 
-                <!-- @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='5')
-                    <a href="/dashbaord/customerRegistration" class="panel-content"><span>Customer</span></a>
-                @else
-                    <span class="panel-content">Customer</span>
-                @endif -->
             <!-- customer registration end     -->
 
             <!-- vendor registration start -->
@@ -117,11 +107,6 @@
                     <span class="panel-content">Vendor</span>
                 @endif
 
-                <!-- @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7' || $user_role_id=='13' || $user_role_id=='14')
-                    <a href="/dashbaord/vendorRegistration" class="panel-content"><span>Vendor</span></a>
-                @else
-                    <span class="panel-content">Vendor</span>
-                @endif -->
             <!-- vendor registration end -->
 
             <!-- user registration start -->
@@ -150,17 +135,6 @@
              
             <!-- dispatch service info section start -->
 
-
-                <!-- @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='7' || $user_role_id=='12')
-                    <a href="/dashboard/dispatchService" class="panel-content"><span>Dispatch Service</span></a>
-                    <a href="/dashboard/dispatchInfo" class="panel-content"><span>Dispatch Info</span></a>
-                    <div id="dispatchInfoCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -14% 0% 0% 35%;">0</div>
-                @else
-                    <span class="panel-content">Dispatch Service</span>
-                    <span style="margin-bottom: 12px;">Dispatch Info</span>
-                @endif -->
-
-
                 @if($user_role_id=='1' || $user_role_id=='2' || $isUserLocationHavingAdministratorAccess=='Y' ||  Dashboard::isRouteExistForUser('/dashboard/dispatchService')=='YES')
                     <a href="/dashboard/dispatchService" class="panel-content"><span>Dispatch Service</span></a>
                 @else
@@ -187,17 +161,7 @@
             <div class="panel-body panel-class">
             
             <!-- product ,category , method section start here -->
-                <!-- @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='14')
-                    <a href="/product/productIndex" class="panel-content"><span>Product</span></a>
-                    <a href="/product/categoryIndex" class="panel-content"><span>Category</span></a>
-                    <a href="/product/methodIndex" class="panel-content"><span>Method</span></a>
-                @else
-                    <span class="panel-content">Product</span>
-                    <span class="panel-content">Category</span>
-                    <span class="panel-content">Method</span>
-                @endif  -->
-
-
+            
                 @if($user_role_id=='1' || $user_role_id=='2' || $isUserLocationHavingAdministratorAccess=='Y' ||  Dashboard::isRouteExistForUser('/product/productIndex')=='YES')
                     <a href="/product/productIndex" class="panel-content"><span>Product</span></a>
                 @else
@@ -239,16 +203,7 @@
             <!-- Add wish list section end here   --> 
                 
             <!-- stock, warehouse section start here -->
-                <!-- @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='11' || $user_role_id=='7')    
-                    <a href="/dashboard/stockEntryInit" class="panel-content"><span>Stock Entry</span></a>
-                    <div id="stockEntryCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -14% 0% 0% 33%;">0</div>
-
-                    <a href="/dashboard/warehouseInit" class="panel-content"><span>Warehouse</span></a>
-                @else
-                    <span class="panel-content">Stock Entry</span>
-                    <span class="panel-content">Warehouse</span>
-                @endif -->
-
+    
                 @if($user_role_id=='1' || $user_role_id=='2' || $isUserLocationHavingAdministratorAccess=='Y' ||  Dashboard::isRouteExistForUser('/dashboard/stockEntryInit')=='YES')     
                     <a href="/dashboard/stockEntryInit" class="panel-content"><span>Stock Entry</span></a>
                     <div id="stockEntryCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -14% 0% 0% 33%;">0</div>
@@ -311,19 +266,7 @@
             <div class="panel-body panel-class" style="margin-bottom: 270px">
 
             <!-- verify PRN,Qutation,approved vendor list section start here -->
-                <!-- @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='13')
-                    <a href="/dashoard/prn/verify" class="panel-content"><span>Verify Purchase Requization Note (PRN)</span></a>
-                        <div id="verifyPRNCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -14% 0% 0% 93%;">0</div>
-                    <a href="/dashoard/qutationInit" class="panel-content"><span>Purchase Request</span></a>
-                    <a href="#" class="panel-content"><span style="color: #c48d07;">Supplier Quotation</span></a>
-                @else
-                    <span class="panel-content">Verify Purchase Requization Note (PRN)</span>
-                    <span class="panel-content">Purchase Request</span>
-                    <span class="panel-content">Supplier Quotation</span>
-                @endif -->
-
-
-
+               
                 @if($user_role_id=='1' || $user_role_id=='2' || $isUserLocationHavingAdministratorAccess=='Y' ||  Dashboard::isRouteExistForUser('/dashoard/prn/verify')=='YES')
                     <a href="/dashoard/prn/verify" class="panel-content"><span>Verify Purchase Requization Note (PRN)</span></a>
                     <div id="verifyPRNCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -14% 0% 0% 93%;">0</div>
@@ -352,15 +295,13 @@
 
             <!-- purchase indent,purchase order,performa invoice section start here -->
                 @if($user_role_id=='1' || $user_role_id=='2' || $isUserLocationHavingAdministratorAccess=='Y' ||  Dashboard::isRouteExistForUser('/dashboard/pI')=='YES')
-                   <!--  <a href="/dashboard/pI" class="panel-content" style="margin-bottom: 80%"><span>Purchase Indent</span></a> -->
+                  
                     <a href="/dashboard/pI" class="panel-content"><span>Purchase Indent</span></a>
                     <div id="purchaseIndentCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -11% 0% 0% 40%;">0</div>
-                    <!-- <a href="#" class="panel-content"><span style="color: #c48d07;">Purchase Order (PO) Information</span></a>
-                    <a href="#" class="panel-content" style="margin-bottom: 48%"><span style="color: #c48d07;">Performa Invoice</span></a> -->
+                    
                 @else
                     <span class="panel-content">Purchase Indent</span>
-                    <!-- <span class="panel-content">Purchase Order (PO) Information</span>
-                    <span style="margin-bottom: 48%">Performa Invoice</span> -->
+                  
                 @endif
             <!-- purchase indent,purchase order,performa invoice section end here     -->
             </div>
@@ -375,21 +316,6 @@
             <div class="panel-body panel-class" style="margin-bottom: 314px;">
 
             <!-- Bill of Materials , Production planing details section start here -->
-               <!--  @if($user_role_id=='1' || $user_role_id=='3' || $user_role_id=='8')
-                    <a href="/dashboard/BOM" class="panel-content"><span>Bill of Materials (BOM)</span></a>
-                        <div id="bomCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -14% 0% 0% 60%;">0</div>
-
-                    <a href="/dashboard/production" class="panel-content"><span>Production Plan Details</span></a>
-
-                    <a href="/dashboard/customerSampleBMRList" class="panel-content"><span>BMR Number</span></a>
-                        <div id="bmrNumberCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -13% 0% 0% 37%;">0</div>
-                @else
-                    <span class="panel-content">Bill of Materials (BOM)</span>
-                    <span class="panel-content">Production Plan Details</span>
-                    <span>BMR Number</span>
-                @endif  -->
-
-
                 @if($user_role_id=='1' || $user_role_id=='2' || $isUserLocationHavingAdministratorAccess=='Y' ||  Dashboard::isRouteExistForUser('/dashboard/BOM')=='YES')
                     <a href="/dashboard/BOM" class="panel-content"><span>Bill of Materials (BOM)</span></a>
                     <div id="bomCount"  class="countDivClass" style="background-color: #f2f2f2;margin: -14% 0% 0% 60%;">0</div>
@@ -460,20 +386,21 @@
         </div>
     </div>
 
-    <!-- contact us section start here     -->
-           <!--  <div class="col-lg-4 col-sm-4"> 
-                <div class="panel panel-default boxShadow">
-                    <div class="panel-heading panel-heading-class">Contact Us</div>
-                    <div class="panel-body panel-class">
 
-                        <a href="#" class="panel-content"><span style="color: #c48d07;">Feedback / Query</span></a>
-                        <a href="#"><span style="color: #c48d07;">Add Sugguestion</span></a>
-                    
-                    </div>
+    @if($user_role_id=='1' || $user_role_id=='2' || $isUserLocationHavingAdministratorAccess=='Y')
+        <div class="col-lg-4 col-sm-4"> 
+            <div class="panel panel-default boxShadow">
+                <div class="panel-heading panel-heading-class">Sales Report</div>
+                <div class="panel-body panel-class" style="margin: 0% 0% 13% 0%;">
+
+                <!-- contact us section start here     -->
+                    <a href="/monthly_target_report" class="panel-content"><span>Monthly Target Report</span></a>
+                <!-- contact us section end here     -->
                 </div>
-            </div> -->
-    <!-- contact us section end here     -->
-
+            </div>
+        </div>
+    @endif  
+     
     @if($user_role_id=='1')
         <div class="col-lg-4 col-sm-4"> 
             <div class="panel panel-default boxShadow">
@@ -504,9 +431,3 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="{{ asset('js/custom/custom.js') }}"></script>
-
-
-<!-- @extends('layout.dashboard_footer_layout')
-@section('footer')
-    @parent
-@stop -->

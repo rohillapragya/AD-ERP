@@ -24,11 +24,7 @@ function populate()
             $("#user_dept").empty();
             for(var i=0;i<length;i++) { $('#user_dept').append("<option value="+resp[i].id+">"+resp[i].name+"</option>");}
 
-            // if(user_dept_selected_index_innerHTML=='Administartor')
-            // {
-            //     $("#user_menu").empty(); $('#user_menu').append("<option value='0'>ALL</option>");
-            //     $("#user_access").empty(); $('#user_access').append(" <option value='O'>ALL</option>");
-            // }
+          
         },
         error:function() {  console.log('error');}
     });
@@ -47,30 +43,7 @@ function populate()
     });
 
 
-    // $.ajax({
-    //     type: 'GET', 
-    //     url: '/development/getMenu',
-    //     dataType: 'json',
-    //     success: function (resp) {
-    //         var length = resp.length;
-    //         $("#user_menu").empty();
-    //         for(var i=0;i<length;i++) { $('#user_menu').append("<option value="+resp[i].id+">"+resp[i].name+"</option>");}
-    //     },
-    //     error:function() {  console.log('error');}
-    // });
-
-
-    // $.ajax({
-    //     type: 'GET', 
-    //     url: '/user/getAccess',
-    //     dataType: 'json',
-    //     success: function (resp) {
-    //         var length = resp.length;
-    //         $("#user_access").empty();
-    //         for(var i=0;i<length;i++) { $('#user_access').append("<option value="+resp[i].id+">"+resp[i].name+"</option>");}
-    //     },
-    //     error:function() {  console.log('error');}
-    // });
+  
 
 }
 

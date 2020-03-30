@@ -27,7 +27,3 @@
 @stop
 
 <script src="{{ asset('js/custom/success.js') }}"></script>
-
-<!-- @section('footer')
-    @parent
-@stop -->

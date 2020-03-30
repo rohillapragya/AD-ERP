@@ -10,11 +10,6 @@ use App\lib\Users;
 
 class ForgotPassController extends Controller
 {
-    
-    // public function __construct()
-    // {
-    // }
-
     public function __construct(Users $user) 
     {
         $this->user = $user;

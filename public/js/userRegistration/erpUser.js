@@ -46,33 +46,6 @@ function onClickChangeStatus(id,status)
         success: function (resp) 
         {
             location.reload(true/false);
-            
-            // var length = resp.length;
-
-            // $("#erpUserTableTbody").empty();
-            // var email='';
-            // var mobile='';
-            // var edit = '';
-            // var changeStatus = '';
-
-            // for(var i=0;i<length;i++)
-            // {
-            //     if(resp[i].offical_email=='null') { email = resp[i].offical_email; }
-            //     else { email = resp[i].personal_email; }
-
-            //     if(resp[i].offical_mobile=='null') { mobile = resp[i].offical_mobile;  }
-            //     else {  mobile = resp[i].personal_mobile; }
-
-            //     if(resp[i].is_active=='Y') { edit="<a href=/erpuser/edit/"+resp[i].id+"><span class='glyphicon glyphicon-pencil'></span></a>"; }
-
-            //     if(resp[i].is_active=='Y') { changeStatus="<button type='button' onclick='onClickChangeStatus('"+resp[i].id+",'N') class='btn btn-primary btn-sm'>Inactive</button>";
-            //     }
-
-            //     else { changeStatus="<button type='button' onclick='onClickChangeStatus('"+resp[i].id+",'Y') style='width: 64px' class='btn btn-primary btn-sm'>Active</button>";
-            //     }
-
-            //     $('#erpUserTableTbody').append("<tr><td>"+(i+1)+"</td><td>"+resp[i].first_name+resp[i].last_name+"</td><td>"+email+"</td><td>"+mobile+"</td><td>"+resp[i].role_name+"</td><td>"+resp[i].is_active+"</td> <td>"+edit+"</td> <td>"+changeStatus+"</td></tr>");
-            // }
         }
     });
 }

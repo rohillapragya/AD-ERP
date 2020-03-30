@@ -492,7 +492,7 @@ class UserRegistration extends Controller
         $offical_mobile = request('offical_mobile');
         $personal_email = request('personal_email');
         $personal_mobile = request('personal_mobile');
-        // $erpuser_role = request('erpuser_role');
+        $monthly_target = request('monthly_target');
         $password_erp_user = request('password_erp_user');
 
         $user_dept = request('user_dept');
@@ -502,7 +502,7 @@ class UserRegistration extends Controller
 
         // $output = $this->user_registration->saveERPUser($first_name,$last_name,$offical_email,$offical_mobile,$personal_email,$personal_mobile,$erpuser_role,$password_erp_user,$user_id);
 
-        $output = $this->user_registration->saveERPUser($first_name,$last_name,$offical_email,$offical_mobile,$personal_email,$personal_mobile,$password_erp_user,$user_dept,$user_location,$user_menu,$user_access,$user_id);
+        $output = $this->user_registration->saveERPUser($first_name,$last_name,$offical_email,$offical_mobile,$personal_email,$personal_mobile,$monthly_target,$password_erp_user,$user_dept,$user_location,$user_menu,$user_access,$user_id);
 
        // dd($output);
 
@@ -564,7 +564,7 @@ class UserRegistration extends Controller
         $offical_mobile = request('offical_mobile');
         $personal_email = request('personal_email');
         $personal_mobile = request('personal_mobile');
-        // $erpuser_role = request('erpuser_role');
+        $monthly_target = request('monthly_target');
         $password_erp_user = request('password_erp_user');
 
 
@@ -576,7 +576,7 @@ class UserRegistration extends Controller
         //dd(Session::get('UID'));
         // $output = $this->user_registration->updateERPUser($erpuserid,$first_name,$last_name,$offical_mobile,$personal_email,$personal_mobile,$erpuser_role,$password_erp_user,$user_id);
 
-        $output = $this->user_registration->updateERPUser($erpuserid,$first_name,$last_name,$offical_mobile,$personal_email,$personal_mobile,$password_erp_user,$user_dept,$user_location,$user_menu,$user_access,$user_id);
+        $output = $this->user_registration->updateERPUser($erpuserid,$first_name,$last_name,$offical_mobile,$personal_email,$personal_mobile,$monthly_target,$password_erp_user,$user_dept,$user_location,$user_menu,$user_access,$user_id);
 
         $data['message'] ='User Information Updated';
         $data['text'] = '';

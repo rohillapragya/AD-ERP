@@ -47,13 +47,7 @@ class GRN extends Controller
         $getVendorList = $this->user_reg->getVendorList();
 
         $dispatchServiceList = $this->dispatch->getDispatchServiceList();
-
-        // $prouductList = $this->product->getProuductList();
-
-        // $method = $this->product->getMethod();
         
-        // $categoryList = $this->product->activeCategoryList();
-       // dd($getVendorList);
         return view('grn.new',compact('warehouseList','getVendorList','dispatchServiceList'));
     }
 

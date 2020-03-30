@@ -373,3 +373,10 @@ Route::post('/quotation/save','Quotation@saveQuotation');
 Route::get('/quotation/view/{qID}','Quotation@viewQuotation');
 
 Route::get('/chart/wish','Chart@wish');
+
+
+Route::get('/monthly_target','UserMonthlyTarget@index');
+Route::post('/monthlyTarget/add','UserMonthlyTarget@add');
+
+Route::get('/monthly_target_report','UserMonthlyTarget@reportInit');
+Route::get('/monthlyTarget/getReport','UserMonthlyTarget@getReport');
